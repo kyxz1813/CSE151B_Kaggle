@@ -1,6 +1,3 @@
-# Claude Code
-CLAUDE.md
-
 # macOS
 .DS_Store
 
@@ -36,3 +33,14 @@ htmlcov/
 # IDE
 .idea/
 .vscode/
+
+results/
+.cache/
+models/
+*.safetensors
+*.bin
+*.pt
+*.pth
+*.ckpt
+
+CLAUDE.md

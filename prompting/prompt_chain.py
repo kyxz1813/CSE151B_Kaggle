@@ -51,7 +51,6 @@ Free-form:
 $json = '{"id": 2, "question": "Compute 3^2 + 4^2 = [ANS]"}'
 Set-Content sample_problem.json $json
 python -m prompting.prompt_chain sample_problem.json
-"""
 
 if __name__ == "__main__":
     print(sys.argv)
@@ -78,3 +77,4 @@ if __name__ == "__main__":
         "generation_hints": spec.generation_hints,
         "messages": spec.to_messages(),
     }, indent=2))
+"""
