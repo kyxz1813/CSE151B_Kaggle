@@ -62,20 +62,13 @@ def predownload_model(config):
 
 
 def load_transformers_model(config):
-    key = config.cache_key()
-
-    if config.reuse_loaded and key in _MODEL_CACHE:
-        print("Reusing model already loaded in this Python session.")
-        return _MODEL_CACHE[key]
-
     if config.gpu_id is not None:
         os.environ["CUDA_VISIBLE_DEVICES"] = str(config.gpu_id)
 
+    import torch
+    from transformers import AutoModelForCausalLM, AutoTokenizer, BitsAndBytesConfig
 
-    if torch.cuda.is_available():
-        print("CUDA available:", torch.cuda.get_device_name(0))
-    else:
-        print("CUDA unavailable. Model will run on CPU and will be very slow.")
+    cuda_available = torch.cuda.is_available()
 
     tokenizer = AutoTokenizer.from_pretrained(
         config.model_id,
@@ -88,23 +81,23 @@ def load_transformers_model(config):
 
     kwargs = {
         "trust_remote_code": True,
-        "device_map": config.device_map,
+        "device_map": config.device_map if cuda_available else None,
         "cache_dir": config.cache_dir,
     }
 
-    if config.load_in_4bit and torch.cuda.is_available():
+    if config.load_in_4bit and cuda_available:
         kwargs["quantization_config"] = BitsAndBytesConfig(
             load_in_4bit=True,
-            bnb_4bit_compute_dtype=torch.bfloat16,
+            bnb_4bit_compute_dtype="bfloat16",
             bnb_4bit_use_double_quant=True,
         )
     else:
-        if config.torch_dtype == "bfloat16":
+        if config.torch_dtype == "bfloat16" and cuda_available:
             kwargs["torch_dtype"] = torch.bfloat16
-        elif config.torch_dtype == "float16":
+        elif config.torch_dtype == "float16" and cuda_available:
             kwargs["torch_dtype"] = torch.float16
         else:
-            kwargs["torch_dtype"] = "auto"
+            kwargs["torch_dtype"] = torch.float32
 
     model = AutoModelForCausalLM.from_pretrained(
         config.model_id,
@@ -113,12 +106,12 @@ def load_transformers_model(config):
 
     model.eval()
 
-    bundle = ModelBundle(config=config, tokenizer=tokenizer, model=model)
+    if not cuda_available:
+        print("CUDA unavailable. Model is on CPU and will be very slow.")
+    else:
+        print("CUDA available:", torch.cuda.get_device_name(0))
 
-    if config.reuse_loaded:
-        _MODEL_CACHE[key] = bundle
-
-    return bundle
+    return ModelBundle(config=config, tokenizer=tokenizer, model=model)
 
 
 def clear_loaded_model_cache():
