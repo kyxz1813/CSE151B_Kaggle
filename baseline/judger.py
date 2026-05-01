@@ -7,7 +7,7 @@ import math
 import random
 from sympy.calculus.util import continuous_domain
 import numpy as np
-from utils import *
+from .utils import *
 random.seed(123)
 
 EXCLUDE_TYPE = ["UOL", "OL"]
