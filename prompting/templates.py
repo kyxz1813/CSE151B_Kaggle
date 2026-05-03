@@ -1,4 +1,5 @@
 from .models import PromptSpec
+from baseline.baseline2_prompts import BASELINE2_SYSTEM_PROMPT, build_baseline2_user_prompt
 
 
 FREE_FORM_SYSTEM_PROMPT = (
@@ -106,6 +107,34 @@ def build_default_registry():
             name="baseline_mcq",
             system_prompt=MCQ_SYSTEM_PROMPT,
             user_builder=build_user_prompt_mcq,
+            generation_hints={
+                "temperature": 0.6,
+                "top_p": 0.95,
+            },
+        ),
+    )
+
+    registry.register(
+        "baseline2",
+        "free_form",
+        PromptTemplate(
+            name="baseline2_free_form",
+            system_prompt=BASELINE2_SYSTEM_PROMPT,
+            user_builder=build_baseline2_user_prompt,
+            generation_hints={
+                "temperature": 0.6,
+                "top_p": 0.95,
+            },
+        ),
+    )
+
+    registry.register(
+        "baseline2",
+        "mcq",
+        PromptTemplate(
+            name="baseline2_mcq",
+            system_prompt=BASELINE2_SYSTEM_PROMPT,
+            user_builder=build_baseline2_user_prompt,
             generation_hints={
                 "temperature": 0.6,
                 "top_p": 0.95,

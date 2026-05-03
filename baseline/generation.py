@@ -1,9 +1,5 @@
 import time
 
-from tqdm.auto import tqdm
-from vllm import SamplingParams
-import torch
-
 
 class GenerationConfig:
     def __init__(
@@ -34,7 +30,20 @@ def chunk_list(items, batch_size):
         yield i, items[i:i + batch_size]
 
 
+def progress_iterator(items, show_progress, desc):
+    if not show_progress:
+        return items
+
+    try:
+        from tqdm.auto import tqdm
+        return tqdm(items, desc=desc, total=len(items))
+    except ImportError:
+        return items
+
+
 def generate_vllm(model_bundle, prompt_texts, generation_config, batch_size=None, show_progress=True):
+    from vllm import SamplingParams
+
     sampling_params = SamplingParams(
         max_tokens=generation_config.max_new_tokens,
         temperature=generation_config.temperature,
@@ -47,10 +56,7 @@ def generate_vllm(model_bundle, prompt_texts, generation_config, batch_size=None
 
     responses = []
     batch_ranges = list(chunk_list(prompt_texts, batch_size))
-    iterator = batch_ranges
-
-    if show_progress:
-        iterator = tqdm(batch_ranges, desc="Generating", total=len(batch_ranges))
+    iterator = progress_iterator(batch_ranges, show_progress, "Generating")
 
     for _, batch_prompts in iterator:
         outputs = model_bundle.llm.generate(batch_prompts, sampling_params=sampling_params)
@@ -61,16 +67,15 @@ def generate_vllm(model_bundle, prompt_texts, generation_config, batch_size=None
 
 
 def generate_transformers(model_bundle, prompt_texts, generation_config, batch_size=1, show_progress=True):
+    import torch
+
     tokenizer = model_bundle.tokenizer
     model = model_bundle.model
     device = model_bundle.device()
     responses = []
 
     batch_ranges = list(chunk_list(prompt_texts, batch_size))
-    iterator = batch_ranges
-
-    if show_progress:
-        iterator = tqdm(batch_ranges, desc="Generating", total=len(batch_ranges))
+    iterator = progress_iterator(batch_ranges, show_progress, "Generating")
 
     for _, batch_prompts in iterator:
         inputs = tokenizer(

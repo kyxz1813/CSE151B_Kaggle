@@ -1,7 +1,6 @@
 import re
 import sys
 from pathlib import Path
-from .judger import Judger
 
 
 def extract_letter(text):
@@ -21,6 +20,8 @@ def load_judger(judger_dir="."):
     judger_dir = str(Path(judger_dir).resolve())
     if judger_dir not in sys.path:
         sys.path.insert(0, judger_dir)
+
+    from .judger import Judger
 
     return Judger(strict_extract=False)
 

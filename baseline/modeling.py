@@ -1,7 +1,6 @@
 import os
 
 from huggingface_hub import snapshot_download
-from vllm import LLM
 import torch
 from transformers import AutoModelForCausalLM, BitsAndBytesConfig, AutoTokenizer
 
@@ -212,6 +211,8 @@ def load_transformers_model(config):
 
 
 def load_vllm_model(config):
+    from vllm import LLM
+
     set_cuda_visible_devices(config)
 
     key = config.cache_key()
