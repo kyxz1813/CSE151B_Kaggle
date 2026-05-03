@@ -37,18 +37,29 @@ def _with_assistant_prefill(output):
 def _formatting_summary(debug_rows):
     total = len(debug_rows)
     retry_rows = [row for row in debug_rows if row["retry_needed"]]
-    malformed = [row for row in debug_rows if not row["well_formed"]]
-    retry_success = [
+    malformed = [row for row in debug_rows if not row["strict_well_formed"]]
+    extractable = [row for row in debug_rows if row["extractable"]]
+    retry_strict_success = [
         row for row in retry_rows
-        if row["well_formed"] and not row["initial_well_formed"]
+        if row["strict_well_formed"] and not row["initial_strict_well_formed"]
+    ]
+    retry_extract_success = [
+        row for row in retry_rows
+        if row["extractable"] and not row["initial_extractable"]
     ]
 
     return {
         "n_outputs": total,
         "formatting_failure_count": len(malformed),
         "formatting_failure_rate": len(malformed) / total if total else None,
+        "extractable_count": len(extractable),
+        "extractable_rate": len(extractable) / total if total else None,
+        "unextractable_count": total - len(extractable),
+        "unextractable_rate": (total - len(extractable)) / total if total else None,
         "retry_count": len(retry_rows),
-        "retry_success_count": len(retry_success),
+        "retry_success_count": len(retry_strict_success),
+        "retry_strict_success_count": len(retry_strict_success),
+        "retry_extract_success_count": len(retry_extract_success),
     }
 
 
@@ -91,6 +102,7 @@ def run_baseline2_problem_set(
     parsed = [parse_model_output(output) for output in raw_outputs]
     malformed_indices = [idx for idx, row in enumerate(parsed) if not row["well_formed"]]
     retry_outputs = {}
+    retry_used_indices = set()
 
     if malformed_indices:
         retry_prompt_texts = [
@@ -111,12 +123,16 @@ def run_baseline2_problem_set(
         for idx, retry_output in zip(malformed_indices, retry_generations["responses"]):
             retry_output = _with_assistant_prefill(retry_output)
             retry_outputs[idx] = retry_output
-            raw_outputs[idx] = retry_output
-            parsed[idx] = parse_model_output(retry_output)
+            retry_parsed = parse_model_output(retry_output)
+
+            if retry_parsed["extractable"] or not parsed[idx]["extractable"]:
+                raw_outputs[idx] = retry_output
+                parsed[idx] = retry_parsed
+                retry_used_indices.add(idx)
     else:
         timings["retry_generation_sec"] = 0.0
 
-    responses = [row["extracted_answer"] for row in parsed]
+    responses = [row["repaired_response"] for row in parsed]
 
     debug_rows = []
     for idx, (record, raw_output, parsed_row) in enumerate(zip(problem_set.records, raw_outputs, parsed)):
@@ -126,7 +142,14 @@ def run_baseline2_problem_set(
             "question": record.get("question"),
             "raw_output": raw_output,
             "extracted_final_answer": parsed_row["extracted_answer"],
+            "repaired_response": parsed_row["repaired_response"],
             "retry_needed": idx in retry_outputs,
+            "retry_used": idx in retry_used_indices,
+            "retry_raw_output": retry_outputs.get(idx),
+            "initial_extractable": initial_parsed["extractable"],
+            "extractable": parsed_row["extractable"],
+            "initial_strict_well_formed": initial_parsed["strict_well_formed"],
+            "strict_well_formed": parsed_row["strict_well_formed"],
             "initial_well_formed": initial_parsed["well_formed"],
             "well_formed": parsed_row["well_formed"],
         })
@@ -152,7 +175,11 @@ def run_baseline2_problem_set(
         scored_row.update({
             "raw_output": debug_row["raw_output"],
             "extracted_final_answer": debug_row["extracted_final_answer"],
+            "repaired_response": debug_row["repaired_response"],
             "retry_needed": debug_row["retry_needed"],
+            "retry_used": debug_row["retry_used"],
+            "extractable": debug_row["extractable"],
+            "strict_well_formed": debug_row["strict_well_formed"],
             "well_formed": debug_row["well_formed"],
         })
 

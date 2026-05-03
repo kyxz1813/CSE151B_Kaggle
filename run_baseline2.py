@@ -29,7 +29,10 @@ def install_dry_run_generator():
 
         for idx, _ in enumerate(prompt_texts):
             if call_state["n"] == 1 and idx == 0:
-                responses.append("Reasoning:\nThis is a formatting smoke-test response.\n\nFinal Answer: \\boxed{0}")
+                responses.append(
+                    "Reasoning:\nThis is a formatting smoke-test response.\n\n"
+                    "Final Answer: \\boxed{0}\n\nExtra trailing text."
+                )
             elif call_state["n"] == 1:
                 responses.append("Malformed smoke-test response")
             else:

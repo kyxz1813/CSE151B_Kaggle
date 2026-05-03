@@ -43,17 +43,21 @@ def _find_boxed_contents(text):
 
 def extract_final_answer(raw_output):
     text = raw_output or ""
-    boxed = _find_boxed_contents(text)
+    matches = list(FINAL_ANSWER_RE.finditer(text))
 
+    if matches:
+        final_section = text[matches[-1].end():].strip()
+        boxed = _find_boxed_contents(final_section)
+        if boxed:
+            return boxed[-1].strip()
+
+        return final_section.strip().strip("`").strip()
+
+    boxed = _find_boxed_contents(text)
     if boxed:
         return boxed[-1].strip()
 
-    matches = list(FINAL_ANSWER_RE.finditer(text))
-    if not matches:
-        return ""
-
-    answer = text[matches[-1].end():].strip()
-    return answer.strip().strip("`").strip()
+    return ""
 
 
 def is_well_formed_output(raw_output):
@@ -78,8 +82,14 @@ def is_well_formed_output(raw_output):
 
 
 def parse_model_output(raw_output):
+    extracted_answer = extract_final_answer(raw_output)
+    well_formed = is_well_formed_output(raw_output)
+
     return {
         "raw_output": raw_output or "",
-        "extracted_answer": extract_final_answer(raw_output),
-        "well_formed": is_well_formed_output(raw_output),
+        "extracted_answer": extracted_answer,
+        "repaired_response": extracted_answer,
+        "extractable": bool(extracted_answer),
+        "well_formed": well_formed,
+        "strict_well_formed": well_formed,
     }
