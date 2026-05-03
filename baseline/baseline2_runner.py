@@ -63,6 +63,40 @@ def _formatting_summary(debug_rows):
     }
 
 
+def _category_summary(scored_rows):
+    rows_by_category = {}
+    for row in scored_rows:
+        category = row.get("category") or "uncategorized"
+        rows_by_category.setdefault(category, []).append(row)
+
+    summary = {}
+    for category, rows in sorted(rows_by_category.items()):
+        scored = [row for row in rows if row.get("correct") is not None]
+        extractable = [row for row in rows if row.get("extractable")]
+        malformed = [row for row in rows if not row.get("strict_well_formed")]
+
+        summary[category] = {
+            "n": len(rows),
+            "n_scored": len(scored),
+            "accuracy": (
+                sum(bool(row["correct"]) for row in scored) / len(scored)
+                if scored else None
+            ),
+            "extractable_rate": len(extractable) / len(rows) if rows else None,
+            "formatting_failure_rate": len(malformed) / len(rows) if rows else None,
+        }
+
+    return summary
+
+
+def _category_counts(debug_rows):
+    counts = {}
+    for row in debug_rows:
+        category = row.get("category") or "uncategorized"
+        counts[category] = counts.get(category, 0) + 1
+    return dict(sorted(counts.items()))
+
+
 def run_baseline2_problem_set(
     problem_set,
     model_bundle,
@@ -70,6 +104,8 @@ def run_baseline2_problem_set(
     batch_size=1,
     limit=None,
     score=True,
+    strategy_name="baseline2",
+    report_label="baseline2_prompt_format",
     judger_dir=".",
     output_jsonl_path=None,
     debug_jsonl_path=None,
@@ -81,7 +117,7 @@ def run_baseline2_problem_set(
     timings = {}
 
     t0 = time.perf_counter()
-    prompt_chain = build_prompt_chain(strategy_name="baseline2")
+    prompt_chain = build_prompt_chain(strategy_name=strategy_name)
     prompt_rows = build_prompt_texts(problem_set, model_bundle.tokenizer, prompt_chain=prompt_chain)
     prompt_texts = [row["prompt_text"] for row in prompt_rows]
     timings["prompt_build_sec"] = time.perf_counter() - t0
@@ -137,9 +173,13 @@ def run_baseline2_problem_set(
     debug_rows = []
     for idx, (record, raw_output, parsed_row) in enumerate(zip(problem_set.records, raw_outputs, parsed)):
         initial_parsed = parse_model_output(_with_assistant_prefill(generations["responses"][idx]))
+        prompt_row = prompt_rows[idx]
         debug_rows.append({
             "id": record.get("id"),
             "question": record.get("question"),
+            "category": prompt_row["metadata"].get("category"),
+            "route_name": prompt_row["metadata"].get("route_name"),
+            "template_name": prompt_row["spec"].name,
             "raw_output": raw_output,
             "extracted_final_answer": parsed_row["extracted_answer"],
             "repaired_response": parsed_row["repaired_response"],
@@ -173,6 +213,9 @@ def run_baseline2_problem_set(
 
     for scored_row, debug_row in zip(scored_rows, debug_rows):
         scored_row.update({
+            "category": debug_row["category"],
+            "route_name": debug_row["route_name"],
+            "template_name": debug_row["template_name"],
             "raw_output": debug_row["raw_output"],
             "extracted_final_answer": debug_row["extracted_final_answer"],
             "repaired_response": debug_row["repaired_response"],
@@ -185,6 +228,8 @@ def run_baseline2_problem_set(
 
     summary = summarize_results(scored_rows)
     formatting_summary = _formatting_summary(debug_rows)
+    category_counts = _category_counts(debug_rows)
+    category_summary = _category_summary(scored_rows)
     timings["scoring_sec"] = time.perf_counter() - t0
 
     if output_jsonl_path:
@@ -197,7 +242,7 @@ def run_baseline2_problem_set(
         save_submission_csv(scored_rows, submission_csv_path)
 
     report = {
-        "baseline": "baseline2_prompt_format",
+        "baseline": report_label,
         "problem_set": problem_set.summary(),
         "backend": model_bundle.backend,
         "batch_size": batch_size,
@@ -205,6 +250,8 @@ def run_baseline2_problem_set(
         "score_available": score_available,
         "summary": summary,
         "formatting": formatting_summary,
+        "category_counts": category_counts,
+        "category_summary": category_summary,
         "generation": generations,
         "timings": timings,
         "output_jsonl_path": str(output_jsonl_path) if output_jsonl_path else None,
@@ -224,3 +271,9 @@ def run_baseline2_problem_set(
         timings=timings,
         report=report,
     )
+
+
+def run_baseline3_problem_set(*args, **kwargs):
+    kwargs.setdefault("strategy_name", "baseline3")
+    kwargs.setdefault("report_label", "baseline3_category_prompts")
+    return run_baseline2_problem_set(*args, **kwargs)

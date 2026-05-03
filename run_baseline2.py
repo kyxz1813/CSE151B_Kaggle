@@ -51,12 +51,15 @@ def install_dry_run_generator():
     runner.generate_prompt_texts = dry_run_generate
 
 
-def parse_args():
-    parser = argparse.ArgumentParser(description="Run Baseline 2 prompt-formatting inference.")
+def parse_args(
+    description="Run Baseline 2 prompt-formatting inference.",
+    default_output_dir="results/baseline2_prompt_format",
+):
+    parser = argparse.ArgumentParser(description=description)
     parser.add_argument("--split", choices=["train", "val", "public", "private"], default="val")
     parser.add_argument("--public-data-path", default="data/public.jsonl")
     parser.add_argument("--private-data-path", default="data/private.jsonl")
-    parser.add_argument("--output-dir", default="results/baseline2_prompt_format")
+    parser.add_argument("--output-dir", default=default_output_dir)
     parser.add_argument("--val-frac", type=float, default=0.20)
     parser.add_argument("--split-seed", type=int, default=414)
     parser.add_argument("--limit", type=int, default=None)

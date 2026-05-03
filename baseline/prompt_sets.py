@@ -9,7 +9,7 @@ def apply_chat_template(tokenizer, messages, metadata=None):
         add_generation_prompt=True,
     )
 
-    if metadata and metadata.get("strategy_name") == "baseline2":
+    if metadata and metadata.get("strategy_name") in {"baseline2", "baseline3"}:
         role_start = "<|im_start|>" + "assist" + "ant\n"
         thinking_prefill = f"{role_start}<think>\n"
         answer_prefill = f"{role_start}{BASELINE2_ASSISTANT_PREFILL}"
@@ -43,7 +43,7 @@ def build_prompt_texts(problem_set, tokenizer, prompt_chain=None):
     for row in prompt_rows:
         row["assistant_prefill"] = (
             BASELINE2_ASSISTANT_PREFILL
-            if row["metadata"].get("strategy_name") == "baseline2"
+            if row["metadata"].get("strategy_name") in {"baseline2", "baseline3"}
             else ""
         )
         row["prompt_text"] = apply_chat_template(

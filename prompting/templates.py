@@ -1,5 +1,10 @@
 from .models import PromptSpec
 from baseline.baseline2_prompts import BASELINE2_SYSTEM_PROMPT, build_baseline2_user_prompt
+from baseline.baseline3_prompts import (
+    CATEGORY_GUIDANCE,
+    build_baseline3_system_prompt,
+    build_baseline3_user_prompt,
+)
 
 
 FREE_FORM_SYSTEM_PROMPT = (
@@ -36,17 +41,20 @@ class PromptTemplate:
         if self.few_shot_builder is not None:
             few_shot_messages = self.few_shot_builder(context)
 
+        metadata = dict(context.metadata)
+        metadata.update({
+            "strategy_name": context.strategy_name,
+            "route_name": context.route_name,
+            "tags": sorted(context.tags),
+        })
+
         return PromptSpec(
             name=self.name,
             system_prompt=self.system_prompt,
             user_prompt=self.user_builder(context),
             few_shot_messages=few_shot_messages,
             generation_hints=dict(self.generation_hints),
-            metadata={
-                "strategy_name": context.strategy_name,
-                "route_name": context.route_name,
-                "tags": sorted(context.tags),
-            },
+            metadata=metadata,
         )
 
 
@@ -141,5 +149,21 @@ def build_default_registry():
             },
         ),
     )
+
+    for category in CATEGORY_GUIDANCE:
+        for answer_format in ("free_form", "mcq"):
+            registry.register(
+                "baseline3",
+                f"{category}_{answer_format}",
+                PromptTemplate(
+                    name=f"baseline3_{category}_{answer_format}",
+                    system_prompt=build_baseline3_system_prompt(category),
+                    user_builder=build_baseline3_user_prompt,
+                    generation_hints={
+                        "temperature": 0.6,
+                        "top_p": 0.95,
+                    },
+                ),
+            )
 
     return registry
