@@ -11,6 +11,20 @@ from .generation import generate_prompt_texts, GenerationConfig
 from .scoring import load_judger, score_records, summarize_results
 
 
+def maybe_limit_problem_set(problem_set, limit=None):
+    if limit is None:
+        return problem_set
+
+    return problem_set.head(limit)
+
+
+def write_report(report, path):
+    path = Path(path)
+    path.parent.mkdir(parents=True, exist_ok=True)
+
+    with open(path, "w", encoding="utf-8") as f:
+        json.dump(report, f, indent=2, ensure_ascii=False)
+
 class RunResult:
     def __init__(self, problem_set, prompt_rows, generations, scored_rows, summary, timings, report):
         self.problem_set = problem_set

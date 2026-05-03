@@ -56,9 +56,8 @@ Set-Content sample_problem.json $json
 python -m prompting.prompt_chain sample_problem.json
 
 if __name__ == "__main__":
-    print(sys.argv)
     if len(sys.argv) != 2:
-        print("Usage: python -m prompting.prompt_chain '<json_record>'")
+        print("Usage: python -m prompting.prompt_chain '<json_record_or_json_file>'")
         sys.exit(1)
 
     arg = sys.argv[1]
