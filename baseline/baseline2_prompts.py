@@ -1,41 +1,63 @@
-BASELINE2_SYSTEM_PROMPT = """You are an expert mathematician. Solve the problem and follow the required output format exactly.
+BASELINE2_SYSTEM_PROMPT = """You are an expert mathematician. Solve the problem, but keep the response short and follow the required output format exactly.
 
 Required output structure:
 
 Reasoning:
-<concise step-by-step reasoning>
+- Use at most 8 concise lines.
+- Do not repeat checks unless necessary.
+- Do not continue once the final answer is written.
 
 Final Answer: \\boxed{<final answer>}
 
 Rules:
 - The final answer must contain only the answer, not explanation.
-- For multiple-choice questions, the final answer must be a single capital letter when applicable.
-- For numeric answers, simplify when possible.
-- For multiple sub-answers, put all answers inside one box separated by commas.
-- Never omit the final answer.
+- For multiple-choice questions, the final answer must be one capital letter when applicable.
+- For numeric or symbolic answers, simplify when possible.
+- For multiple [ANS] blanks, put all answers inside one box separated by commas, in the same order as the blanks.
+- Use exactly one boxed expression after Final Answer.
+- Do not write anything after the boxed final answer.
 """
 
 
-BASELINE2_RETRY_SYSTEM_PROMPT = """You are an expert mathematician. Solve the original problem again and follow the required output format exactly.
+BASELINE2_FORMAT_REPAIR_SYSTEM_PROMPT = """You are a formatting repair assistant.
 
-Your output must include:
+Your job is not to solve a new problem. Your job is to rewrite the previous answer into the required final-answer schema.
 
-Final Answer: \\boxed{...}
-
-Use this exact structure:
+Required output structure:
 
 Reasoning:
-<concise step-by-step reasoning>
+Briefly state that the answer is being reformatted.
+
+Final Answer: \\boxed{<final answer>}
+
+Rules:
+- Use exactly one boxed expression after Final Answer.
+- Do not write anything after the boxed final answer.
+- If an extracted answer is provided, preserve it exactly unless it clearly violates the requested answer-count format.
+- For multiple-choice questions, the boxed answer must be a capital letter when applicable.
+- For multiple [ANS] blanks, put all answers inside one box separated by commas, in the same order as the blanks.
+"""
+
+
+BASELINE2_SHORT_RESOLVE_SYSTEM_PROMPT = """You are an expert mathematician. Solve the original problem briefly and finish with the required final-answer format.
+
+Required output structure:
+
+Reasoning:
+- Use at most 6 concise lines.
+- Focus only on the shortest path to the answer.
+- Do not re-check repeatedly.
+- Do not continue once the final answer is written.
 
 Final Answer: \\boxed{<final answer>}
 
 Rules:
 - The final answer must contain only the answer, not explanation.
-- For multiple-choice questions, the final answer must be a single capital letter when applicable.
-- For numeric answers, simplify when possible.
-- For multiple sub-answers, put all answers inside one box separated by commas.
-- Never omit the final answer.
+- For multiple-choice questions, the final answer must be one capital letter when applicable.
+- For numeric or symbolic answers, simplify when possible.
+- For multiple [ANS] blanks, put all answers inside one box separated by commas, in the same order as the blanks.
 - Use exactly one boxed expression after Final Answer.
+- Do not write anything after the boxed final answer.
 - Do not use external APIs, calculators, tools, code execution, or any other model.
 """
 
@@ -64,23 +86,47 @@ def build_baseline2_user_prompt(context):
     )
 
 
-def build_baseline2_retry_messages(record):
+def _format_original_problem_block(record):
     question = str(record.get("question", "")).strip()
     options = record.get("options") or []
 
     if options:
-        user_prompt = (
+        return (
             f"Original question:\n{question}\n\n"
-            f"Answer choices:\n{format_options(options)}\n\n"
-            "Return the answer using the required structure."
-        )
-    else:
-        user_prompt = (
-            f"Original question:\n{question}\n\n"
-            "Return the answer using the required structure."
+            f"Answer choices:\n{format_options(options)}"
         )
 
+    return f"Original question:\n{question}"
+
+
+def build_baseline2_retry_messages(
+    record,
+    previous_output=None,
+    extracted_answer=None,
+    retry_mode="short_resolve",
+):
+    original_block = _format_original_problem_block(record)
+
+    if retry_mode == "format_repair":
+        user_prompt = (
+            f"{original_block}\n\n"
+            f"Extracted answer candidate:\n{extracted_answer or ''}\n\n"
+            f"Previous model output:\n{previous_output or ''}\n\n"
+            "Rewrite the answer using the required schema. Do not solve from scratch unless the extracted answer is unusable."
+        )
+
+        return [
+            {"role": "system", "content": BASELINE2_FORMAT_REPAIR_SYSTEM_PROMPT},
+            {"role": "user", "content": user_prompt},
+        ]
+
+    user_prompt = (
+        f"{original_block}\n\n"
+        "The previous response did not contain a usable final boxed answer. "
+        "Solve briefly and return the answer using the required schema."
+    )
+
     return [
-        {"role": "system", "content": BASELINE2_RETRY_SYSTEM_PROMPT},
+        {"role": "system", "content": BASELINE2_SHORT_RESOLVE_SYSTEM_PROMPT},
         {"role": "user", "content": user_prompt},
     ]

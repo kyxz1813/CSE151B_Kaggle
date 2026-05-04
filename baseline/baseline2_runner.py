@@ -11,9 +11,14 @@ from .runner import RunResult, save_submission_csv, write_report, maybe_limit_pr
 from .scoring import load_judger, score_records, summarize_results
 
 
-def _build_retry_prompt_text(tokenizer, record):
+def _build_retry_prompt_text(tokenizer, record, previous_output=None, extracted_answer=None, retry_mode="short_resolve"):
     prompt_text = tokenizer.apply_chat_template(
-        build_baseline2_retry_messages(record),
+        build_baseline2_retry_messages(
+            record=record,
+            previous_output=previous_output,
+            extracted_answer=extracted_answer,
+            retry_mode=retry_mode,
+        ),
         tokenize=False,
         add_generation_prompt=True,
     )
@@ -37,6 +42,19 @@ def _with_assistant_prefill(output):
     return BASELINE2_ASSISTANT_PREFILL + text.lstrip()
 
 
+def _default_retry_generation_config(gen):
+    return GenerationConfig(
+        max_new_tokens=min(256, getattr(gen, "max_new_tokens", 256)),
+        temperature=0.0,
+        top_p=1.0,
+        top_k=-1,
+        min_p=0.0,
+        repetition_penalty=1.0,
+        presence_penalty=0.0,
+        do_sample=False,
+    )
+
+
 def _schema_score(parsed_row):
     score = 0
 
@@ -50,37 +68,29 @@ def _schema_score(parsed_row):
         score += 1
 
     if parsed_row.get("schema_valid"):
-        score += 2
+        score += 3
 
-    score -= 0.05 * len(parsed_row.get("schema_errors") or [])
+    if parsed_row.get("sanitized"):
+        score += 0.25
+
+    score -= 0.10 * len(parsed_row.get("schema_errors") or [])
 
     return score
 
 
 def _should_retry(parsed_row):
-    if not parsed_row.get("extractable"):
-        return True
-
-    if not parsed_row.get("well_formed"):
-        return True
-
-    if not parsed_row.get("schema_valid"):
-        return True
-
-    return False
+    return not parsed_row.get("schema_valid")
 
 
-def _should_use_retry(initial_parsed, retry_parsed):
-    if retry_parsed.get("schema_valid") and not initial_parsed.get("schema_valid"):
-        return True
+def _retry_mode_for(parsed_row):
+    if parsed_row.get("extractable"):
+        return "format_repair"
 
-    if retry_parsed.get("well_formed") and not initial_parsed.get("well_formed"):
-        return True
+    return "short_resolve"
 
-    if retry_parsed.get("extractable") and not initial_parsed.get("extractable"):
-        return True
 
-    return _schema_score(retry_parsed) > _schema_score(initial_parsed)
+def _choose_better(current_parsed, candidate_parsed):
+    return _schema_score(candidate_parsed) > _schema_score(current_parsed)
 
 
 def _formatting_summary(debug_rows):
@@ -88,6 +98,7 @@ def _formatting_summary(debug_rows):
 
     retry_rows = [row for row in debug_rows if row["retry_needed"]]
     retry_used_rows = [row for row in debug_rows if row["retry_used"]]
+    sanitized_rows = [row for row in debug_rows if row["sanitized"]]
 
     initial_schema_valid = [row for row in debug_rows if row["initial_schema_valid"]]
     final_schema_valid = [row for row in debug_rows if row["schema_valid"]]
@@ -100,12 +111,12 @@ def _formatting_summary(debug_rows):
 
     retry_schema_success = [
         row for row in retry_rows
-        if row["schema_valid"] and not row["initial_schema_valid"]
+        if row["schema_valid"] and not row["post_sanitize_schema_valid"]
     ]
 
     retry_extract_success = [
         row for row in retry_rows
-        if row["extractable"] and not row["initial_extractable"]
+        if row["extractable"] and not row["post_sanitize_extractable"]
     ]
 
     error_counts = {}
@@ -118,35 +129,49 @@ def _formatting_summary(debug_rows):
         for error in row.get("initial_schema_errors") or []:
             initial_error_counts[error] = initial_error_counts.get(error, 0) + 1
 
+    post_sanitize_error_counts = {}
+    for row in debug_rows:
+        for error in row.get("post_sanitize_schema_errors") or []:
+            post_sanitize_error_counts[error] = post_sanitize_error_counts.get(error, 0) + 1
+
     return {
         "n_outputs": total,
 
         "initial_schema_valid_count": len(initial_schema_valid),
         "initial_schema_valid_rate": len(initial_schema_valid) / total if total else None,
+
         "schema_valid_count": len(final_schema_valid),
         "schema_valid_rate": len(final_schema_valid) / total if total else None,
 
         "initial_formatting_failure_count": len(initial_malformed),
         "initial_formatting_failure_rate": len(initial_malformed) / total if total else None,
+
         "formatting_failure_count": len(final_malformed),
         "formatting_failure_rate": len(final_malformed) / total if total else None,
 
         "initial_extractable_count": len(initial_extractable),
         "initial_extractable_rate": len(initial_extractable) / total if total else None,
+
         "extractable_count": len(final_extractable),
         "extractable_rate": len(final_extractable) / total if total else None,
 
         "unextractable_count": total - len(final_extractable),
         "unextractable_rate": (total - len(final_extractable)) / total if total else None,
 
+        "sanitized_count": len(sanitized_rows),
+        "sanitized_rate": len(sanitized_rows) / total if total else None,
+
         "retry_count": len(retry_rows),
         "retry_rate": len(retry_rows) / total if total else None,
+
         "retry_used_count": len(retry_used_rows),
         "retry_used_rate": len(retry_used_rows) / total if total else None,
+
         "retry_schema_success_count": len(retry_schema_success),
         "retry_extract_success_count": len(retry_extract_success),
 
         "initial_schema_error_counts": dict(sorted(initial_error_counts.items())),
+        "post_sanitize_schema_error_counts": dict(sorted(post_sanitize_error_counts.items())),
         "schema_error_counts": dict(sorted(error_counts.items())),
     }
 
@@ -197,6 +222,7 @@ def _schema_accuracy_summary(scored_rows):
     valid_rows = [row for row in scored if row.get("schema_valid")]
     invalid_rows = [row for row in scored if not row.get("schema_valid")]
     retry_rows = [row for row in scored if row.get("retry_used")]
+    sanitized_rows = [row for row in scored if row.get("sanitized")]
 
     def acc(rows):
         if not rows:
@@ -206,14 +232,31 @@ def _schema_accuracy_summary(scored_rows):
     return {
         "schema_valid_n": len(valid_rows),
         "schema_valid_accuracy": acc(valid_rows),
+
         "schema_invalid_n": len(invalid_rows),
         "schema_invalid_accuracy": acc(invalid_rows),
+
         "retry_used_n": len(retry_rows),
         "retry_used_accuracy": acc(retry_rows),
+
+        "sanitized_n": len(sanitized_rows),
+        "sanitized_accuracy": acc(sanitized_rows),
     }
 
 
-def _build_debug_row(record, prompt_row, initial_output, final_output, initial_parsed, final_parsed, retry_output, retry_needed, retry_used):
+def _build_debug_row(
+    record,
+    prompt_row,
+    initial_output,
+    initial_raw_parsed,
+    post_sanitize_parsed,
+    final_parsed,
+    retry_output,
+    retry_parsed,
+    retry_needed,
+    retry_used,
+    retry_mode,
+):
     return {
         "id": record.get("id"),
         "question": record.get("question"),
@@ -226,9 +269,9 @@ def _build_debug_row(record, prompt_row, initial_output, final_output, initial_p
         "prompt_metadata": prompt_row["metadata"],
 
         "initial_raw_output": initial_output,
-        "raw_output": final_output,
-        "response": final_output,
-        "response_for_submission": final_output,
+        "raw_output": final_parsed["response_for_submission"],
+        "response": final_parsed["response_for_submission"],
+        "response_for_submission": final_parsed["response_for_submission"],
 
         "extracted_final_answer": final_parsed["extracted_answer"],
         "boxed_answer": final_parsed["boxed_answer"],
@@ -237,21 +280,30 @@ def _build_debug_row(record, prompt_row, initial_output, final_output, initial_p
 
         "retry_needed": retry_needed,
         "retry_used": retry_used,
+        "retry_mode": retry_mode,
         "retry_raw_output": retry_output,
+        "retry_schema_errors": retry_parsed["schema_errors"] if retry_parsed else None,
 
-        "initial_extractable": initial_parsed["extractable"],
+        "sanitized": final_parsed["sanitized"],
+
+        "initial_extractable": initial_raw_parsed["extractable"],
+        "post_sanitize_extractable": post_sanitize_parsed["extractable"],
         "extractable": final_parsed["extractable"],
 
-        "initial_strict_well_formed": initial_parsed["strict_well_formed"],
+        "initial_strict_well_formed": initial_raw_parsed["strict_well_formed"],
+        "post_sanitize_strict_well_formed": post_sanitize_parsed["strict_well_formed"],
         "strict_well_formed": final_parsed["strict_well_formed"],
 
-        "initial_well_formed": initial_parsed["well_formed"],
+        "initial_well_formed": initial_raw_parsed["well_formed"],
+        "post_sanitize_well_formed": post_sanitize_parsed["well_formed"],
         "well_formed": final_parsed["well_formed"],
 
-        "initial_schema_valid": initial_parsed["schema_valid"],
+        "initial_schema_valid": initial_raw_parsed["schema_valid"],
+        "post_sanitize_schema_valid": post_sanitize_parsed["schema_valid"],
         "schema_valid": final_parsed["schema_valid"],
 
-        "initial_schema_errors": initial_parsed["schema_errors"],
+        "initial_schema_errors": initial_raw_parsed["schema_errors"],
+        "post_sanitize_schema_errors": post_sanitize_parsed["schema_errors"],
         "schema_errors": final_parsed["schema_errors"],
     }
 
@@ -260,6 +312,7 @@ def run_baseline2_problem_set(
     problem_set,
     model_bundle,
     generation_config=None,
+    retry_generation_config=None,
     batch_size=1,
     limit=None,
     score=True,
@@ -282,6 +335,7 @@ def run_baseline2_problem_set(
     timings["prompt_build_sec"] = time.perf_counter() - t0
 
     gen = generation_config or GenerationConfig()
+    retry_gen = retry_generation_config or _default_retry_generation_config(gen)
 
     t0 = time.perf_counter()
     generations = generate_prompt_texts(
@@ -294,30 +348,50 @@ def run_baseline2_problem_set(
     timings["generation_sec"] = time.perf_counter() - t0
 
     initial_outputs = [_with_assistant_prefill(output) for output in generations["responses"]]
-    initial_parsed = [
-        parse_model_output(output, record=record)
+
+    initial_raw_parsed = [
+        parse_model_output(output, record=record, sanitize=False)
+        for output, record in zip(initial_outputs, problem_set.records)
+    ]
+
+    post_sanitize_parsed = [
+        parse_model_output(output, record=record, sanitize=True)
         for output, record in zip(initial_outputs, problem_set.records)
     ]
 
     retry_needed_indices = [
-        idx for idx, parsed_row in enumerate(initial_parsed)
+        idx for idx, parsed_row in enumerate(post_sanitize_parsed)
         if _should_retry(parsed_row)
     ]
 
     retry_outputs = {}
     retry_parsed = {}
+    retry_modes = {}
 
     if retry_needed_indices:
-        retry_prompt_texts = [
-            _build_retry_prompt_text(model_bundle.tokenizer, problem_set.records[idx])
-            for idx in retry_needed_indices
-        ]
+        retry_prompt_texts = []
+
+        for idx in retry_needed_indices:
+            record = problem_set.records[idx]
+            parsed_row = post_sanitize_parsed[idx]
+            retry_mode = _retry_mode_for(parsed_row)
+            retry_modes[idx] = retry_mode
+
+            retry_prompt_texts.append(
+                _build_retry_prompt_text(
+                    tokenizer=model_bundle.tokenizer,
+                    record=record,
+                    previous_output=post_sanitize_parsed[idx]["response_for_submission"],
+                    extracted_answer=post_sanitize_parsed[idx]["extracted_answer"],
+                    retry_mode=retry_mode,
+                )
+            )
 
         t0 = time.perf_counter()
         retry_generations = generate_prompt_texts(
             model_bundle=model_bundle,
             prompt_texts=retry_prompt_texts,
-            generation_config=gen,
+            generation_config=retry_gen,
             batch_size=batch_size,
             show_progress=show_progress,
         )
@@ -326,28 +400,27 @@ def run_baseline2_problem_set(
         for idx, retry_output in zip(retry_needed_indices, retry_generations["responses"]):
             retry_output = _with_assistant_prefill(retry_output)
             retry_outputs[idx] = retry_output
-            retry_parsed[idx] = parse_model_output(retry_output, record=problem_set.records[idx])
+            retry_parsed[idx] = parse_model_output(
+                retry_output,
+                record=problem_set.records[idx],
+                sanitize=True,
+            )
     else:
         timings["retry_generation_sec"] = 0.0
 
-    final_outputs = []
     final_parsed = []
     retry_used_indices = set()
 
-    for idx, output in enumerate(initial_outputs):
-        chosen_output = output
-        chosen_parsed = initial_parsed[idx]
+    for idx, parsed_row in enumerate(post_sanitize_parsed):
+        chosen_parsed = parsed_row
 
-        if idx in retry_outputs:
-            candidate_parsed = retry_parsed[idx]
+        if idx in retry_parsed and _choose_better(chosen_parsed, retry_parsed[idx]):
+            chosen_parsed = retry_parsed[idx]
+            retry_used_indices.add(idx)
 
-            if _should_use_retry(chosen_parsed, candidate_parsed):
-                chosen_output = retry_outputs[idx]
-                chosen_parsed = candidate_parsed
-                retry_used_indices.add(idx)
-
-        final_outputs.append(chosen_output)
         final_parsed.append(chosen_parsed)
+
+    final_outputs = [row["response_for_submission"] for row in final_parsed]
 
     debug_rows = []
 
@@ -357,12 +430,14 @@ def run_baseline2_problem_set(
                 record=record,
                 prompt_row=prompt_rows[idx],
                 initial_output=initial_outputs[idx],
-                final_output=final_outputs[idx],
-                initial_parsed=initial_parsed[idx],
+                initial_raw_parsed=initial_raw_parsed[idx],
+                post_sanitize_parsed=post_sanitize_parsed[idx],
                 final_parsed=final_parsed[idx],
                 retry_output=retry_outputs.get(idx),
+                retry_parsed=retry_parsed.get(idx),
                 retry_needed=idx in retry_needed_indices,
                 retry_used=idx in retry_used_indices,
+                retry_mode=retry_modes.get(idx),
             )
         )
 
@@ -406,21 +481,30 @@ def run_baseline2_problem_set(
 
             "retry_needed": debug_row["retry_needed"],
             "retry_used": debug_row["retry_used"],
+            "retry_mode": debug_row["retry_mode"],
             "retry_raw_output": debug_row["retry_raw_output"],
+            "retry_schema_errors": debug_row["retry_schema_errors"],
+
+            "sanitized": debug_row["sanitized"],
 
             "initial_extractable": debug_row["initial_extractable"],
+            "post_sanitize_extractable": debug_row["post_sanitize_extractable"],
             "extractable": debug_row["extractable"],
 
             "initial_strict_well_formed": debug_row["initial_strict_well_formed"],
+            "post_sanitize_strict_well_formed": debug_row["post_sanitize_strict_well_formed"],
             "strict_well_formed": debug_row["strict_well_formed"],
 
             "initial_well_formed": debug_row["initial_well_formed"],
+            "post_sanitize_well_formed": debug_row["post_sanitize_well_formed"],
             "well_formed": debug_row["well_formed"],
 
             "initial_schema_valid": debug_row["initial_schema_valid"],
+            "post_sanitize_schema_valid": debug_row["post_sanitize_schema_valid"],
             "schema_valid": debug_row["schema_valid"],
 
             "initial_schema_errors": debug_row["initial_schema_errors"],
+            "post_sanitize_schema_errors": debug_row["post_sanitize_schema_errors"],
             "schema_errors": debug_row["schema_errors"],
         })
 
@@ -446,6 +530,7 @@ def run_baseline2_problem_set(
         "backend": model_bundle.backend,
         "batch_size": batch_size,
         "generation_config": vars(gen),
+        "retry_generation_config": vars(retry_gen),
         "score_available": score_available,
         "summary": summary,
         "formatting": formatting_summary,

@@ -34,7 +34,7 @@ htmlcov/
 .idea/
 .vscode/
 
-results/
+#results/
 .cache/
 models/
 *.safetensors

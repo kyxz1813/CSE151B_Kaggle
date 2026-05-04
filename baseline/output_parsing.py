@@ -43,13 +43,9 @@ def _find_boxed_contents(text):
     return [content for _, _, content in _find_boxed_spans(text)]
 
 
-def _last_final_section(text):
+def _last_final_match(text):
     matches = list(FINAL_ANSWER_RE.finditer(text or ""))
-
-    if not matches:
-        return None
-
-    return (text or "")[matches[-1].end():].strip()
+    return matches[-1] if matches else None
 
 
 def _top_level_comma_split(text):
@@ -57,19 +53,14 @@ def _top_level_comma_split(text):
     current = []
     depth = 0
 
-    pairs = {
-        "{": "}",
-        "(": ")",
-        "[": "]",
-    }
-
-    closing = set(pairs.values())
+    openers = {"{", "(", "["}
+    closers = {"}", ")", "]"}
 
     for char in text or "":
-        if char in pairs:
+        if char in openers:
             depth += 1
             current.append(char)
-        elif char in closing:
+        elif char in closers:
             depth = max(0, depth - 1)
             current.append(char)
         elif char == "," and depth == 0:
@@ -95,9 +86,7 @@ def expected_answer_count(record):
         return 1
 
     question = str(record.get("question", ""))
-    count = len(ANS_RE.findall(question))
-
-    return max(1, count)
+    return max(1, len(ANS_RE.findall(question)))
 
 
 def valid_mcq_letters(record):
@@ -109,12 +98,13 @@ def valid_mcq_letters(record):
 
 def extract_final_answer(raw_output):
     text = raw_output or ""
-    final_section = _last_final_section(text)
+    final_match = _last_final_match(text)
 
-    if final_section is not None:
+    if final_match:
+        final_section = text[final_match.end():].strip()
         boxed = _find_boxed_contents(final_section)
         if boxed:
-            return boxed[-1].strip()
+            return boxed[0].strip()
 
         return final_section.strip().strip("`").strip()
 
@@ -125,22 +115,57 @@ def extract_final_answer(raw_output):
     return ""
 
 
+def _ensure_reasoning_prefix(text):
+    text = (text or "").strip()
+
+    if not text:
+        return "Reasoning:\nFormatting repair."
+
+    if text.startswith("Reasoning:"):
+        return text
+
+    return "Reasoning:\n" + text
+
+
+def sanitize_response(raw_output, record=None):
+    text = raw_output or ""
+    final_match = _last_final_match(text)
+
+    if final_match:
+        before_final = text[:final_match.start()].strip()
+        final_section = text[final_match.end():].strip()
+        boxed_spans = _find_boxed_spans(final_section)
+
+        if boxed_spans:
+            _, _, answer = boxed_spans[0]
+            before_final = _ensure_reasoning_prefix(before_final)
+            return f"{before_final}\n\nFinal Answer: \\boxed{{{answer}}}"
+
+    boxed_spans = _find_boxed_spans(text)
+
+    if boxed_spans:
+        start, end, answer = boxed_spans[-1]
+        before_box = text[:start].strip()
+        before_box = _ensure_reasoning_prefix(before_box)
+        return f"{before_box}\n\nFinal Answer: \\boxed{{{answer}}}"
+
+    return text
+
+
 def validate_output_schema(raw_output, record=None):
     text = raw_output or ""
     errors = []
 
-    has_reasoning = "Reasoning:" in text
-    if not has_reasoning:
+    if "Reasoning:" not in text:
         errors.append("missing_reasoning_section")
 
-    final_matches = list(FINAL_ANSWER_RE.finditer(text))
-    has_final_marker = bool(final_matches)
+    final_match = _last_final_match(text)
 
-    if not has_final_marker:
+    if not final_match:
         errors.append("missing_final_answer_marker")
         final_section = text.strip()
     else:
-        final_section = text[final_matches[-1].end():].strip()
+        final_section = text[final_match.end():].strip()
 
     boxed_spans = _find_boxed_spans(final_section)
 
@@ -148,8 +173,9 @@ def validate_output_schema(raw_output, record=None):
         errors.append("unclosed_boxed_answer")
 
     if not boxed_spans:
-        errors.append("missing_boxed_answer_after_final")
         extracted_answer = extract_final_answer(text)
+        errors.append("missing_boxed_answer_after_final")
+
         return {
             "schema_errors": errors,
             "extracted_answer": extracted_answer,
@@ -166,22 +192,19 @@ def validate_output_schema(raw_output, record=None):
     if len(boxed_spans) > 1:
         errors.append("multiple_boxed_answers_after_final")
 
-    start, end, content = boxed_spans[-1]
+    start, end, content = boxed_spans[0]
     boxed_answer = content.strip()
     boxed_answers = [span[2].strip() for span in boxed_spans]
 
     if not boxed_answer:
         errors.append("empty_boxed_answer")
 
-    if len(boxed_spans) == 1:
-        only_start, only_end, _ = boxed_spans[0]
+    if start != 0:
+        errors.append("text_before_final_box")
 
-        if only_start != 0:
-            errors.append("text_before_final_box")
-
-        trailing = final_section[only_end:].strip()
-        if trailing:
-            errors.append("trailing_text_after_final_box")
+    trailing = final_section[end:].strip()
+    if trailing:
+        errors.append("trailing_text_after_final_box")
 
     expected_count = expected_answer_count(record)
     actual_count = 1
@@ -234,14 +257,20 @@ def is_well_formed_output(raw_output):
     return validate_output_schema(raw_output)["well_formed"]
 
 
-def parse_model_output(raw_output, record=None):
-    text = raw_output or ""
-    validation = validate_output_schema(text, record=record)
+def parse_model_output(raw_output, record=None, sanitize=False):
+    original = raw_output or ""
+
+    if sanitize:
+        response = sanitize_response(original, record=record)
+    else:
+        response = original
+
+    validation = validate_output_schema(response, record=record)
 
     return {
-        "raw_output": text,
-        "response_for_submission": text,
-        "response_for_scoring": text,
+        "raw_output": original,
+        "response_for_submission": response,
+        "response_for_scoring": response,
         "extracted_answer": validation["extracted_answer"],
         "boxed_answer": validation["boxed_answer"],
         "boxed_answers_after_final": validation["boxed_answers_after_final"],
@@ -252,5 +281,6 @@ def parse_model_output(raw_output, record=None):
         "well_formed": validation["well_formed"],
         "strict_well_formed": validation["strict_well_formed"],
         "schema_valid": validation["schema_valid"],
-        "repaired_response": text,
+        "sanitized": response != original,
+        "repaired_response": response,
     }
