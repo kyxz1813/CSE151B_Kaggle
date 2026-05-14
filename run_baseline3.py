@@ -2,8 +2,10 @@ import json
 from pathlib import Path
 from pprint import pprint
 
+from baseline.category_tagging import tag_problem_set_with_qwen
 from baseline.baseline2_runner import run_baseline3_problem_set
 from baseline.generation import GenerationConfig
+from baseline.runner import write_report
 from run_baseline2 import (
     DryRunModelBundle,
     install_dry_run_generator,
@@ -12,10 +14,18 @@ from run_baseline2 import (
 )
 
 
+def add_baseline3_args(parser):
+    parser.add_argument("--category-tags-path", default=None)
+    parser.add_argument("--reuse-category-tags", action="store_true")
+    parser.add_argument("--category-tag-batch-size", type=int, default=None)
+    parser.add_argument("--category-tag-max-new-tokens", type=int, default=128)
+
+
 def main():
     args = parse_args(
         description="Run Baseline 3 category-prompt inference.",
         default_output_dir="results/baseline3_category_prompts",
+        extra_args_fn=add_baseline3_args,
     )
 
     output_dir = Path(args.output_dir)
@@ -60,24 +70,55 @@ def main():
         do_sample=not args.no_sample,
     )
 
-    result = run_baseline3_problem_set(
+    category_tags_path = Path(args.category_tags_path) if args.category_tags_path else output_dir / f"{args.split}_category_tags.jsonl"
+    existing_tags_path = category_tags_path if args.reuse_category_tags and category_tags_path.exists() else None
+    category_generation_config = GenerationConfig(
+        max_new_tokens=args.category_tag_max_new_tokens,
+        temperature=0.0,
+        top_p=1.0,
+        top_k=-1,
+        min_p=0.0,
+        repetition_penalty=1.0,
+        presence_penalty=0.0,
+        do_sample=False,
+    )
+    tagged_problem_set, category_tag_rows = tag_problem_set_with_qwen(
         problem_set=problem_set,
+        model_bundle=model_bundle,
+        generation_config=category_generation_config,
+        batch_size=args.category_tag_batch_size or args.batch_size,
+        output_jsonl_path=category_tags_path,
+        existing_tags_path=existing_tags_path,
+        limit=args.limit,
+    )
+
+    report_json_path = output_dir / f"{args.split}_report.json"
+    result = run_baseline3_problem_set(
+        problem_set=tagged_problem_set,
         model_bundle=model_bundle,
         generation_config=generation_config,
         batch_size=args.batch_size,
-        limit=args.limit,
+        limit=None,
         score=score,
         output_jsonl_path=output_dir / f"{args.split}_results.jsonl",
         debug_jsonl_path=output_dir / f"{args.split}_debug.jsonl",
         submission_csv_path=output_dir / "submission.csv" if args.split == "private" else None,
-        report_json_path=output_dir / f"{args.split}_report.json",
+        report_json_path=report_json_path,
+        comparison_csv_path=args.comparison_csv,
+        experiment_name="baseline3_qwen_category_prompts",
+        split_name=args.split,
     )
+    result.report["category_tags_path"] = str(category_tags_path)
+    result.report["category_tag_count"] = len(category_tag_rows)
+    write_report(result.report, report_json_path)
 
     printed_report = {
         "summary": result.report["summary"],
         "formatting": result.report["formatting"],
         "category_counts": result.report["category_counts"],
         "category_summary": result.report["category_summary"],
+        "category_tags_path": str(category_tags_path),
+        "category_tag_count": len(category_tag_rows),
         "output_jsonl_path": result.report["output_jsonl_path"],
         "debug_jsonl_path": result.report["debug_jsonl_path"],
         "submission_csv_path": result.report["submission_csv_path"],

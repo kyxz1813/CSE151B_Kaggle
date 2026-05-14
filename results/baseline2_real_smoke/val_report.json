@@ -1,0 +1,59 @@
+{
+  "baseline": "baseline2_prompt_format",
+  "problem_set": {
+    "name": "public_val_head1",
+    "n": 1,
+    "n_mcq": 0,
+    "n_free_form": 1,
+    "n_answered": 1
+  },
+  "backend": "transformers",
+  "batch_size": 1,
+  "generation_config": {
+    "max_new_tokens": 128,
+    "temperature": 0.6,
+    "top_p": 0.95,
+    "top_k": 20,
+    "min_p": 0.0,
+    "repetition_penalty": 1.0,
+    "presence_penalty": 0.0,
+    "do_sample": true
+  },
+  "score_available": true,
+  "summary": {
+    "n_scored": 1,
+    "overall_acc": 0.0,
+    "mcq_acc": null,
+    "free_form_acc": 0.0,
+    "n_mcq": 0,
+    "n_free_form": 1,
+    "n_correct": 0
+  },
+  "formatting": {
+    "n_outputs": 1,
+    "formatting_failure_count": 1,
+    "formatting_failure_rate": 1.0,
+    "retry_count": 1,
+    "retry_success_count": 0
+  },
+  "generation": {
+    "responses": [
+      "Okay, let's tackle this problem step by step. First, part (a) asks for the formula for H(t), which is an exponential function. \n\nWe know that when t=0, the brick is removed from the kiln, so the initial temperature difference is 250\u00b0C above room temperature. That means H(0) = 250. \n\nThen, after 2 hours, H(2) = 20. Since it's an exponential function, we can write H(t) = H\u2080 * e^(kt), where H\u2080 is the initial value. Here, H\u2080 is"
+    ],
+    "elapsed_sec": 36.970530790999874,
+    "n": 1,
+    "sec_per_problem": 36.970530790999874,
+    "backend": "transformers",
+    "batch_size": 1,
+    "max_new_tokens": 128
+  },
+  "timings": {
+    "prompt_build_sec": 0.016707834000044386,
+    "generation_sec": 36.970543458000066,
+    "retry_generation_sec": 34.002245582999876,
+    "scoring_sec": 0.10218120900026406
+  },
+  "output_jsonl_path": "results/baseline2_real_smoke/val_results.jsonl",
+  "debug_jsonl_path": "results/baseline2_real_smoke/val_debug.jsonl",
+  "submission_csv_path": null
+}

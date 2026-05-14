@@ -1,0 +1,86 @@
+{
+  "baseline": "baseline3_category_prompts",
+  "problem_set": {
+    "name": "private_head2",
+    "n": 2,
+    "n_mcq": 1,
+    "n_free_form": 1,
+    "n_answered": 0
+  },
+  "backend": "dry_run",
+  "batch_size": 1,
+  "generation_config": {
+    "max_new_tokens": 1024,
+    "temperature": 0.6,
+    "top_p": 0.95,
+    "top_k": 20,
+    "min_p": 0.0,
+    "repetition_penalty": 1.0,
+    "presence_penalty": 0.0,
+    "do_sample": true
+  },
+  "score_available": false,
+  "summary": {
+    "n_scored": 0,
+    "overall_acc": null,
+    "mcq_acc": null,
+    "free_form_acc": null,
+    "n_mcq": 0,
+    "n_free_form": 0,
+    "n_correct": 0
+  },
+  "formatting": {
+    "n_outputs": 2,
+    "formatting_failure_count": 0,
+    "formatting_failure_rate": 0.0,
+    "extractable_count": 2,
+    "extractable_rate": 1.0,
+    "unextractable_count": 0,
+    "unextractable_rate": 0.0,
+    "retry_count": 2,
+    "retry_success_count": 2,
+    "retry_strict_success_count": 2,
+    "retry_extract_success_count": 1
+  },
+  "category_counts": {
+    "arithmetic_algebra": 1,
+    "statistics_probability": 1
+  },
+  "category_summary": {
+    "arithmetic_algebra": {
+      "n": 1,
+      "n_scored": 0,
+      "accuracy": null,
+      "extractable_rate": 1.0,
+      "formatting_failure_rate": 0.0
+    },
+    "statistics_probability": {
+      "n": 1,
+      "n_scored": 0,
+      "accuracy": null,
+      "extractable_rate": 1.0,
+      "formatting_failure_rate": 0.0
+    }
+  },
+  "generation": {
+    "responses": [
+      "Reasoning:\nThis is a formatting smoke-test response.\n\nFinal Answer: \\boxed{0}\n\nExtra trailing text.",
+      "Malformed smoke-test response"
+    ],
+    "elapsed_sec": 0.0,
+    "n": 2,
+    "sec_per_problem": 0.0,
+    "backend": "dry_run",
+    "batch_size": 1,
+    "max_new_tokens": 1024
+  },
+  "timings": {
+    "prompt_build_sec": 7.845799973438261e-05,
+    "generation_sec": 2.1249998098937795e-06,
+    "retry_generation_sec": 1.3749995559919626e-06,
+    "scoring_sec": 1.4917000044079032e-05
+  },
+  "output_jsonl_path": "results/baseline3_dry_run/private_results.jsonl",
+  "debug_jsonl_path": "results/baseline3_dry_run/private_debug.jsonl",
+  "submission_csv_path": "results/baseline3_dry_run/submission.csv"
+}

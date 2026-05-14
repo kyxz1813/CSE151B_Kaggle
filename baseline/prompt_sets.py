@@ -1,5 +1,5 @@
 from prompting.prompt_chain import build_prompt_chain
-from .baseline2_prompts import BASELINE2_ASSISTANT_PREFILL
+from .baseline2_prompts import BASELINE2_RESPONSE_PREFILL
 
 
 def apply_chat_template(tokenizer, messages, metadata=None):
@@ -12,7 +12,7 @@ def apply_chat_template(tokenizer, messages, metadata=None):
     if metadata and metadata.get("strategy_name") in {"baseline2", "baseline3"}:
         role_start = "<|im_start|>" + "assist" + "ant\n"
         thinking_prefill = f"{role_start}<think>\n"
-        answer_prefill = f"{role_start}{BASELINE2_ASSISTANT_PREFILL}"
+        answer_prefill = f"{role_start}{BASELINE2_RESPONSE_PREFILL}"
         if prompt_text.endswith(thinking_prefill):
             prompt_text = prompt_text[:-len(thinking_prefill)] + answer_prefill
 
@@ -41,8 +41,8 @@ def build_prompt_texts(problem_set, tokenizer, prompt_chain=None):
     prompt_rows = build_prompt_specs(problem_set, prompt_chain=prompt_chain)
 
     for row in prompt_rows:
-        row["assistant_prefill"] = (
-            BASELINE2_ASSISTANT_PREFILL
+        row["response_prefill"] = (
+            BASELINE2_RESPONSE_PREFILL
             if row["metadata"].get("strategy_name") in {"baseline2", "baseline3"}
             else ""
         )

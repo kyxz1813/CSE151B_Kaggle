@@ -1,0 +1,9 @@
+id,response
+0,"Reasoning:
+This is a formatting smoke-test response.
+
+Final Answer: \boxed{0}"
+1,"Reasoning:
+This retry follows the required format.
+
+Final Answer: \boxed{A}"

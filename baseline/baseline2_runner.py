@@ -2,8 +2,9 @@ import time
 
 from prompting.prompt_chain import build_prompt_chain
 
-from .baseline2_prompts import BASELINE2_ASSISTANT_PREFILL, build_baseline2_retry_messages
+from .baseline2_prompts import BASELINE2_RESPONSE_PREFILL, build_baseline2_retry_messages
 from .datasets import save_jsonl
+from .experiments import append_comparison_row, build_comparison_row
 from .generation import GenerationConfig, generate_prompt_texts
 from .output_parsing import parse_model_output
 from .prompt_sets import build_prompt_texts
@@ -25,7 +26,7 @@ def _build_retry_prompt_text(tokenizer, record, previous_output=None, extracted_
 
     role_start = "<|im_start|>" + "assist" + "ant\n"
     thinking_prefill = f"{role_start}<think>\n"
-    answer_prefill = f"{role_start}{BASELINE2_ASSISTANT_PREFILL}"
+    answer_prefill = f"{role_start}{BASELINE2_RESPONSE_PREFILL}"
 
     if prompt_text.endswith(thinking_prefill):
         prompt_text = prompt_text[:-len(thinking_prefill)] + answer_prefill
@@ -33,13 +34,13 @@ def _build_retry_prompt_text(tokenizer, record, previous_output=None, extracted_
     return prompt_text
 
 
-def _with_assistant_prefill(output):
+def _with_response_prefill(output):
     text = output or ""
 
-    if text.startswith(BASELINE2_ASSISTANT_PREFILL):
+    if text.startswith(BASELINE2_RESPONSE_PREFILL):
         return text
 
-    return BASELINE2_ASSISTANT_PREFILL + text.lstrip()
+    return BASELINE2_RESPONSE_PREFILL + text.lstrip()
 
 
 def _default_retry_generation_config(gen):
@@ -264,6 +265,7 @@ def _build_debug_row(
         "gold": record.get("answer"),
 
         "category": prompt_row["metadata"].get("category"),
+        "qwen_categories": prompt_row["metadata"].get("qwen_categories"),
         "route_name": prompt_row["metadata"].get("route_name"),
         "template_name": prompt_row["spec"].name,
         "prompt_metadata": prompt_row["metadata"],
@@ -323,6 +325,9 @@ def run_baseline2_problem_set(
     debug_jsonl_path=None,
     submission_csv_path=None,
     report_json_path=None,
+    comparison_csv_path=None,
+    experiment_name=None,
+    split_name=None,
     show_progress=True,
 ):
     problem_set = maybe_limit_problem_set(problem_set, limit)
@@ -347,7 +352,7 @@ def run_baseline2_problem_set(
     )
     timings["generation_sec"] = time.perf_counter() - t0
 
-    initial_outputs = [_with_assistant_prefill(output) for output in generations["responses"]]
+    initial_outputs = [_with_response_prefill(output) for output in generations["responses"]]
 
     initial_raw_parsed = [
         parse_model_output(output, record=record, sanitize=False)
@@ -398,7 +403,7 @@ def run_baseline2_problem_set(
         timings["retry_generation_sec"] = time.perf_counter() - t0
 
         for idx, retry_output in zip(retry_needed_indices, retry_generations["responses"]):
-            retry_output = _with_assistant_prefill(retry_output)
+            retry_output = _with_response_prefill(retry_output)
             retry_outputs[idx] = retry_output
             retry_parsed[idx] = parse_model_output(
                 retry_output,
@@ -465,6 +470,7 @@ def run_baseline2_problem_set(
     for scored_row, debug_row in zip(scored_rows, debug_rows):
         scored_row.update({
             "category": debug_row["category"],
+            "qwen_categories": debug_row["qwen_categories"],
             "route_name": debug_row["route_name"],
             "template_name": debug_row["template_name"],
             "prompt_metadata": debug_row["prompt_metadata"],
@@ -528,6 +534,7 @@ def run_baseline2_problem_set(
         "baseline": report_label,
         "problem_set": problem_set.summary(),
         "backend": model_bundle.backend,
+        "model_id": getattr(getattr(model_bundle, "config", None), "model_id", None),
         "batch_size": batch_size,
         "generation_config": vars(gen),
         "retry_generation_config": vars(retry_gen),
@@ -542,10 +549,21 @@ def run_baseline2_problem_set(
         "output_jsonl_path": str(output_jsonl_path) if output_jsonl_path else None,
         "debug_jsonl_path": str(debug_jsonl_path) if debug_jsonl_path else None,
         "submission_csv_path": str(submission_csv_path) if submission_csv_path else None,
+        "report_json_path": str(report_json_path) if report_json_path else None,
     }
 
     if report_json_path:
         write_report(report, report_json_path)
+
+    if comparison_csv_path:
+        row = build_comparison_row(
+            report=report,
+            experiment_name=experiment_name,
+            strategy_name=strategy_name,
+            split=split_name,
+            report_json_path=report_json_path,
+        )
+        append_comparison_row(comparison_csv_path, row)
 
     return RunResult(
         problem_set=problem_set,
@@ -560,5 +578,5 @@ def run_baseline2_problem_set(
 
 def run_baseline3_problem_set(*args, **kwargs):
     kwargs.setdefault("strategy_name", "baseline3")
-    kwargs.setdefault("report_label", "baseline3_category_prompts")
+    kwargs.setdefault("report_label", "baseline3_qwen_category_prompts")
     return run_baseline2_problem_set(*args, **kwargs)

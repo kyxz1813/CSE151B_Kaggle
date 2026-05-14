@@ -2,7 +2,8 @@ import json
 import sys
 
 from .models import problem_from_record
-from .routing import Baseline3Router, FixedStrategyRouter
+from .routing import StrategyRouter
+from .strategies import build_default_strategy_registry
 from .templates import build_default_registry
 
 
@@ -32,11 +33,9 @@ class PromptChain:
 
 
 def build_prompt_chain(strategy_name="baseline"):
+    strategy_registry = build_default_strategy_registry()
     registry = build_default_registry()
-    if strategy_name == "baseline3":
-        router = Baseline3Router()
-    else:
-        router = FixedStrategyRouter(strategy_name=strategy_name)
+    router = StrategyRouter(strategy_name=strategy_name, registry=strategy_registry)
     renderer = RegistryBackedTemplateRenderer(registry)
     return PromptChain(router=router, renderer=renderer)
 

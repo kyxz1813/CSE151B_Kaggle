@@ -45,9 +45,21 @@ class PromptSpec:
 
 
 def problem_from_record(record):
+    metadata = dict(record.get("metadata") or {})
+    for key in (
+        "qwen_categories",
+        "primary_category",
+        "category_tag_raw_output",
+        "category_tag_prompt",
+    ):
+        if key in record:
+            metadata[key] = record[key]
+
     return Problem(
         id=int(record["id"]),
         question=str(record["question"]),
         options=record.get("options"),
         answer=record.get("answer"),
+        tags=set(record.get("tags") or []),
+        metadata=metadata,
     )

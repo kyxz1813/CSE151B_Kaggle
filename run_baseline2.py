@@ -20,6 +20,7 @@ class DryRunModelBundle:
 
 def install_dry_run_generator():
     import baseline.baseline2_runner as runner
+    import baseline.category_tagging as category_tagging
 
     call_state = {"n": 0}
 
@@ -50,10 +51,40 @@ def install_dry_run_generator():
 
     runner.generate_prompt_texts = dry_run_generate
 
+    def dry_run_category_generate(model_bundle, prompt_texts, generation_config=None, batch_size=1, show_progress=True):
+        categories = [
+            "statistics_probability",
+            "calculus",
+            "geometry_trig",
+            "linear_algebra",
+            "discrete_algorithm",
+            "arithmetic_algebra",
+            "applied_word_problem",
+            "general_math",
+        ]
+        responses = []
+        for idx, _ in enumerate(prompt_texts):
+            category = categories[idx % len(categories)]
+            responses.append(
+                f'{{"categories":["{category}"],"primary_category":"{category}"}}'
+            )
+        return {
+            "responses": responses,
+            "elapsed_sec": 0.0,
+            "n": len(responses),
+            "sec_per_problem": 0.0,
+            "backend": model_bundle.backend,
+            "batch_size": batch_size,
+            "max_new_tokens": generation_config.max_new_tokens if generation_config else None,
+        }
+
+    category_tagging.generate_prompt_texts = dry_run_category_generate
+
 
 def parse_args(
     description="Run Baseline 2 prompt-formatting inference.",
     default_output_dir="results/baseline2_prompt_format",
+    extra_args_fn=None,
 ):
     parser = argparse.ArgumentParser(description=description)
     parser.add_argument("--split", choices=["train", "val", "public", "private"], default="val")
@@ -80,6 +111,9 @@ def parse_args(
     parser.add_argument("--presence-penalty", type=float, default=0.0)
     parser.add_argument("--no-sample", action="store_true")
     parser.add_argument("--dry-run", action="store_true")
+    parser.add_argument("--comparison-csv", default="results/experiment_comparison.csv")
+    if extra_args_fn is not None:
+        extra_args_fn(parser)
     return parser.parse_args()
 
 
@@ -151,6 +185,9 @@ def main():
         debug_jsonl_path=output_dir / f"{args.split}_debug.jsonl",
         submission_csv_path=output_dir / "submission.csv" if args.split == "private" else None,
         report_json_path=output_dir / f"{args.split}_report.json",
+        comparison_csv_path=args.comparison_csv,
+        experiment_name="baseline2_prompt_format",
+        split_name=args.split,
     )
 
     printed_report = {

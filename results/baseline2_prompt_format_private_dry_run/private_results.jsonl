@@ -1,0 +1,2 @@
+{"id": 0, "is_mcq": false, "gold": null, "response": "0", "correct": null, "raw_output": "Reasoning:\nThis is a formatting smoke-test response.\n\nFinal Answer: \\boxed{0}", "extracted_final_answer": "0", "retry_needed": false, "well_formed": true}
+{"id": 1, "is_mcq": true, "gold": null, "response": "A", "correct": null, "raw_output": "Reasoning:\nThis retry follows the required format.\n\nFinal Answer: \\boxed{A}", "extracted_final_answer": "A", "retry_needed": true, "well_formed": true}

@@ -1,0 +1,138 @@
+{
+  "baseline": "baseline3_qwen_category_prompts",
+  "problem_set": {
+    "name": "private",
+    "n": 2,
+    "n_mcq": 1,
+    "n_free_form": 1,
+    "n_answered": 0
+  },
+  "backend": "dry_run",
+  "model_id": null,
+  "batch_size": 32,
+  "generation_config": {
+    "max_new_tokens": 1024,
+    "temperature": 0.6,
+    "top_p": 0.95,
+    "top_k": 20,
+    "min_p": 0.0,
+    "repetition_penalty": 1.0,
+    "presence_penalty": 0.0,
+    "do_sample": true
+  },
+  "retry_generation_config": {
+    "max_new_tokens": 256,
+    "temperature": 0.0,
+    "top_p": 1.0,
+    "top_k": -1,
+    "min_p": 0.0,
+    "repetition_penalty": 1.0,
+    "presence_penalty": 0.0,
+    "do_sample": false
+  },
+  "score_available": false,
+  "summary": {
+    "n_scored": 0,
+    "overall_acc": null,
+    "mcq_acc": null,
+    "free_form_acc": null,
+    "n_mcq": 0,
+    "n_free_form": 0,
+    "n_correct": 0
+  },
+  "formatting": {
+    "n_outputs": 2,
+    "initial_schema_valid_count": 0,
+    "initial_schema_valid_rate": 0.0,
+    "schema_valid_count": 1,
+    "schema_valid_rate": 0.5,
+    "initial_formatting_failure_count": 2,
+    "initial_formatting_failure_rate": 1.0,
+    "formatting_failure_count": 0,
+    "formatting_failure_rate": 0.0,
+    "initial_extractable_count": 1,
+    "initial_extractable_rate": 0.5,
+    "extractable_count": 2,
+    "extractable_rate": 1.0,
+    "unextractable_count": 0,
+    "unextractable_rate": 0.0,
+    "sanitized_count": 1,
+    "sanitized_rate": 0.5,
+    "retry_count": 2,
+    "retry_rate": 1.0,
+    "retry_used_count": 1,
+    "retry_used_rate": 0.5,
+    "retry_schema_success_count": 1,
+    "retry_extract_success_count": 1,
+    "initial_schema_error_counts": {
+      "missing_boxed_answer_after_final": 1,
+      "missing_final_answer_marker": 1,
+      "multi_answer_count_mismatch": 1,
+      "trailing_text_after_final_box": 1
+    },
+    "post_sanitize_schema_error_counts": {
+      "missing_boxed_answer_after_final": 1,
+      "missing_final_answer_marker": 1,
+      "multi_answer_count_mismatch": 1
+    },
+    "schema_error_counts": {
+      "multi_answer_count_mismatch": 1
+    }
+  },
+  "schema_accuracy": {
+    "schema_valid_n": 0,
+    "schema_valid_accuracy": null,
+    "schema_invalid_n": 0,
+    "schema_invalid_accuracy": null,
+    "retry_used_n": 0,
+    "retry_used_accuracy": null,
+    "sanitized_n": 0,
+    "sanitized_accuracy": null
+  },
+  "category_counts": {
+    "calculus": 1,
+    "statistics_probability": 1
+  },
+  "category_summary": {
+    "calculus": {
+      "n": 1,
+      "n_scored": 0,
+      "accuracy": null,
+      "extractable_rate": 1.0,
+      "schema_valid_rate": 1.0,
+      "formatting_failure_rate": 0.0
+    },
+    "statistics_probability": {
+      "n": 1,
+      "n_scored": 0,
+      "accuracy": null,
+      "extractable_rate": 1.0,
+      "schema_valid_rate": 0.0,
+      "formatting_failure_rate": 0.0
+    }
+  },
+  "generation": {
+    "responses": [
+      "Reasoning:\nThis is a formatting smoke-test response.\n\nFinal Answer: \\boxed{0}\n\nExtra trailing text.",
+      "Malformed smoke-test response"
+    ],
+    "elapsed_sec": 0.0,
+    "n": 2,
+    "sec_per_problem": 0.0,
+    "backend": "dry_run",
+    "batch_size": 32,
+    "max_new_tokens": 1024
+  },
+  "timings": {
+    "prompt_build_sec": 8.233400149038061e-05,
+    "generation_sec": 1.3749995559919626e-06,
+    "retry_generation_sec": 1.0000003385357559e-06,
+    "scoring_sec": 1.9916002202080563e-05
+  },
+  "output_jsonl_path": "results/baseline3_qwen_dry_check/private_results.jsonl",
+  "debug_jsonl_path": "results/baseline3_qwen_dry_check/private_debug.jsonl",
+  "submission_csv_path": "results/baseline3_qwen_dry_check/submission.csv",
+  "report_json_path": "results/baseline3_qwen_dry_check/private_report.json",
+  "category_tags_path": "results/baseline3_qwen_dry_check/private_category_tags.jsonl",
+  "category_tag_count": 2
+}

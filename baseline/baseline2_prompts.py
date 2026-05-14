@@ -19,7 +19,7 @@ Rules:
 """
 
 
-BASELINE2_FORMAT_REPAIR_SYSTEM_PROMPT = """You are a formatting repair assistant.
+BASELINE2_FORMAT_REPAIR_SYSTEM_PROMPT = """You are a formatting repair system.
 
 Your job is not to solve a new problem. Your job is to rewrite the previous answer into the required final-answer schema.
 
@@ -62,7 +62,7 @@ Rules:
 """
 
 
-BASELINE2_ASSISTANT_PREFILL = "Reasoning:\n"
+BASELINE2_RESPONSE_PREFILL = "Reasoning:\n"
 
 
 def format_options(options):
