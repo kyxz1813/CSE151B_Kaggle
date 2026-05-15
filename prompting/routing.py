@@ -1,5 +1,5 @@
 from .models import PromptContext
-from .strategies import build_default_strategy_registry
+from .strategies import BASELINE3_CATEGORIES, build_default_strategy_registry, normalize_category
 
 
 class RuleBasedProblemRouter:
@@ -32,12 +32,44 @@ class StrategyRouter:
     def __init__(self, strategy_name, registry=None):
         self.strategy = (registry or build_default_strategy_registry()).get(strategy_name)
 
+    def _normalize_problem_category(self, problem):
+        primary = problem.metadata.get("primary_category")
+
+        if primary not in BASELINE3_CATEGORIES:
+            categories = problem.metadata.get("qwen_categories") or []
+            if isinstance(categories, str):
+                categories = [categories]
+
+            primary = None
+            for category in categories:
+                category = normalize_category(category)
+                if category != "general_math":
+                    primary = category
+                    break
+
+            if primary is None:
+                for category in categories:
+                    category = normalize_category(category)
+                    if category in BASELINE3_CATEGORIES:
+                        primary = category
+                        break
+
+        primary = normalize_category(primary)
+
+        problem.metadata["primary_category"] = primary
+        problem.metadata["qwen_categories"] = [primary]
+
+        return primary
+
     def route(self, problem):
+        category = self._normalize_problem_category(problem)
         route = self.strategy.select_route(problem)
-        category = route.category or problem.metadata.get("primary_category") or "general_math"
+
+        if route.category is not None:
+            category = route.category
+
         tags = set(problem.tags)
-        if category:
-            tags.add(category)
+        tags.add(category)
 
         return PromptContext(
             problem=problem,
@@ -47,7 +79,8 @@ class StrategyRouter:
             metadata={
                 "answer_format": problem.answer_format,
                 "category": category,
-                "qwen_categories": problem.metadata.get("qwen_categories") or [category],
+                "primary_category": category,
+                "qwen_categories": [category],
                 "strategy_label": self.strategy.label,
                 "route_template_name": route.template_name or route.name,
             },

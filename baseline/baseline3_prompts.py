@@ -39,7 +39,13 @@ CATEGORY_GUIDANCE = {
 
 def build_baseline3_system_prompt(category):
     guidance = CATEGORY_GUIDANCE.get(category, CATEGORY_GUIDANCE["general_math"])
-    return f"{BASELINE2_SYSTEM_PROMPT}\nCategory guidance:\n{guidance}\n"
+    return (
+        f"{BASELINE2_SYSTEM_PROMPT}\n"
+        "Baseline 3 routing note:\n"
+        f"- This problem has been assigned exactly one category: {category}.\n"
+        "- Use the category guidance only to choose the solving style; do not mention or debate the category.\n\n"
+        f"Category guidance:\n{guidance}\n"
+    )
 
 
 def build_baseline3_user_prompt(context):

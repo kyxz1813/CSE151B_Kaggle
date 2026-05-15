@@ -1,6 +1,25 @@
 from dataclasses import dataclass, field
 
 
+BASELINE3_CATEGORIES = (
+    "statistics_probability",
+    "calculus",
+    "geometry_trig",
+    "linear_algebra",
+    "discrete_algorithm",
+    "arithmetic_algebra",
+    "applied_word_problem",
+    "general_math",
+)
+
+
+def normalize_category(category):
+    category = str(category or "").strip()
+    if category in BASELINE3_CATEGORIES:
+        return category
+    return "general_math"
+
+
 @dataclass(frozen=True)
 class RouteDefinition:
     name: str
@@ -14,9 +33,8 @@ class RouteDefinition:
             return False
 
         if self.category is not None:
-            categories = problem.metadata.get("qwen_categories") or []
-            primary_category = problem.metadata.get("primary_category")
-            if self.category != primary_category and self.category not in categories:
+            primary_category = normalize_category(problem.metadata.get("primary_category"))
+            if self.category != primary_category:
                 return False
 
         if self.required_tags and not self.required_tags.issubset(problem.tags):
@@ -42,6 +60,13 @@ class StrategyDefinition:
                 if route.name == self.default_route_name:
                     return route
 
+        answer_format = problem.answer_format
+        fallback_name = f"general_math_{answer_format}"
+
+        for route in self.routes:
+            if route.name == fallback_name:
+                return route
+
         raise ValueError(f"No eligible route for strategy {self.name} and problem {problem.id}")
 
 
@@ -57,18 +82,6 @@ class StrategyRegistry:
 
     def names(self):
         return sorted(self._strategies)
-
-
-BASELINE3_CATEGORIES = (
-    "statistics_probability",
-    "calculus",
-    "geometry_trig",
-    "linear_algebra",
-    "discrete_algorithm",
-    "arithmetic_algebra",
-    "applied_word_problem",
-    "general_math",
-)
 
 
 def build_default_strategy_registry():
@@ -90,6 +103,7 @@ def build_default_strategy_registry():
         )
 
     baseline3_routes = []
+
     for category in BASELINE3_CATEGORIES:
         for answer_format in ("mcq", "free_form"):
             baseline3_routes.append(
@@ -119,7 +133,7 @@ def build_default_strategy_registry():
     registry.register(
         StrategyDefinition(
             name="baseline3",
-            label="baseline3_qwen_category_prompts",
+            label="baseline3_qwen_single_category_prompts",
             routes=tuple(baseline3_routes),
         )
     )

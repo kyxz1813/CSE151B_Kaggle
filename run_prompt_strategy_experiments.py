@@ -3,7 +3,8 @@ from pathlib import Path
 from pprint import pprint
 
 from baseline.baseline2_runner import run_baseline2_problem_set
-from baseline.category_tagging import tag_problem_set_with_qwen
+from baseline.category_tagging import category_distribution, tag_problem_set_with_qwen
+from baseline.experiments import append_comparison_row, build_comparison_row
 from baseline.generation import GenerationConfig
 from run_baseline2 import (
     DryRunModelBundle,
@@ -15,7 +16,7 @@ from run_baseline2 import (
 STRATEGY_LABELS = {
     "baseline": "baseline_weakest_prompt_chain",
     "baseline2": "baseline2_prompt_format",
-    "baseline3": "baseline3_qwen_category_prompts",
+    "baseline3": "baseline3_qwen_single_category_prompts",
 }
 
 
@@ -47,6 +48,8 @@ def parse_args():
     parser.add_argument("--presence-penalty", type=float, default=0.0)
     parser.add_argument("--no-sample", action="store_true")
     parser.add_argument("--dry-run", action="store_true")
+    parser.add_argument("--reuse-category-tags", action="store_true")
+    parser.add_argument("--category-tag-max-new-tokens", type=int, default=128)
     return parser.parse_args()
 
 
@@ -74,6 +77,7 @@ def load_model_bundle(args):
         max_num_batched_tokens=32768,
         reuse_loaded=True,
     )
+
     return load_model(model_config)
 
 
@@ -98,17 +102,21 @@ def main():
     )
 
     tagged_problem_set = None
+    category_tag_rows = []
     category_tags_path = output_dir / f"{args.split}_category_tags.jsonl"
+    category_one_hot_csv_path = output_dir / f"{args.split}_category_one_hot.csv"
 
     results = {}
+
     for strategy_name in args.strategies:
         if strategy_name == "baseline3":
             if tagged_problem_set is None:
-                tagged_problem_set, _ = tag_problem_set_with_qwen(
+                existing_tags_path = category_tags_path if args.reuse_category_tags and category_tags_path.exists() else None
+                tagged_problem_set, category_tag_rows = tag_problem_set_with_qwen(
                     problem_set=problem_set,
                     model_bundle=model_bundle,
                     generation_config=GenerationConfig(
-                        max_new_tokens=128,
+                        max_new_tokens=args.category_tag_max_new_tokens,
                         temperature=0.0,
                         top_p=1.0,
                         top_k=-1,
@@ -117,8 +125,11 @@ def main():
                     ),
                     batch_size=args.batch_size,
                     output_jsonl_path=category_tags_path,
+                    output_one_hot_csv_path=category_one_hot_csv_path,
+                    existing_tags_path=existing_tags_path,
                     limit=args.limit,
                 )
+
             run_problem_set = tagged_problem_set
             run_limit = None
         else:
@@ -127,6 +138,8 @@ def main():
 
         strategy_dir = output_dir / strategy_name
         strategy_dir.mkdir(parents=True, exist_ok=True)
+
+        report_json_path = strategy_dir / f"{args.split}_report.json"
 
         result = run_baseline2_problem_set(
             problem_set=run_problem_set,
@@ -140,20 +153,38 @@ def main():
             output_jsonl_path=strategy_dir / f"{args.split}_results.jsonl",
             debug_jsonl_path=strategy_dir / f"{args.split}_debug.jsonl",
             submission_csv_path=strategy_dir / "submission.csv" if args.split == "private" else None,
-            report_json_path=strategy_dir / f"{args.split}_report.json",
-            comparison_csv_path=args.comparison_csv,
-            experiment_name=f"prompt_chain_{strategy_name}",
-            split_name=args.split,
+            report_json_path=report_json_path,
+            show_progress=True,
         )
+
+        if strategy_name == "baseline3":
+            result.report["category_tags_path"] = str(category_tags_path)
+            result.report["category_one_hot_csv_path"] = str(category_one_hot_csv_path)
+            result.report["category_tag_count"] = len(category_tag_rows)
+            result.report["category_tag_distribution"] = category_distribution(category_tag_rows)
+
+        result.report["report_json_path"] = str(report_json_path)
+
+        if args.comparison_csv:
+            comparison_row = build_comparison_row(
+                result.report,
+                experiment_name=f"prompt_chain_{strategy_name}",
+                strategy_name=strategy_name,
+                split=args.split,
+                report_json_path=report_json_path,
+            )
+            append_comparison_row(args.comparison_csv, comparison_row)
+
         results[strategy_name] = {
             "summary": result.report["summary"],
             "formatting": result.report["formatting"],
-            "report_json_path": result.report["report_json_path"],
+            "report_json_path": str(report_json_path),
         }
 
     pprint({
         "strategies": results,
         "category_tags_path": str(category_tags_path) if "baseline3" in args.strategies else None,
+        "category_one_hot_csv_path": str(category_one_hot_csv_path) if "baseline3" in args.strategies else None,
         "comparison_csv": args.comparison_csv,
     })
 

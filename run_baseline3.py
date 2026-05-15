@@ -2,8 +2,9 @@ import json
 from pathlib import Path
 from pprint import pprint
 
-from baseline.category_tagging import tag_problem_set_with_qwen
+from baseline.category_tagging import category_distribution, tag_problem_set_with_qwen
 from baseline.baseline2_runner import run_baseline3_problem_set
+from baseline.experiments import append_comparison_row, build_comparison_row
 from baseline.generation import GenerationConfig
 from baseline.runner import write_report
 from run_baseline2 import (
@@ -16,6 +17,7 @@ from run_baseline2 import (
 
 def add_baseline3_args(parser):
     parser.add_argument("--category-tags-path", default=None)
+    parser.add_argument("--category-one-hot-csv-path", default=None)
     parser.add_argument("--reuse-category-tags", action="store_true")
     parser.add_argument("--category-tag-batch-size", type=int, default=None)
     parser.add_argument("--category-tag-max-new-tokens", type=int, default=128)
@@ -23,7 +25,7 @@ def add_baseline3_args(parser):
 
 def main():
     args = parse_args(
-        description="Run Baseline 3 category-prompt inference.",
+        description="Run Baseline 3 single-category prompt inference.",
         default_output_dir="results/baseline3_category_prompts",
         extra_args_fn=add_baseline3_args,
     )
@@ -71,7 +73,9 @@ def main():
     )
 
     category_tags_path = Path(args.category_tags_path) if args.category_tags_path else output_dir / f"{args.split}_category_tags.jsonl"
+    category_one_hot_csv_path = Path(args.category_one_hot_csv_path) if args.category_one_hot_csv_path else output_dir / f"{args.split}_category_one_hot.csv"
     existing_tags_path = category_tags_path if args.reuse_category_tags and category_tags_path.exists() else None
+
     category_generation_config = GenerationConfig(
         max_new_tokens=args.category_tag_max_new_tokens,
         temperature=0.0,
@@ -82,17 +86,20 @@ def main():
         presence_penalty=0.0,
         do_sample=False,
     )
+
     tagged_problem_set, category_tag_rows = tag_problem_set_with_qwen(
         problem_set=problem_set,
         model_bundle=model_bundle,
         generation_config=category_generation_config,
         batch_size=args.category_tag_batch_size or args.batch_size,
         output_jsonl_path=category_tags_path,
+        output_one_hot_csv_path=category_one_hot_csv_path,
         existing_tags_path=existing_tags_path,
         limit=args.limit,
     )
 
     report_json_path = output_dir / f"{args.split}_report.json"
+
     result = run_baseline3_problem_set(
         problem_set=tagged_problem_set,
         model_bundle=model_bundle,
@@ -104,20 +111,34 @@ def main():
         debug_jsonl_path=output_dir / f"{args.split}_debug.jsonl",
         submission_csv_path=output_dir / "submission.csv" if args.split == "private" else None,
         report_json_path=report_json_path,
-        comparison_csv_path=args.comparison_csv,
-        experiment_name="baseline3_qwen_category_prompts",
-        split_name=args.split,
+        show_progress=True,
     )
+
     result.report["category_tags_path"] = str(category_tags_path)
+    result.report["category_one_hot_csv_path"] = str(category_one_hot_csv_path)
     result.report["category_tag_count"] = len(category_tag_rows)
+    result.report["category_tag_distribution"] = category_distribution(category_tag_rows)
+    result.report["report_json_path"] = str(report_json_path)
     write_report(result.report, report_json_path)
+
+    if args.comparison_csv:
+        comparison_row = build_comparison_row(
+            result.report,
+            experiment_name="baseline3_qwen_single_category_prompts",
+            strategy_name="baseline3",
+            split=args.split,
+            report_json_path=report_json_path,
+        )
+        append_comparison_row(args.comparison_csv, comparison_row)
 
     printed_report = {
         "summary": result.report["summary"],
         "formatting": result.report["formatting"],
         "category_counts": result.report["category_counts"],
         "category_summary": result.report["category_summary"],
+        "category_tag_distribution": result.report["category_tag_distribution"],
         "category_tags_path": str(category_tags_path),
+        "category_one_hot_csv_path": str(category_one_hot_csv_path),
         "category_tag_count": len(category_tag_rows),
         "output_jsonl_path": result.report["output_jsonl_path"],
         "debug_jsonl_path": result.report["debug_jsonl_path"],

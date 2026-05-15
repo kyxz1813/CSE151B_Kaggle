@@ -39,20 +39,6 @@ def build_prompt_chain(strategy_name="baseline"):
     renderer = RegistryBackedTemplateRenderer(registry)
     return PromptChain(router=router, renderer=renderer)
 
-"""
-In powershell:
-
-MCQ:
-
-$json = '{"id": 1, "question": "What is 2+2?", "options": ["1", "2", "4", "8"]}'
-Set-Content sample_problem.json $json
-python -m prompting.prompt_chain sample_problem.json
-
-Free-form:
-
-$json = '{"id": 2, "question": "Compute 3^2 + 4^2 = [ANS]"}'
-Set-Content sample_problem.json $json
-python -m prompting.prompt_chain sample_problem.json
 
 if __name__ == "__main__":
     if len(sys.argv) != 2:
@@ -78,4 +64,3 @@ if __name__ == "__main__":
         "generation_hints": spec.generation_hints,
         "messages": spec.to_messages(),
     }, indent=2))
-"""

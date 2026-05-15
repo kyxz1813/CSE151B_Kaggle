@@ -1,0 +1,9 @@
+id,answer_format,is_mcq,primary_category,category_tag_parse_ok,category_tag_source,statistics_probability,calculus,geometry_trig,linear_algebra,discrete_algorithm,arithmetic_algebra,applied_word_problem,general_math
+990,free_form,False,applied_word_problem,True,qwen_json,0,0,0,0,0,0,1,0
+902,free_form,False,applied_word_problem,True,qwen_json,0,0,0,0,0,0,1,0
+159,free_form,False,statistics_probability,True,qwen_json,1,0,0,0,0,0,0,0
+431,mcq,True,calculus,True,qwen_json,0,1,0,0,0,0,0,0
+1078,free_form,False,arithmetic_algebra,True,qwen_json,0,0,0,0,0,1,0,0
+251,mcq,True,geometry_trig,True,qwen_json,0,0,1,0,0,0,0,0
+74,mcq,True,calculus,True,rule_override_general_math,0,1,0,0,0,0,0,0
+484,mcq,True,arithmetic_algebra,True,qwen_json,0,0,0,0,0,1,0,0
