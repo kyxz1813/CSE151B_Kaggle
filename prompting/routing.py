@@ -79,8 +79,9 @@ class StrategyRouter:
             metadata={
                 "answer_format": problem.answer_format,
                 "category": category,
-                "primary_category": category,
-                "qwen_categories": [category],
+                "qwen_categories": problem.metadata.get("qwen_categories") or [category],
+                "derived_rules": problem.metadata.get("derived_rules") or [],
+                "rule_annotations": problem.metadata.get("rule_annotations") or {},
                 "strategy_label": self.strategy.label,
                 "route_template_name": route.template_name or route.name,
             },

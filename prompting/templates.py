@@ -4,6 +4,16 @@ from baseline.baseline3_prompts import (
     CATEGORY_GUIDANCE,
     build_baseline3_system_prompt,
     build_baseline3_user_prompt,
+    build_linear_algebra_structured_verify_system_prompt,
+    build_linear_algebra_mcq_option_verifier_system_prompt,
+    build_linear_algebra_freeform_multi_answer_system_prompt,
+    build_linear_algebra_lp_systems_system_prompt,
+    build_discrete_subtype_router_system_prompt,
+    build_discrete_sequence_option_verifier_system_prompt,
+    build_discrete_boolean_logic_system_prompt,
+    build_discrete_counting_dp_system_prompt,
+    build_discrete_number_theory_system_prompt,
+    build_adaptive_rule_user_prompt,
 )
 
 
@@ -159,6 +169,114 @@ def build_default_registry():
                     name=f"baseline3_{category}_{answer_format}",
                     system_prompt=build_baseline3_system_prompt(category),
                     user_builder=build_baseline3_user_prompt,
+                    generation_hints={
+                        "temperature": 0.6,
+                        "top_p": 0.95,
+                    },
+                ),
+            )
+
+    def register_category_strategy_templates(strategy_name, category, mcq_system_prompt, free_form_system_prompt):
+        registry.register(
+            strategy_name,
+            f"{category}_mcq",
+            PromptTemplate(
+                name=f"{strategy_name}_{category}_mcq",
+                system_prompt=mcq_system_prompt,
+                user_builder=build_baseline3_user_prompt,
+                generation_hints={
+                    "temperature": 0.6,
+                    "top_p": 0.95,
+                },
+            ),
+        )
+
+        registry.register(
+            strategy_name,
+            f"{category}_free_form",
+            PromptTemplate(
+                name=f"{strategy_name}_{category}_free_form",
+                system_prompt=free_form_system_prompt,
+                user_builder=build_baseline3_user_prompt,
+                generation_hints={
+                    "temperature": 0.6,
+                    "top_p": 0.95,
+                },
+            ),
+        )
+
+    register_category_strategy_templates(
+        "linear_algebra_v1_structured_verify",
+        "linear_algebra",
+        build_linear_algebra_structured_verify_system_prompt(),
+        build_linear_algebra_structured_verify_system_prompt(),
+    )
+
+    register_category_strategy_templates(
+        "linear_algebra_mcq_option_verifier",
+        "linear_algebra",
+        build_linear_algebra_mcq_option_verifier_system_prompt(),
+        build_linear_algebra_structured_verify_system_prompt(),
+    )
+
+    register_category_strategy_templates(
+        "linear_algebra_freeform_multi_answer",
+        "linear_algebra",
+        build_linear_algebra_mcq_option_verifier_system_prompt(),
+        build_linear_algebra_freeform_multi_answer_system_prompt(),
+    )
+
+    register_category_strategy_templates(
+        "linear_algebra_lp_systems",
+        "linear_algebra",
+        build_linear_algebra_mcq_option_verifier_system_prompt(),
+        build_linear_algebra_lp_systems_system_prompt(),
+    )
+
+    register_category_strategy_templates(
+        "discrete_algorithm_v1_subtype_router",
+        "discrete_algorithm",
+        build_discrete_subtype_router_system_prompt(),
+        build_discrete_subtype_router_system_prompt(),
+    )
+
+    register_category_strategy_templates(
+        "discrete_sequence_option_verifier",
+        "discrete_algorithm",
+        build_discrete_sequence_option_verifier_system_prompt(),
+        build_discrete_subtype_router_system_prompt(),
+    )
+
+    register_category_strategy_templates(
+        "discrete_boolean_logic_v1",
+        "discrete_algorithm",
+        build_discrete_boolean_logic_system_prompt(),
+        build_discrete_boolean_logic_system_prompt(),
+    )
+
+    register_category_strategy_templates(
+        "discrete_counting_dp_v1",
+        "discrete_algorithm",
+        build_discrete_counting_dp_system_prompt(),
+        build_discrete_counting_dp_system_prompt(),
+    )
+
+    register_category_strategy_templates(
+        "discrete_number_theory_v1",
+        "discrete_algorithm",
+        build_discrete_number_theory_system_prompt(),
+        build_discrete_number_theory_system_prompt(),
+    )
+
+    for category in CATEGORY_GUIDANCE:
+        for route_name in [f"{category}_mcq", f"{category}_free_form"]:
+            registry.register(
+                "baseline3_adaptive_rules",
+                route_name,
+                PromptTemplate(
+                    name=f"baseline3_adaptive_rules_{route_name}",
+                    system_prompt=build_baseline3_system_prompt(category),
+                    user_builder=build_adaptive_rule_user_prompt,
                     generation_hints={
                         "temperature": 0.6,
                         "top_p": 0.95,

@@ -52,6 +52,10 @@ def problem_from_record(record):
         "primary_category",
         "category_tag_raw_output",
         "category_tag_parse_ok",
+        "category_tag_source",
+        "derived_rules",
+        "rule_annotations",
+        "rule_annotation_source",
     ]:
         if key in record:
             metadata[key] = record.get(key)

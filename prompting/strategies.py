@@ -138,4 +138,97 @@ def build_default_strategy_registry():
         )
     )
 
+    def register_category_strategy(strategy_name, label, category):
+        registry.register(
+            StrategyDefinition(
+                name=strategy_name,
+                label=label,
+                routes=(
+                    RouteDefinition(
+                        name=f"{category}_mcq",
+                        answer_format="mcq",
+                        category=category,
+                        template_name=f"{strategy_name}_{category}_mcq",
+                    ),
+                    RouteDefinition(
+                        name=f"{category}_free_form",
+                        answer_format="free_form",
+                        category=category,
+                        template_name=f"{strategy_name}_{category}_free_form",
+                    ),
+                ),
+            )
+        )
+
+    register_category_strategy(
+        "linear_algebra_v1_structured_verify",
+        "linear_algebra_structured_verify",
+        "linear_algebra",
+    )
+
+    register_category_strategy(
+        "linear_algebra_mcq_option_verifier",
+        "linear_algebra_mcq_option_verifier",
+        "linear_algebra",
+    )
+
+    register_category_strategy(
+        "linear_algebra_freeform_multi_answer",
+        "linear_algebra_freeform_multi_answer",
+        "linear_algebra",
+    )
+
+    register_category_strategy(
+        "linear_algebra_lp_systems",
+        "linear_algebra_lp_systems",
+        "linear_algebra",
+    )
+
+    register_category_strategy(
+        "discrete_algorithm_v1_subtype_router",
+        "discrete_algorithm_subtype_router",
+        "discrete_algorithm",
+    )
+
+    register_category_strategy(
+        "discrete_sequence_option_verifier",
+        "discrete_sequence_option_verifier",
+        "discrete_algorithm",
+    )
+
+    register_category_strategy(
+        "discrete_boolean_logic_v1",
+        "discrete_boolean_logic_v1",
+        "discrete_algorithm",
+    )
+
+    register_category_strategy(
+        "discrete_counting_dp_v1",
+        "discrete_counting_dp_v1",
+        "discrete_algorithm",
+    )
+
+    register_category_strategy(
+        "discrete_number_theory_v1",
+        "discrete_number_theory_v1",
+        "discrete_algorithm",
+    )
+
+    registry.register(
+        StrategyDefinition(
+            name="baseline3_adaptive_rules",
+            label="baseline3_adaptive_rules",
+            routes=tuple(
+                RouteDefinition(
+                    name=f"{category}_{answer_format}",
+                    answer_format=answer_format,
+                    category=category,
+                    template_name=f"baseline3_adaptive_rules_{category}_{answer_format}",
+                )
+                for category in BASELINE3_CATEGORIES
+                for answer_format in ("mcq", "free_form")
+            ),
+        )
+    )
+
     return registry
