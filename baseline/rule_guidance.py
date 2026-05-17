@@ -291,3 +291,136 @@ def register_default_linear_discrete_guidance():
         register_rule_guidance(item)
 
     return items
+
+
+def register_default_ved_guidance():
+    items = [
+        RuleGuidance(
+            rule_name="calculus_limit_asymptotic",
+            category="calculus",
+            title="Limit or asymptotic problem",
+            guidance=(
+                "Identify the limit variable and point first. Simplify before substitution, "
+                "then use dominant terms, rationalization, l'Hopital's rule, or Taylor expansion "
+                "only when justified."
+            ),
+            priority=10,
+        ),
+        RuleGuidance(
+            rule_name="calculus_integral",
+            category="calculus",
+            title="Integral problem",
+            guidance=(
+                "Identify the variable and definite/indefinite form. Choose substitution, parts, "
+                "symmetry, partial fractions, standard antiderivatives, or residues as appropriate. "
+                "Apply bounds after transforming correctly."
+            ),
+            priority=10,
+        ),
+        RuleGuidance(
+            rule_name="calculus_derivative_extrema",
+            category="calculus",
+            title="Derivative or extrema problem",
+            guidance=(
+                "Differentiate accurately before substituting. For tangent or approximation, compute "
+                "both function value and derivative at the point. For extrema on bounded domains, "
+                "compare critical points and endpoints."
+            ),
+            priority=10,
+        ),
+        RuleGuidance(
+            rule_name="calculus_series_approximation",
+            category="calculus",
+            title="Series or approximation",
+            guidance=(
+                "Use the requested expansion center and degree. Keep enough terms to answer the "
+                "question and avoid evaluating at the wrong point."
+            ),
+            priority=15,
+        ),
+        RuleGuidance(
+            rule_name="calculus_differential_equation",
+            category="calculus",
+            title="Differential equation",
+            guidance=(
+                "Identify variables and initial conditions. Solve the general form, then determine "
+                "constants before answering with the requested units or value."
+            ),
+            priority=10,
+        ),
+        RuleGuidance(
+            rule_name="calculus_complex_residue",
+            category="calculus",
+            title="Complex residue or contour",
+            guidance=(
+                "Find the relevant poles and residues carefully. Check whether the contour includes "
+                "each pole before summing residues."
+            ),
+            priority=10,
+        ),
+        RuleGuidance(
+            rule_name="calculus_mcq_option_mapping",
+            category="calculus",
+            title="MCQ option mapping",
+            guidance=(
+                "Because this is multiple-choice, compare the calculus result to every answer "
+                "choice and box only the final option letter."
+            ),
+            priority=1,
+        ),
+        RuleGuidance(
+            rule_name="general_math_mcq_option_mapping",
+            category="general_math",
+            title="MCQ option mapping",
+            guidance=(
+                "Compute the requested value or statement, compare every choice, and box only the "
+                "single option letter."
+            ),
+            priority=1,
+        ),
+        RuleGuidance(
+            rule_name="general_math_multi_answer",
+            category="general_math",
+            title="Multi-answer fallback",
+            guidance=(
+                "Count all [ANS] placeholders before solving. Return exactly that many comma-separated "
+                "answers in the same order."
+            ),
+            priority=1,
+        ),
+        RuleGuidance(
+            rule_name="general_math_text_answer",
+            category="general_math",
+            title="Text answer",
+            guidance=(
+                "If the prompt requests a phrase or word, preserve the requested wording and do not "
+                "add explanation inside the final answer box."
+            ),
+            priority=5,
+        ),
+        RuleGuidance(
+            rule_name="general_math_unit_or_conversion",
+            category="general_math",
+            title="Unit or conversion check",
+            guidance=(
+                "Track units and conversion direction. Include the requested units or rounding only "
+                "when the final answer format asks for them."
+            ),
+            priority=10,
+        ),
+        RuleGuidance(
+            rule_name="general_math_direct_formula",
+            category="general_math",
+            title="Direct formula use",
+            guidance=(
+                "Identify the formula variables, substitute values carefully, and return only the "
+                "requested unknown."
+            ),
+            priority=10,
+        ),
+    ]
+
+    for item in items:
+        register_rule_guidance(item)
+
+    return items

@@ -7,9 +7,12 @@ CATEGORY_GUIDANCE = {
         "critical values, p-values, regression quantities, and probability assumptions before computing."
     ),
     "calculus": (
-        "Identify the relevant calculus operation first. For integrals, choose substitutions, symmetry, "
-        "series, or standard antiderivatives as appropriate. For derivatives or extrema, state the function "
-        "and conditions before simplifying."
+        "Identify the calculus object first: derivative, integral, limit, series, approximation, "
+        "optimization, differential equation, or complex-analysis residue. State the exact operation "
+        "and variables before computing. For limits, compare dominant terms or use expansions. "
+        "For derivatives and extrema, differentiate before testing candidates. For integrals, choose "
+        "substitution, parts, symmetry, standard forms, or residues as appropriate. Keep exact forms "
+        "when possible and match the requested precision."
     ),
     "geometry_trig": (
         "Track geometric definitions, diagrams implied by the text, and trigonometric identities. "
@@ -32,7 +35,10 @@ CATEGORY_GUIDANCE = {
         "multi-part answer order."
     ),
     "general_math": (
-        "Identify the mathematical structure, solve directly, and keep the final answer concise."
+        "First identify whether the problem is actually arithmetic/algebra, applied units, geometry, "
+        "statistics, calculus, linear algebra, or discrete math. If no specialized structure clearly "
+        "fits, solve directly with concise arithmetic and consistency checks. Preserve requested "
+        "answer order, units, rounding, and option-letter format."
     ),
 }
 
@@ -207,6 +213,120 @@ Use this method:
 """
 
 
+CALCULUS_STRUCTURED_GUIDANCE = """
+You are solving a calculus category problem.
+
+Before computing, identify the subtype:
+limit/asymptotic, derivative/tangent, integral/antiderivative, series/approximation, optimization/extrema, differential equation/model, or complex residue/contour.
+
+Rules:
+- For MCQ, solve first, compare the result to all choices, and box only the option letter.
+- For limits, identify the dominant terms, equivalent forms, or expansion before substituting.
+- For derivatives and tangent lines, keep track of the point of evaluation and requested variable.
+- For integrals, state the method briefly: substitution, parts, symmetry, standard form, partial fractions, or residue.
+- For extrema, check endpoints and critical points when the domain is bounded.
+- For multiple [ANS] blanks, count the blanks and return answers in order inside one box.
+"""
+
+
+CALCULUS_LIMIT_ASYMPTOTIC_GUIDANCE = """
+You are solving a calculus limit or asymptotic problem.
+
+Use this method:
+1. Identify the variable and limit point.
+2. Simplify the expression before substitution.
+3. Use dominant-term comparison, rationalization, logarithms, l'Hopital's rule, or Taylor expansion only when justified.
+4. Preserve exact constants when possible.
+5. For MCQ, map the computed limit to the answer letter.
+"""
+
+
+CALCULUS_INTEGRAL_GUIDANCE = """
+You are solving a calculus integral problem.
+
+Use this method:
+1. Identify definite versus indefinite integral and the variable of integration.
+2. Look for substitution, integration by parts, symmetry, standard antiderivatives, partial fractions, or contour/residue structure.
+3. For definite integrals, apply bounds after finding the antiderivative or transformed bounds.
+4. For improper or complex integrals, state convergence/residue conditions briefly.
+5. For MCQ, compare the final expression/value to choices and box only the letter.
+"""
+
+
+CALCULUS_DERIVATIVE_EXTREMA_GUIDANCE = """
+You are solving a derivative, tangent, rate, or extrema problem.
+
+Use this method:
+1. Define the function and variable.
+2. Differentiate accurately before substituting values.
+3. For tangent/linear approximation, compute both function value and derivative at the point.
+4. For extrema, solve critical points and compare endpoints when relevant.
+5. Return only the requested value, equation, or option letter.
+"""
+
+
+CALCULUS_DIFFERENTIAL_EQUATION_GUIDANCE = """
+You are solving a differential equation or calculus model problem.
+
+Use this method:
+1. Identify the dependent variable, independent variable, and initial/boundary conditions.
+2. Separate variables or use the standard model form when appropriate.
+3. Solve constants from the given condition before answering.
+4. Keep units and requested rounding consistent.
+5. For MCQ, map the derived expression/value to the option letter.
+"""
+
+
+GENERAL_MATH_STRUCTURED_GUIDANCE = """
+You are solving a general math fallback problem.
+
+Before computing, identify whether another structure is hidden:
+basic arithmetic/algebra, unit conversion, direct formula use, table interpretation, pattern recognition, or multi-part answer extraction.
+
+Rules:
+- Do not overcomplicate the problem with an unrelated advanced method.
+- Count [ANS] blanks before solving and return the same number of answers in order.
+- For MCQ, evaluate the answer choices and box exactly one capital letter.
+- Preserve units, signs, percentages, and requested rounding.
+- If the question asks for text, return the requested phrase exactly and without extra explanation in the final box.
+"""
+
+
+GENERAL_MATH_MCQ_VERIFIER_GUIDANCE = """
+You are solving a general math multiple-choice problem.
+
+Use this method:
+1. Parse exactly what the question asks.
+2. Compute or reason to the requested result.
+3. Compare every answer choice to the result.
+4. Reject choices with the right number but wrong interpretation, sign, unit, or wording.
+5. The final answer must be exactly one option letter inside \\boxed{}.
+"""
+
+
+GENERAL_MATH_MULTI_ANSWER_GUIDANCE = """
+You are solving a general math free-form problem with multiple requested blanks or parts.
+
+Use this method:
+1. Count all [ANS] placeholders.
+2. Solve each part separately.
+3. Preserve the order of the blanks.
+4. Keep exact wording, units, and rounding requested by the prompt.
+5. The final answer must contain exactly that many comma-separated entries inside one \\boxed{}.
+"""
+
+
+GENERAL_MATH_TEXT_OR_UNIT_GUIDANCE = """
+You are solving a general math problem that may require text, units, or a direct formula.
+
+Use this method:
+1. Identify whether the answer is numeric, a phrase, a unit-bearing value, or a list.
+2. For unit conversions, write the conversion factor and check direction.
+3. For requested phrases, preserve wording and capitalization when the prompt specifies them.
+4. Do not add explanation inside the final answer box.
+"""
+
+
 def build_linear_algebra_structured_verify_system_prompt():
     return _seed_system_prompt(
         "linear_algebra_v1_structured_verify",
@@ -267,4 +387,67 @@ def build_discrete_number_theory_system_prompt():
     return _seed_system_prompt(
         "discrete_number_theory_v1",
         DISCRETE_NUMBER_THEORY_GUIDANCE,
+    )
+
+
+def build_calculus_structured_system_prompt():
+    return _seed_system_prompt(
+        "calculus_v1_structured",
+        CALCULUS_STRUCTURED_GUIDANCE,
+    )
+
+
+def build_calculus_limit_asymptotic_system_prompt():
+    return _seed_system_prompt(
+        "calculus_limit_asymptotic",
+        CALCULUS_LIMIT_ASYMPTOTIC_GUIDANCE,
+    )
+
+
+def build_calculus_integral_system_prompt():
+    return _seed_system_prompt(
+        "calculus_integral",
+        CALCULUS_INTEGRAL_GUIDANCE,
+    )
+
+
+def build_calculus_derivative_extrema_system_prompt():
+    return _seed_system_prompt(
+        "calculus_derivative_extrema",
+        CALCULUS_DERIVATIVE_EXTREMA_GUIDANCE,
+    )
+
+
+def build_calculus_differential_equation_system_prompt():
+    return _seed_system_prompt(
+        "calculus_differential_equation",
+        CALCULUS_DIFFERENTIAL_EQUATION_GUIDANCE,
+    )
+
+
+def build_general_math_structured_system_prompt():
+    return _seed_system_prompt(
+        "general_math_v1_structured",
+        GENERAL_MATH_STRUCTURED_GUIDANCE,
+    )
+
+
+def build_general_math_mcq_verifier_system_prompt():
+    return _seed_system_prompt(
+        "general_math_mcq_verifier",
+        GENERAL_MATH_MCQ_VERIFIER_GUIDANCE,
+    )
+
+
+def build_general_math_multi_answer_system_prompt():
+    return _seed_system_prompt(
+        "general_math_multi_answer",
+        GENERAL_MATH_MULTI_ANSWER_GUIDANCE,
+    )
+
+
+def build_general_math_text_or_unit_system_prompt():
+    return _seed_system_prompt(
+        "general_math_text_or_unit",
+        GENERAL_MATH_TEXT_OR_UNIT_GUIDANCE,
     )

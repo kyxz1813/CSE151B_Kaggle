@@ -17,11 +17,10 @@ Choose exactly one category from this fixed list:
 statistics_probability, calculus, geometry_trig, linear_algebra, discrete_algorithm, arithmetic_algebra, applied_word_problem, general_math
 
 Return only one JSON object in this exact schema:
-{"primary_category":"<category>","categories":["<same category>"]}
+{"primary_category":"<category>"}
 
 Rules:
 - Choose exactly one primary_category.
-- categories must contain exactly the same one category.
 - Use general_math only when no more specific category fits.
 - Do not solve the problem.
 - Do not explain.
