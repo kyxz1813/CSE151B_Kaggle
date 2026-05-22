@@ -13,6 +13,15 @@ from baseline.baseline3_prompts import (
     build_discrete_boolean_logic_system_prompt,
     build_discrete_counting_dp_system_prompt,
     build_discrete_number_theory_system_prompt,
+    build_calculus_structured_system_prompt,
+    build_calculus_limit_asymptotic_system_prompt,
+    build_calculus_integral_system_prompt,
+    build_calculus_derivative_extrema_system_prompt,
+    build_calculus_differential_equation_system_prompt,
+    build_general_math_structured_system_prompt,
+    build_general_math_mcq_verifier_system_prompt,
+    build_general_math_multi_answer_system_prompt,
+    build_general_math_text_or_unit_system_prompt,
     build_arithmetic_algebra_general_system_prompt,
     build_arithmetic_algebra_symbolic_system_prompt,
     build_arithmetic_algebra_numeric_system_prompt,
@@ -216,6 +225,76 @@ def build_default_registry():
         )
 
     register_category_strategy_templates(
+        "calculus_v1_structured",
+        "calculus",
+        build_calculus_structured_system_prompt(),
+        build_calculus_structured_system_prompt(),
+    )
+
+    register_category_strategy_templates(
+        "calculus_limit_asymptotic",
+        "calculus",
+        build_calculus_limit_asymptotic_system_prompt(),
+        build_calculus_limit_asymptotic_system_prompt(),
+    )
+
+    register_category_strategy_templates(
+        "calculus_integral",
+        "calculus",
+        build_calculus_integral_system_prompt(),
+        build_calculus_integral_system_prompt(),
+    )
+
+    register_category_strategy_templates(
+        "calculus_derivative_extrema",
+        "calculus",
+        build_calculus_derivative_extrema_system_prompt(),
+        build_calculus_derivative_extrema_system_prompt(),
+    )
+
+    register_category_strategy_templates(
+        "calculus_differential_equation",
+        "calculus",
+        build_calculus_differential_equation_system_prompt(),
+        build_calculus_differential_equation_system_prompt(),
+    )
+
+    register_category_strategy_templates(
+        "calculus_v1_structured",
+        "calculus",
+        build_calculus_structured_system_prompt(),
+        build_calculus_structured_system_prompt(),
+    )
+
+    register_category_strategy_templates(
+        "calculus_limit_asymptotic",
+        "calculus",
+        build_calculus_limit_asymptotic_system_prompt(),
+        build_calculus_limit_asymptotic_system_prompt(),
+    )
+
+    register_category_strategy_templates(
+        "calculus_integral",
+        "calculus",
+        build_calculus_integral_system_prompt(),
+        build_calculus_integral_system_prompt(),
+    )
+
+    register_category_strategy_templates(
+        "calculus_derivative_extrema",
+        "calculus",
+        build_calculus_derivative_extrema_system_prompt(),
+        build_calculus_derivative_extrema_system_prompt(),
+    )
+
+    register_category_strategy_templates(
+        "calculus_differential_equation",
+        "calculus",
+        build_calculus_differential_equation_system_prompt(),
+        build_calculus_differential_equation_system_prompt(),
+    )
+
+    register_category_strategy_templates(
         "linear_algebra_v1_structured_verify",
         "linear_algebra",
         build_linear_algebra_structured_verify_system_prompt(),
@@ -276,6 +355,34 @@ def build_default_registry():
         "discrete_algorithm",
         build_discrete_number_theory_system_prompt(),
         build_discrete_number_theory_system_prompt(),
+    )
+
+    register_category_strategy_templates(
+        "general_math_v1_structured",
+        "general_math",
+        build_general_math_structured_system_prompt(),
+        build_general_math_structured_system_prompt(),
+    )
+
+    register_category_strategy_templates(
+        "general_math_mcq_verifier",
+        "general_math",
+        build_general_math_mcq_verifier_system_prompt(),
+        build_general_math_structured_system_prompt(),
+    )
+
+    register_category_strategy_templates(
+        "general_math_multi_answer",
+        "general_math",
+        build_general_math_structured_system_prompt(),
+        build_general_math_multi_answer_system_prompt(),
+    )
+
+    register_category_strategy_templates(
+        "general_math_text_or_unit",
+        "general_math",
+        build_general_math_mcq_verifier_system_prompt(),
+        build_general_math_text_or_unit_system_prompt(),
     )
 
     register_category_strategy_templates(

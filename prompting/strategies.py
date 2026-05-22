@@ -161,6 +161,36 @@ def build_default_strategy_registry():
         )
 
     register_category_strategy(
+        "calculus_v1_structured",
+        "calculus_structured",
+        "calculus",
+    )
+
+    register_category_strategy(
+        "calculus_limit_asymptotic",
+        "calculus_limit_asymptotic",
+        "calculus",
+    )
+
+    register_category_strategy(
+        "calculus_integral",
+        "calculus_integral",
+        "calculus",
+    )
+
+    register_category_strategy(
+        "calculus_derivative_extrema",
+        "calculus_derivative_extrema",
+        "calculus",
+    )
+
+    register_category_strategy(
+        "calculus_differential_equation",
+        "calculus_differential_equation",
+        "calculus",
+    )
+
+    register_category_strategy(
         "linear_algebra_v1_structured_verify",
         "linear_algebra_structured_verify",
         "linear_algebra",
@@ -212,6 +242,30 @@ def build_default_strategy_registry():
         "discrete_number_theory_v1",
         "discrete_number_theory_v1",
         "discrete_algorithm",
+    )
+
+    register_category_strategy(
+        "general_math_v1_structured",
+        "general_math_structured",
+        "general_math",
+    )
+
+    register_category_strategy(
+        "general_math_mcq_verifier",
+        "general_math_mcq_verifier",
+        "general_math",
+    )
+
+    register_category_strategy(
+        "general_math_multi_answer",
+        "general_math_multi_answer",
+        "general_math",
+    )
+
+    register_category_strategy(
+        "general_math_text_or_unit",
+        "general_math_text_or_unit",
+        "general_math",
     )
 
     register_category_strategy(
