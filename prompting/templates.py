@@ -13,6 +13,16 @@ from baseline.baseline3_prompts import (
     build_discrete_boolean_logic_system_prompt,
     build_discrete_counting_dp_system_prompt,
     build_discrete_number_theory_system_prompt,
+    build_arithmetic_algebra_general_system_prompt,
+    build_arithmetic_algebra_symbolic_system_prompt,
+    build_arithmetic_algebra_numeric_system_prompt,
+    build_arithmetic_algebra_multi_answer_system_prompt,
+    build_arithmetic_algebra_mcq_system_prompt,
+    build_applied_word_problem_model_building_system_prompt,
+    build_applied_word_problem_multi_step_system_prompt,
+    build_applied_word_problem_piecewise_system_prompt,
+    build_applied_word_problem_rate_distance_system_prompt,
+    build_applied_word_problem_financial_system_prompt,
     build_adaptive_rule_user_prompt,
 )
 
@@ -266,6 +276,76 @@ def build_default_registry():
         "discrete_algorithm",
         build_discrete_number_theory_system_prompt(),
         build_discrete_number_theory_system_prompt(),
+    )
+
+    register_category_strategy_templates(
+        "arithmetic_algebra_v2_general",
+        "arithmetic_algebra",
+        build_arithmetic_algebra_general_system_prompt(),
+        build_arithmetic_algebra_general_system_prompt(),
+    )
+
+    register_category_strategy_templates(
+        "arithmetic_algebra_symbolic",
+        "arithmetic_algebra",
+        build_arithmetic_algebra_mcq_system_prompt(),
+        build_arithmetic_algebra_symbolic_system_prompt(),
+    )
+
+    register_category_strategy_templates(
+        "arithmetic_algebra_numeric",
+        "arithmetic_algebra",
+        build_arithmetic_algebra_mcq_system_prompt(),
+        build_arithmetic_algebra_numeric_system_prompt(),
+    )
+
+    register_category_strategy_templates(
+        "arithmetic_algebra_multi_answer",
+        "arithmetic_algebra",
+        build_arithmetic_algebra_mcq_system_prompt(),
+        build_arithmetic_algebra_multi_answer_system_prompt(),
+    )
+
+    register_category_strategy_templates(
+        "arithmetic_algebra_mcq",
+        "arithmetic_algebra",
+        build_arithmetic_algebra_mcq_system_prompt(),
+        build_arithmetic_algebra_general_system_prompt(),
+    )
+
+    register_category_strategy_templates(
+        "applied_word_problem_v2_model_building",
+        "applied_word_problem",
+        build_applied_word_problem_model_building_system_prompt(),
+        build_applied_word_problem_model_building_system_prompt(),
+    )
+
+    register_category_strategy_templates(
+        "applied_word_problem_multi_step",
+        "applied_word_problem",
+        build_applied_word_problem_model_building_system_prompt(),
+        build_applied_word_problem_multi_step_system_prompt(),
+    )
+
+    register_category_strategy_templates(
+        "applied_word_problem_piecewise",
+        "applied_word_problem",
+        build_applied_word_problem_model_building_system_prompt(),
+        build_applied_word_problem_piecewise_system_prompt(),
+    )
+
+    register_category_strategy_templates(
+        "applied_word_problem_rate_distance",
+        "applied_word_problem",
+        build_applied_word_problem_model_building_system_prompt(),
+        build_applied_word_problem_rate_distance_system_prompt(),
+    )
+
+    register_category_strategy_templates(
+        "applied_word_problem_financial",
+        "applied_word_problem",
+        build_applied_word_problem_model_building_system_prompt(),
+        build_applied_word_problem_financial_system_prompt(),
     )
 
     for category in CATEGORY_GUIDANCE:

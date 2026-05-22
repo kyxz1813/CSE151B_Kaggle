@@ -214,6 +214,67 @@ def build_default_strategy_registry():
         "discrete_algorithm",
     )
 
+    register_category_strategy(
+        "arithmetic_algebra_v2_general",
+        "arithmetic_algebra_general",
+        "arithmetic_algebra",
+    )
+
+    register_category_strategy(
+        "arithmetic_algebra_symbolic",
+        "arithmetic_algebra_symbolic",
+        "arithmetic_algebra",
+    )
+
+    register_category_strategy(
+        "arithmetic_algebra_numeric",
+        "arithmetic_algebra_numeric",
+        "arithmetic_algebra",
+    )
+
+    register_category_strategy(
+        "arithmetic_algebra_multi_answer",
+        "arithmetic_algebra_multi_answer",
+        "arithmetic_algebra",
+    )
+
+    register_category_strategy(
+        "arithmetic_algebra_mcq",
+        "arithmetic_algebra_mcq",
+        "arithmetic_algebra",
+    )
+
+
+    register_category_strategy(
+        "applied_word_problem_v2_model_building",
+        "applied_word_problem_model_building",
+        "applied_word_problem",
+    )
+
+    register_category_strategy(
+        "applied_word_problem_multi_step",
+        "applied_word_problem_multi_step",
+        "applied_word_problem",
+    )
+
+    register_category_strategy(
+        "applied_word_problem_piecewise",
+        "applied_word_problem_piecewise",
+        "applied_word_problem",
+    )
+
+    register_category_strategy(
+        "applied_word_problem_rate_distance",
+        "applied_word_problem_rate_distance",
+        "applied_word_problem",
+    )
+
+    register_category_strategy(
+        "applied_word_problem_financial",
+        "applied_word_problem_financial",
+        "applied_word_problem",
+    )
+
     registry.register(
         StrategyDefinition(
             name="baseline3_adaptive_rules",

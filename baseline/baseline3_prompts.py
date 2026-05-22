@@ -206,6 +206,146 @@ Use this method:
 5. For MCQ, map the result to the correct option letter.
 """
 
+ARITHMETIC_ALGEBRA_GENERAL_GUIDANCE = """
+You are solving an arithmetic or algebra problem.
+
+Before computing, identify the subtype:
+numeric evaluation, symbolic simplification,
+equation solving, functional reasoning,
+sequence/table reasoning, interval/set notation,
+or discrete divisibility/integer reasoning.
+
+Rules:
+- Preserve exact forms unless the problem explicitly requests approximation.
+- Respect signs, fractions, radicals, logarithms, exponents, and algebraic structure carefully.
+- For MCQ, solve independently before mapping to an answer choice.
+- Count [ANS] placeholders and return exactly that many answers in order.
+- Preserve symbolic expressions when appropriate; do not over-decimalize exact algebraic results.
+- Express multiplication explicitly using asterisks. Do not round answers unless explicitly asked.
+"""
+
+
+ARITHMETIC_ALGEBRA_SYMBOLIC_GUIDANCE = """
+You are solving a symbolic arithmetic/algebra problem.
+
+Use this method:
+1. Preserve symbolic structure whenever possible.
+2. Simplify expressions carefully and systematically.
+3. Track signs, exponents, radicals, fractions, logarithms, and parentheses exactly.
+4. Avoid converting exact symbolic answers into decimals unless explicitly requested.
+5. If solving equations, verify all candidate solutions.
+6. Express multiplication explicitly using asterisks. Do not round answers unless explicitly asked.
+"""
+
+
+ARITHMETIC_ALGEBRA_NUMERIC_GUIDANCE = """
+You are solving a numerical arithmetic/algebra problem.
+
+Use this method:
+1. Apply order of operations (parenthesis, exponents, multiplcation/division, addition/subtraction) carefully.
+2. Track arithmetic signs and parentheses exactly.
+3. Compute intermediate values accurately.
+4. Respect requested rounding precision.
+5. For percentages, proportions, or unit conversions, preserve units and requested formatting.
+6. Check the derived solution within the original problem to determine correctness.
+7. Express multiplication explicitly using asterisks. Do not round answers unless explicitly asked.
+"""
+
+
+ARITHMETIC_ALGEBRA_MULTI_ANSWER_GUIDANCE = """
+You are solving a multi-answer arithmetic/algebra problem.
+
+Use this method:
+1. Count the number of [ANS] placeholders.
+2. Solve every requested component.
+3. Preserve the requested answer order exactly.
+4. For tables, sequences, or classifications, align answers to the matching row or column.
+5. Return exactly the required number of answers.
+6. Express multiplication explicitly using asterisks. Do not round answers unless explicitly asked.
+"""
+
+ARITHMETIC_ALGEBRA_MCQ_GUIDANCE = """
+You are solving an arithmetic/algebra multiple-choice problem.
+
+Use this method:
+1. Solve the problem independently.
+2. Compute the exact mathematical result first.
+3. Compare the computed result against every option.
+4. Eliminate distractors carefully.
+5. Return only the correct option letter inside \\boxed{}. Express multiplication explicitly using asterisks. Do not round answers unless explicitly asked.
+"""
+
+APPLIED_WORD_PROBLEM_MODEL_BUILDING_GUIDANCE = """
+You are solving an applied word problem.
+
+Before computing:
+1. Define variables clearly.
+2. Identify units and constraints.
+3. Translate the verbal description into equations,
+   inequalities, functions, or expressions.
+
+Rules:
+- Preserve units carefully.
+- Respect requested rounding instructions.
+- Preserve exact forms unless approximation is requested.
+- For multi-part problems, preserve answer order exactly.
+- For modeling problems, ensure the mathematical model
+  matches the real-world interpretation.
+- Express multiplication explicitly using asterisks. Do not round answers unless explicitly asked.
+"""
+
+APPLIED_WORD_PROBLEM_MULTI_STEP_GUIDANCE = """
+You are solving a multi-step applied problem.
+
+Use this method:
+1. Break the problem into explicit stages.
+2. Track intermediate quantities carefully.
+3. Preserve units throughout the computation.
+4. Verify that each intermediate result is physically
+   or contextually meaningful.
+5. Return all requested answers in the correct order.
+6. Express multiplication explicitly using asterisks. Do not round answers unless explicitly asked.
+"""
+
+APPLIED_WORD_PROBLEM_PIECEWISE_GUIDANCE = """
+You are solving a piecewise or conditional applied problem.
+
+Use this method:
+1. Identify each condition or threshold.
+2. Write the correct expression/function for each case.
+3. Verify interval boundaries carefully.
+4. Preserve inequality direction and interval notation.
+5. Return the final piecewise form exactly as requested.
+6. Express multiplication explicitly using asterisks. Do not round answers unless explicitly asked.
+"""
+
+APPLIED_WORD_PROBLEM_RATE_DISTANCE_GUIDANCE = """
+You are solving a rate, distance, speed, tax,
+or proportional reasoning problem.
+
+Use this method:
+1. Define the relevant rates and quantities.
+2. Track units carefully.
+3. Use dimensional consistency checks.
+4. Convert units before combining quantities.
+5. Verify the final answer matches the requested unit.
+6. Express multiplication explicitly using asterisks. Do not round answers unless explicitly asked.
+"""
+
+APPLIED_WORD_PROBLEM_FINANCIAL_GUIDANCE = """
+You are solving a financial or business modeling problem.
+
+Use this method:
+1. Identify fixed and variable quantities separately.
+2. Define revenue, cost, profit, interest,
+   balance, or tax relationships explicitly.
+3. Preserve units and percentages carefully.
+4. Verify whether the model is linear, exponential,
+   proportional, or piecewise.
+5. Respect requested rounding precision.
+6. Express multiplication explicitly using asterisks. Do not round answers unless explicitly asked.
+"""
+
 
 def build_linear_algebra_structured_verify_system_prompt():
     return _seed_system_prompt(
@@ -267,4 +407,73 @@ def build_discrete_number_theory_system_prompt():
     return _seed_system_prompt(
         "discrete_number_theory_v1",
         DISCRETE_NUMBER_THEORY_GUIDANCE,
+    )
+
+def build_arithmetic_algebra_general_system_prompt():
+    return _seed_system_prompt(
+        "arithmetic_algebra_v2_general",
+        ARITHMETIC_ALGEBRA_GENERAL_GUIDANCE,
+    )
+
+
+def build_arithmetic_algebra_symbolic_system_prompt():
+    return _seed_system_prompt(
+        "arithmetic_algebra_symbolic",
+        ARITHMETIC_ALGEBRA_SYMBOLIC_GUIDANCE,
+    )
+
+
+def build_arithmetic_algebra_numeric_system_prompt():
+    return _seed_system_prompt(
+        "arithmetic_algebra_numeric",
+        ARITHMETIC_ALGEBRA_NUMERIC_GUIDANCE,
+    )
+
+
+def build_arithmetic_algebra_multi_answer_system_prompt():
+    return _seed_system_prompt(
+        "arithmetic_algebra_multi_answer",
+        ARITHMETIC_ALGEBRA_MULTI_ANSWER_GUIDANCE,
+    )
+
+
+def build_arithmetic_algebra_mcq_system_prompt():
+    return _seed_system_prompt(
+        "arithmetic_algebra_mcq",
+        ARITHMETIC_ALGEBRA_MCQ_GUIDANCE,
+    )
+
+
+def build_applied_word_problem_model_building_system_prompt():
+    return _seed_system_prompt(
+        "applied_word_problem_v2_model_building",
+        APPLIED_WORD_PROBLEM_MODEL_BUILDING_GUIDANCE,
+    )
+
+
+def build_applied_word_problem_multi_step_system_prompt():
+    return _seed_system_prompt(
+        "applied_word_problem_multi_step",
+        APPLIED_WORD_PROBLEM_MULTI_STEP_GUIDANCE,
+    )
+
+
+def build_applied_word_problem_piecewise_system_prompt():
+    return _seed_system_prompt(
+        "applied_word_problem_piecewise",
+        APPLIED_WORD_PROBLEM_PIECEWISE_GUIDANCE,
+    )
+
+
+def build_applied_word_problem_rate_distance_system_prompt():
+    return _seed_system_prompt(
+        "applied_word_problem_rate_distance",
+        APPLIED_WORD_PROBLEM_RATE_DISTANCE_GUIDANCE,
+    )
+
+
+def build_applied_word_problem_financial_system_prompt():
+    return _seed_system_prompt(
+        "applied_word_problem_financial",
+        APPLIED_WORD_PROBLEM_FINANCIAL_GUIDANCE,
     )
