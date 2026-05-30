@@ -33,6 +33,7 @@ from baseline.baseline3_prompts import (
     build_applied_word_problem_rate_distance_system_prompt,
     build_applied_word_problem_financial_system_prompt,
     build_adaptive_rule_user_prompt,
+    build_geometry_trig_frq_system_prompt,  
 )
 
 
@@ -453,6 +454,12 @@ def build_default_registry():
         "applied_word_problem",
         build_applied_word_problem_model_building_system_prompt(),
         build_applied_word_problem_financial_system_prompt(),
+    )
+    register_category_strategy_templates(
+        "geometry_trig_frq",
+        "geometry_trig",
+        build_geometry_trig_frq_system_prompt(),
+        build_geometry_trig_frq_system_prompt(),
     )
 
     for category in CATEGORY_GUIDANCE:

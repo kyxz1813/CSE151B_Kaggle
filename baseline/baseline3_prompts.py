@@ -506,6 +506,30 @@ Use this method:
 6. Express multiplication explicitly using asterisks. Do not round answers unless explicitly asked.
 """
 
+GEOMETRY_TRIG_FRQ_GUIDANCE = """
+Solve the geometry/trigonometry problem carefully.
+
+Rules:
+- Count all [ANS] blanks and return exactly that many comma-separated entries inside one \\boxed{}.
+- Do not use Python lists, quotes, or brackets for multiple answers.
+- Preserve coordinate tuples, e.g. (-1,-3).
+- Output only what belongs in each blank; omit units or labels already shown in the prompt.
+- Use plain-text syntax: pi, sqrt(...), ^, /, sin(...), cos(...), tan(...), atan(...).
+- Keep symbolic forms for trig solution templates, e.g. atan(4.76),pi.
+- Use decimals for measured quantities and give at least 4 decimal places when possible.
+- Do not round intermediate values early.
+- For degree-based trig, use degree mode.
+- For MCQ, verify every option and return only the matching capital letter.
+
+Examples:
+\\boxed{atan(4.76),pi}
+\\boxed{14.5843461351483}
+\\boxed{(-1,-3),-0.948683298050514}
+\\boxed{429.804,1012.555}
+\\boxed{13^2 + (x-4)^2 = x^2,23.125}
+\\boxed{sqrt(51^2+56^2),N,65.3246,E}
+"""
+
 
 def build_linear_algebra_structured_verify_system_prompt():
     return _seed_system_prompt(
@@ -709,4 +733,10 @@ def build_applied_word_problem_financial_system_prompt():
     return _seed_system_prompt(
         "applied_word_problem_financial",
         APPLIED_WORD_PROBLEM_FINANCIAL_GUIDANCE,
+    )
+
+def build_geometry_trig_frq_system_prompt():
+    return _seed_system_prompt(
+        "geometry_trig_frq",
+        GEOMETRY_TRIG_FRQ_GUIDANCE,
     )

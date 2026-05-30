@@ -328,6 +328,11 @@ def build_default_strategy_registry():
         "applied_word_problem_financial",
         "applied_word_problem",
     )
+    register_category_strategy(
+        "geometry_trig_frq", 
+        "geometry_trig_frq",
+        "geometry_trig",
+    )
 
     registry.register(
         StrategyDefinition(
