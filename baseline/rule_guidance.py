@@ -474,3 +474,463 @@ def register_default_ved_guidance():
         register_rule_guidance(item)
 
     return items
+
+def register_default_remaining_category_guidance():
+    items = [
+        RuleGuidance(
+            rule_name="arithmetic_algebra_numeric_evaluation",
+            category="arithmetic_algebra",
+            title="Numeric evaluation",
+            guidance=(
+                "Compute carefully with order of operations, signs, fractions, exponents, and radicals. "
+                "Keep exact form when useful and apply rounding only if requested."
+            ),
+            priority=10,
+        ),
+        RuleGuidance(
+            rule_name="arithmetic_algebra_symbolic_manipulation",
+            category="arithmetic_algebra",
+            title="Symbolic manipulation",
+            guidance=(
+                "Simplify, factor, expand, reduce, or rewrite algebraically step by step. Preserve "
+                "equivalent exact expressions and avoid unnecessary decimal approximations."
+            ),
+            priority=10,
+        ),
+        RuleGuidance(
+            rule_name="arithmetic_algebra_equation_solving",
+            category="arithmetic_algebra",
+            title="Equation solving",
+            guidance=(
+                "Solve the equation systematically. Check for extraneous roots when squaring, using logs, "
+                "or manipulating rational expressions. Return all requested solutions."
+            ),
+            priority=10,
+        ),
+        RuleGuidance(
+            rule_name="arithmetic_algebra_function_or_relation",
+            category="arithmetic_algebra",
+            title="Function or relation",
+            guidance=(
+                "Track the function definition, input value, inverse/composition order, and requested "
+                "output. Substitute only after identifying the correct expression."
+            ),
+            priority=15,
+        ),
+        RuleGuidance(
+            rule_name="arithmetic_algebra_discrete_integer",
+            category="arithmetic_algebra",
+            title="Integer/divisibility reasoning",
+            guidance=(
+                "Use integer constraints, divisibility, factorization, parity, gcd/lcm, or remainders "
+                "explicitly. Check that the final answer satisfies the stated integer conditions."
+            ),
+            priority=10,
+        ),
+        RuleGuidance(
+            rule_name="arithmetic_algebra_conversion_representation",
+            category="arithmetic_algebra",
+            title="Conversion or representation",
+            guidance=(
+                "Track the requested representation: fraction, decimal, percent, logarithmic form, or unit. "
+                "Convert in the correct direction and preserve requested precision."
+            ),
+            priority=10,
+        ),
+        RuleGuidance(
+            rule_name="arithmetic_algebra_interval_or_set",
+            category="arithmetic_algebra",
+            title="Interval or set operation",
+            guidance=(
+                "For unions, intersections, intervals, and sets, determine membership conditions first, "
+                "then express the final answer in the requested notation."
+            ),
+            priority=10,
+        ),
+        RuleGuidance(
+            rule_name="arithmetic_algebra_mcq",
+            category="arithmetic_algebra",
+            title="MCQ option mapping",
+            guidance=(
+                "Because this is multiple-choice, compute the result, compare it to every option, and box "
+                "only the final option letter."
+            ),
+            priority=1,
+        ),
+        RuleGuidance(
+            rule_name="arithmetic_algebra_multi_answer",
+            category="arithmetic_algebra",
+            title="Multi-answer arithmetic/algebra",
+            guidance=(
+                "Count all [ANS] placeholders before solving. Return exactly that many comma-separated "
+                "answers in the same order."
+            ),
+            priority=1,
+        ),
+        RuleGuidance(
+            rule_name="arithmetic_algebra_table_or_sequence",
+            category="arithmetic_algebra",
+            title="Table or sequence",
+            guidance=(
+                "Infer the rule from the given table or sequence only after checking multiple entries. "
+                "Preserve order and output all requested values."
+            ),
+            priority=10,
+        ),
+
+        RuleGuidance(
+            rule_name="applied_word_problem_rate_ratio_model",
+            category="applied_word_problem",
+            title="Rate or ratio model",
+            guidance=(
+                "Define variables and units. Identify whether the rate is per unit, percent, speed, tax, "
+                "cost, or density. Multiply/divide in the direction implied by the units."
+            ),
+            priority=10,
+        ),
+        RuleGuidance(
+            rule_name="applied_word_problem_linear_modeling",
+            category="applied_word_problem",
+            title="Linear modeling",
+            guidance=(
+                "Build the linear model explicitly: define variables, slope/rate, intercept/fixed cost, "
+                "and the requested unknown. Check units before finalizing."
+            ),
+            priority=10,
+        ),
+        RuleGuidance(
+            rule_name="applied_word_problem_exponential_modeling",
+            category="applied_word_problem",
+            title="Exponential modeling",
+            guidance=(
+                "Identify initial value, growth/decay factor, time units, and whether the model is "
+                "continuous or discrete. Solve constants before evaluating."
+            ),
+            priority=10,
+        ),
+        RuleGuidance(
+            rule_name="applied_word_problem_geometry_application",
+            category="applied_word_problem",
+            title="Geometry application",
+            guidance=(
+                "Translate the story into the correct geometric formula. Track radius/diameter, area, "
+                "perimeter, volume, and unit conversions carefully."
+            ),
+            priority=15,
+        ),
+        RuleGuidance(
+            rule_name="applied_word_problem_function_interpretation",
+            category="applied_word_problem",
+            title="Function interpretation",
+            guidance=(
+                "Identify what the input and output represent. When interpreting a formula, answer in "
+                "context rather than only computing a number."
+            ),
+            priority=15,
+        ),
+        RuleGuidance(
+            rule_name="applied_word_problem_piecewise_case",
+            category="applied_word_problem",
+            title="Piecewise or case problem",
+            guidance=(
+                "Determine which case applies before computing. Check thresholds such as at least, more "
+                "than, inclusive, discount, or otherwise."
+            ),
+            priority=8,
+        ),
+        RuleGuidance(
+            rule_name="applied_word_problem_table_schedule_reasoning",
+            category="applied_word_problem",
+            title="Table or schedule reasoning",
+            guidance=(
+                "Read the table/schedule in order. Track starting value, each transaction/change, and the "
+                "final requested quantity."
+            ),
+            priority=10,
+        ),
+        RuleGuidance(
+            rule_name="applied_word_problem_quantity_tracking",
+            category="applied_word_problem",
+            title="Quantity tracking",
+            guidance=(
+                "Track the quantity step by step through each change. Do not skip intermediate updates, "
+                "especially purchases, returns, payments, remaining balances, or trips."
+            ),
+            priority=8,
+        ),
+        RuleGuidance(
+            rule_name="applied_word_problem_unit_conversion_application",
+            category="applied_word_problem",
+            title="Unit conversion application",
+            guidance=(
+                "Convert units before combining quantities. Check whether the final answer should be in "
+                "hours/minutes, miles/feet, Celsius/Fahrenheit, or another requested unit."
+            ),
+            priority=8,
+        ),
+        RuleGuidance(
+            rule_name="applied_word_problem_inequality_constraint",
+            category="applied_word_problem",
+            title="Inequality or constraint",
+            guidance=(
+                "Translate words like at least, at most, between, maximum, minimum, inclusive, and support "
+                "into inequalities before solving."
+            ),
+            priority=8,
+        ),
+        RuleGuidance(
+            rule_name="applied_word_problem_multi_step",
+            category="applied_word_problem",
+            title="Multi-step applied problem",
+            guidance=(
+                "Solve each part in order. If later parts depend on earlier results, carry forward exact "
+                "values when possible before rounding."
+            ),
+            priority=5,
+        ),
+        RuleGuidance(
+            rule_name="applied_word_problem_multi_answer",
+            category="applied_word_problem",
+            title="Multi-answer applied problem",
+            guidance=(
+                "Count all [ANS] placeholders and return exactly that many answers in the same order, "
+                "with units/rounding only if requested."
+            ),
+            priority=1,
+        ),
+        RuleGuidance(
+            rule_name="applied_word_problem_mcq",
+            category="applied_word_problem",
+            title="MCQ option mapping",
+            guidance=(
+                "For multiple-choice applied problems, solve in context, compare to each option, and box "
+                "only the final option letter."
+            ),
+            priority=1,
+        ),
+
+        RuleGuidance(
+            rule_name="geometry_trig_angle_conversion",
+            category="geometry_trig",
+            title="Angle conversion",
+            guidance=(
+                "Use 180 degrees = pi radians. Track whether the requested final answer is in degrees "
+                "or radians and simplify exact multiples of pi."
+            ),
+            priority=8,
+        ),
+        RuleGuidance(
+            rule_name="geometry_trig_arc_length_sector",
+            category="geometry_trig",
+            title="Arc length or sector area",
+            guidance=(
+                "Use radians for arc/sector formulas. Arc length is s = r theta and sector area is "
+                "A = 1/2 r^2 theta."
+            ),
+            priority=8,
+        ),
+        RuleGuidance(
+            rule_name="geometry_trig_trig_equation",
+            category="geometry_trig",
+            title="Trigonometric equation",
+            guidance=(
+                "Find the reference angle, determine all valid quadrants in the requested interval, and "
+                "return every solution required."
+            ),
+            priority=8,
+        ),
+        RuleGuidance(
+            rule_name="geometry_trig_inverse_trig",
+            category="geometry_trig",
+            title="Inverse trig",
+            guidance=(
+                "Use the principal-value range for inverse trig functions. Check quadrant restrictions "
+                "before finalizing."
+            ),
+            priority=8,
+        ),
+        RuleGuidance(
+            rule_name="geometry_trig_quadrant_sign",
+            category="geometry_trig",
+            title="Quadrant/sign check",
+            guidance=(
+                "Use the quadrant to determine signs of sine, cosine, tangent, and coordinate values. "
+                "Do not choose a value with the wrong sign."
+            ),
+            priority=5,
+        ),
+        RuleGuidance(
+            rule_name="geometry_trig_coordinate_point",
+            category="geometry_trig",
+            title="Coordinate point trig",
+            guidance=(
+                "Relate x, y, and r using x^2 + y^2 = r^2. Match signs to the quadrant and compute trig "
+                "ratios from coordinates."
+            ),
+            priority=8,
+        ),
+        RuleGuidance(
+            rule_name="geometry_trig_right_triangle",
+            category="geometry_trig",
+            title="Right triangle",
+            guidance=(
+                "Identify opposite, adjacent, hypotenuse, and the relevant angle. Use the correct trig "
+                "ratio or Pythagorean theorem."
+            ),
+            priority=8,
+        ),
+        RuleGuidance(
+            rule_name="geometry_trig_law_of_sines_cosines",
+            category="geometry_trig",
+            title="Law of sines/cosines",
+            guidance=(
+                "Choose law of sines or cosines based on the given sides/angles. Watch for ambiguous SSA "
+                "cases and compare possible triangles."
+            ),
+            priority=8,
+        ),
+        RuleGuidance(
+            rule_name="geometry_trig_circle_geometry",
+            category="geometry_trig",
+            title="Circle geometry",
+            guidance=(
+                "Track radius, diameter, chord, tangent, arc, sector, and angle relationships. Convert "
+                "degrees to radians when formulas require it."
+            ),
+            priority=10,
+        ),
+        RuleGuidance(
+            rule_name="geometry_trig_multi_answer_order",
+            category="geometry_trig",
+            title="Multi-answer geometry/trig",
+            guidance=(
+                "Count all [ANS] placeholders and preserve the requested order. Put all answers in one "
+                "comma-separated final box."
+            ),
+            priority=1,
+        ),
+        RuleGuidance(
+            rule_name="geometry_trig_mcq_option_mapping",
+            category="geometry_trig",
+            title="MCQ option mapping",
+            guidance=(
+                "For multiple-choice geometry/trig problems, compute the geometric/trig result, compare "
+                "to every option, and box only the option letter."
+            ),
+            priority=1,
+        ),
+
+        RuleGuidance(
+            rule_name="statistics_probability_hypothesis_test",
+            category="statistics_probability",
+            title="Hypothesis test",
+            guidance=(
+                "Identify null/alternative hypotheses, test statistic, sampling distribution, p-value or "
+                "critical region, and rejection decision. Keep the requested form in the final answer."
+            ),
+            priority=8,
+        ),
+        RuleGuidance(
+            rule_name="statistics_probability_type_i_type_ii_power",
+            category="statistics_probability",
+            title="Type I/II error or power",
+            guidance=(
+                "Translate Type I, Type II, and power carefully. Type II is failing to reject under the "
+                "alternative. Compute the non-rejection probability under the true alternative."
+            ),
+            priority=5,
+        ),
+        RuleGuidance(
+            rule_name="statistics_probability_confidence_interval",
+            category="statistics_probability",
+            title="Confidence interval",
+            guidance=(
+                "Compute estimate ± critical value times standard error. Use z or t according to the "
+                "problem conditions and preserve requested rounding."
+            ),
+            priority=8,
+        ),
+        RuleGuidance(
+            rule_name="statistics_probability_regression_correlation",
+            category="statistics_probability",
+            title="Regression or correlation",
+            guidance=(
+                "Identify slope, intercept, residual, prediction, correlation, or R-squared. Interpret "
+                "slope/intercept in context when requested."
+            ),
+            priority=8,
+        ),
+        RuleGuidance(
+            rule_name="statistics_probability_probability_counting",
+            category="statistics_probability",
+            title="Probability counting",
+            guidance=(
+                "Define the sample space and favorable outcomes. Check independence, replacement, "
+                "conditional probability, complement, and at least/at most wording."
+            ),
+            priority=8,
+        ),
+        RuleGuidance(
+            rule_name="statistics_probability_distribution",
+            category="statistics_probability",
+            title="Distribution problem",
+            guidance=(
+                "Identify the distribution and parameters. Standardize if normal, use the correct mass "
+                "or density formula otherwise, and keep probabilities in [0,1]."
+            ),
+            priority=8,
+        ),
+        RuleGuidance(
+            rule_name="statistics_probability_expected_value_variance",
+            category="statistics_probability",
+            title="Expected value or variance",
+            guidance=(
+                "Use E[X], Var(X), linearity of expectation, and variance rules carefully. Distinguish "
+                "standard deviation from variance."
+            ),
+            priority=8,
+        ),
+        RuleGuidance(
+            rule_name="statistics_probability_sampling_distribution",
+            category="statistics_probability",
+            title="Sampling distribution",
+            guidance=(
+                "Use the sample mean/proportion distribution with the correct standard error. Apply CLT "
+                "only when justified by sample size or assumptions."
+            ),
+            priority=8,
+        ),
+        RuleGuidance(
+            rule_name="statistics_probability_mcq_option_mapping",
+            category="statistics_probability",
+            title="MCQ option mapping",
+            guidance=(
+                "For multiple-choice statistics/probability problems, compute the result, compare to the "
+                "choices, and box only the option letter."
+            ),
+            priority=1,
+        ),
+        RuleGuidance(
+            rule_name="statistics_probability_multi_answer",
+            category="statistics_probability",
+            title="Multi-answer statistics/probability",
+            guidance=(
+                "Count all [ANS] placeholders and return exactly that many comma-separated answers in "
+                "the requested order."
+            ),
+            priority=1,
+        ),
+    ]
+
+    for item in items:
+        register_rule_guidance(item)
+
+    return items
+
+
+def register_all_default_guidance():
+    items = []
+    items.extend(register_default_linear_discrete_guidance())
+    items.extend(register_default_ved_guidance())
+    items.extend(register_default_remaining_category_guidance())
+    return items
