@@ -329,11 +329,17 @@ Use this method:
 ARITHMETIC_ALGEBRA_GENERAL_GUIDANCE = """
 You are solving an arithmetic or algebra problem.
 
-Before computing, identify the subtype:
-numeric evaluation, symbolic simplification,
-equation solving, functional reasoning,
-sequence/table reasoning, interval/set notation,
-or discrete divisibility/integer reasoning.
+Before solving, classify the problem into exactly one primary subtype:
+
+- Numeric evaluation
+- Symbolic simplification
+- Equation solving
+- Functional reasoning
+- Sequence/table reasoning
+- Set or interval reasoning
+- Integer/divisibility reasoning
+
+Use the solving strategy most appropriate for the identified subtype.
 
 Rules:
 - Preserve exact forms unless the problem explicitly requests approximation.
@@ -350,10 +356,11 @@ You are solving a symbolic arithmetic/algebra problem.
 
 Use this method:
 1. Preserve symbolic structure whenever possible.
-2. Simplify expressions carefully and systematically.
+2. Simplify expressions carefully and systematically only when specifically asked.
 3. Track signs, exponents, radicals, fractions, logarithms, and parentheses exactly.
 4. Avoid converting exact symbolic answers into decimals unless explicitly requested.
-5. If solving equations, verify all candidate solutions.
+5. Reject extraneous solutions.
+5. If solving equations, verify all candidate solutions within the original problem.
 6. Express multiplication explicitly using asterisks. Do not round answers unless explicitly asked.
 """
 
@@ -365,7 +372,7 @@ Use this method:
 1. Apply order of operations (parenthesis, exponents, multiplcation/division, addition/subtraction) carefully.
 2. Track arithmetic signs and parentheses exactly.
 3. Compute intermediate values accurately.
-4. Respect requested rounding precision.
+4. Respect requested rounding precision. If none is requested, do not round.
 5. For percentages, proportions, or unit conversions, preserve units and requested formatting.
 6. Check the derived solution within the original problem to determine correctness.
 7. Express multiplication explicitly using asterisks. Do not round answers unless explicitly asked.
@@ -380,7 +387,7 @@ Use this method:
 2. Solve every requested component.
 3. Preserve the requested answer order exactly.
 4. For tables, sequences, or classifications, align answers to the matching row or column.
-5. Return exactly the required number of answers.
+5. Return the same amount of answers as [ANS] placeholders.
 6. Express multiplication explicitly using asterisks. Do not round answers unless explicitly asked.
 """
 
@@ -401,16 +408,16 @@ You are solving an applied word problem.
 Before computing:
 1. Define variables clearly.
 2. Identify units and constraints.
-3. Translate the verbal description into equations,
-   inequalities, functions, or expressions.
+3. Translate the verbal description into equations, inequalities, functions, or expressions.
 
 Rules:
 - Preserve units carefully.
 - Respect requested rounding instructions.
 - Preserve exact forms unless approximation is requested.
 - For multi-part problems, preserve answer order exactly.
-- For modeling problems, ensure the mathematical model
-  matches the real-world interpretation.
+- For modeling problems, ensure the mathematical model matches the real-world interpretation.
+- Reject negative lengths, times, counts, probabilities, or populations unless the problem explicitly allows them.
+- Verify that units are meaningful.
 - Express multiplication explicitly using asterisks. Do not round answers unless explicitly asked.
 """
 
@@ -421,8 +428,7 @@ Use this method:
 1. Break the problem into explicit stages.
 2. Track intermediate quantities carefully.
 3. Preserve units throughout the computation.
-4. Verify that each intermediate result is physically
-   or contextually meaningful.
+4. Verify that each intermediate result is physically or contextually meaningful.
 5. Return all requested answers in the correct order.
 6. Express multiplication explicitly using asterisks. Do not round answers unless explicitly asked.
 """
@@ -440,16 +446,16 @@ Use this method:
 """
 
 APPLIED_WORD_PROBLEM_RATE_DISTANCE_GUIDANCE = """
-You are solving a rate, distance, speed, tax,
-or proportional reasoning problem.
+You are solving a rate, distance, speed, tax, or proportional reasoning problem.
 
 Use this method:
 1. Define the relevant rates and quantities.
-2. Track units carefully.
-3. Use dimensional consistency checks.
-4. Convert units before combining quantities.
-5. Verify the final answer matches the requested unit.
-6. Express multiplication explicitly using asterisks. Do not round answers unless explicitly asked.
+2. Remember and use distance = rate * time, work completed = rate * time, and unit-rate relationships when applicable.
+3. Track units carefully.
+4. Use dimensional consistency checks.
+5. Convert units before combining quantities.
+6. Verify the final answer matches the requested unit.x`
+7. Express multiplication explicitly using asterisks. Do not round answers unless explicitly asked.
 """
 
 APPLIED_WORD_PROBLEM_FINANCIAL_GUIDANCE = """
