@@ -45,7 +45,9 @@ CATEGORY_GUIDANCE = {
 
 def build_baseline3_system_prompt(category):
     guidance = CATEGORY_GUIDANCE.get(category, CATEGORY_GUIDANCE["general_math"])
+    guard = f"{VED_STRICT_OUTPUT_GUARD.strip()}\n\n" if category in {"calculus", "general_math"} else ""
     return (
+        f"{guard}"
         f"{BASELINE2_SYSTEM_PROMPT}\n"
         "Baseline 3 routing note:\n"
         f"- This problem has been assigned exactly one category: {category}.\n"
@@ -78,8 +80,28 @@ def build_adaptive_rule_user_prompt(context):
         f"{base_prompt}"
     )
 
-def _seed_system_prompt(title, guidance):
+VED_STRICT_OUTPUT_GUARD = """
+Required output structure:
+Reasoning:
+- At most 4 concise lines.
+
+Final Answer: \\boxed{<final answer>}
+
+Strict output rules:
+- Do not write <think> or </think>.
+- Do not repeat the answer.
+- Do not write anything after the boxed final answer.
+- Stop immediately after Final Answer: \\boxed{...}.
+- For MCQ, the boxed final answer must be exactly one capital letter.
+- For multiple [ANS] blanks, put all answers in one box, comma-separated and in order.
+"""
+
+
+def _seed_system_prompt(title, guidance, strict_output_guard=None):
+    guard = (strict_output_guard or "").strip()
+    prefix = f"{guard}\n\n" if guard else ""
     return (
+        f"{prefix}"
         f"{BASELINE2_SYSTEM_PROMPT}\n\n"
         f"Specialized strategy: {title}\n"
         f"{guidance.strip()}\n"
@@ -221,11 +243,14 @@ limit/asymptotic, derivative/tangent, integral/antiderivative, series/approximat
 
 Rules:
 - For MCQ, solve first, compare the result to all choices, and box only the option letter.
+- If the computed value matches a choice numerically or algebraically, convert it to the matching letter before the final answer.
 - For limits, identify the dominant terms, equivalent forms, or expansion before substituting.
 - For derivatives and tangent lines, keep track of the point of evaluation and requested variable.
 - For integrals, state the method briefly: substitution, parts, symmetry, standard form, partial fractions, or residue.
 - For extrema, check endpoints and critical points when the domain is bounded.
 - For multiple [ANS] blanks, count the blanks and return answers in order inside one box.
+- Verify the final result against the question type before boxing it: differentiate antiderivatives, substitute tangent points, test limit direction, compare endpoint values, and apply initial conditions.
+- Keep exact simplified forms unless a decimal or rounding is explicitly requested.
 """
 
 
@@ -237,7 +262,8 @@ Use this method:
 2. Simplify the expression before substitution.
 3. Use dominant-term comparison, rationalization, logarithms, l'Hopital's rule, or Taylor expansion only when justified.
 4. Preserve exact constants when possible.
-5. For MCQ, map the computed limit to the answer letter.
+5. Check one-sided behavior, sign, and infinity cases before deciding the answer.
+6. For MCQ, map the computed limit to the answer letter.
 """
 
 
@@ -249,7 +275,8 @@ Use this method:
 2. Look for substitution, integration by parts, symmetry, standard antiderivatives, partial fractions, or contour/residue structure.
 3. For definite integrals, apply bounds after finding the antiderivative or transformed bounds.
 4. For improper or complex integrals, state convergence/residue conditions briefly.
-5. For MCQ, compare the final expression/value to choices and box only the letter.
+5. Differentiate the antiderivative or check the transformed bounds before boxing the answer.
+6. For MCQ, compare the final expression/value to choices and box only the letter.
 """
 
 
@@ -261,7 +288,8 @@ Use this method:
 2. Differentiate accurately before substituting values.
 3. For tangent/linear approximation, compute both function value and derivative at the point.
 4. For extrema, solve critical points and compare endpoints when relevant.
-5. Return only the requested value, equation, or option letter.
+5. For related-rate or optimization wording, answer the requested variable, not an intermediate derivative.
+6. Return only the requested value, equation, or option letter.
 """
 
 
@@ -273,7 +301,8 @@ Use this method:
 2. Separate variables or use the standard model form when appropriate.
 3. Solve constants from the given condition before answering.
 4. Keep units and requested rounding consistent.
-5. For MCQ, map the derived expression/value to the option letter.
+5. Substitute the initial or boundary condition back into the solution as a verification step.
+6. For MCQ, map the derived expression/value to the option letter.
 """
 
 
@@ -285,10 +314,12 @@ basic arithmetic/algebra, unit conversion, direct formula use, table interpretat
 
 Rules:
 - Do not overcomplicate the problem with an unrelated advanced method.
+- Restate the requested answer type before solving: number, option letter, phrase, unit-bearing value, ordered list, interval, or expression.
 - Count [ANS] blanks before solving and return the same number of answers in order.
 - For MCQ, evaluate the answer choices and box exactly one capital letter.
 - Preserve units, signs, percentages, and requested rounding.
 - If the question asks for text, return the requested phrase exactly and without extra explanation in the final box.
+- Re-check arithmetic, sign, rounding, units, and answer count immediately before the final answer.
 """
 
 
@@ -300,7 +331,8 @@ Use this method:
 2. Compute or reason to the requested result.
 3. Compare every answer choice to the result.
 4. Reject choices with the right number but wrong interpretation, sign, unit, or wording.
-5. The final answer must be exactly one option letter inside \\boxed{}.
+5. Never put the raw value in the final box when choices are present.
+6. The final answer must be exactly one option letter inside \\boxed{}.
 """
 
 
@@ -312,7 +344,8 @@ Use this method:
 2. Solve each part separately.
 3. Preserve the order of the blanks.
 4. Keep exact wording, units, and rounding requested by the prompt.
-5. The final answer must contain exactly that many comma-separated entries inside one \\boxed{}.
+5. Recount the comma-separated final entries before boxing.
+6. The final answer must contain exactly that many comma-separated entries inside one \\boxed{}.
 """
 
 
@@ -323,7 +356,8 @@ Use this method:
 1. Identify whether the answer is numeric, a phrase, a unit-bearing value, or a list.
 2. For unit conversions, write the conversion factor and check direction.
 3. For requested phrases, preserve wording and capitalization when the prompt specifies them.
-4. Do not add explanation inside the final answer box.
+4. For percentages and rates, verify whether the prompt asks for a percent, decimal, change amount, or final amount.
+5. Do not add explanation inside the final answer box.
 """
 
 ARITHMETIC_ALGEBRA_GENERAL_GUIDANCE = """
@@ -540,6 +574,7 @@ def build_calculus_structured_system_prompt():
     return _seed_system_prompt(
         "calculus_v1_structured",
         CALCULUS_STRUCTURED_GUIDANCE,
+        strict_output_guard=VED_STRICT_OUTPUT_GUARD,
     )
 
 
@@ -547,6 +582,7 @@ def build_calculus_limit_asymptotic_system_prompt():
     return _seed_system_prompt(
         "calculus_limit_asymptotic",
         CALCULUS_LIMIT_ASYMPTOTIC_GUIDANCE,
+        strict_output_guard=VED_STRICT_OUTPUT_GUARD,
     )
 
 
@@ -554,6 +590,7 @@ def build_calculus_integral_system_prompt():
     return _seed_system_prompt(
         "calculus_integral",
         CALCULUS_INTEGRAL_GUIDANCE,
+        strict_output_guard=VED_STRICT_OUTPUT_GUARD,
     )
 
 
@@ -561,6 +598,7 @@ def build_calculus_derivative_extrema_system_prompt():
     return _seed_system_prompt(
         "calculus_derivative_extrema",
         CALCULUS_DERIVATIVE_EXTREMA_GUIDANCE,
+        strict_output_guard=VED_STRICT_OUTPUT_GUARD,
     )
 
 
@@ -568,6 +606,7 @@ def build_calculus_differential_equation_system_prompt():
     return _seed_system_prompt(
         "calculus_differential_equation",
         CALCULUS_DIFFERENTIAL_EQUATION_GUIDANCE,
+        strict_output_guard=VED_STRICT_OUTPUT_GUARD,
     )
 
 
@@ -575,6 +614,7 @@ def build_general_math_structured_system_prompt():
     return _seed_system_prompt(
         "general_math_v1_structured",
         GENERAL_MATH_STRUCTURED_GUIDANCE,
+        strict_output_guard=VED_STRICT_OUTPUT_GUARD,
     )
 
 
@@ -582,6 +622,7 @@ def build_general_math_mcq_verifier_system_prompt():
     return _seed_system_prompt(
         "general_math_mcq_verifier",
         GENERAL_MATH_MCQ_VERIFIER_GUIDANCE,
+        strict_output_guard=VED_STRICT_OUTPUT_GUARD,
     )
 
 
@@ -589,6 +630,7 @@ def build_general_math_multi_answer_system_prompt():
     return _seed_system_prompt(
         "general_math_multi_answer",
         GENERAL_MATH_MULTI_ANSWER_GUIDANCE,
+        strict_output_guard=VED_STRICT_OUTPUT_GUARD,
     )
 
 
@@ -596,6 +638,7 @@ def build_general_math_text_or_unit_system_prompt():
     return _seed_system_prompt(
         "general_math_text_or_unit",
         GENERAL_MATH_TEXT_OR_UNIT_GUIDANCE,
+        strict_output_guard=VED_STRICT_OUTPUT_GUARD,
     )
 
 

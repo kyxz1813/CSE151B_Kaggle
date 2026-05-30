@@ -91,6 +91,19 @@ def is_derivative_extrema(record):
     ])
 
 
+def is_endpoint_extrema(record):
+    text = _text(record)
+    return is_derivative_extrema(record) and _has_any(text, [
+        "closed interval",
+        "on [",
+        "on the interval",
+        "absolute maximum",
+        "absolute minimum",
+        "global maximum",
+        "global minimum",
+    ])
+
+
 def is_series_approximation(record):
     text = _text(record)
     return _has_any(text, [
@@ -113,6 +126,18 @@ def is_differential_equation(record):
         "newton's law of cooling",
         "exponential decay",
     ])
+
+
+def is_initial_condition(record):
+    text = _text(record)
+    return _has_any(text, [
+        "initial condition",
+        " y(",
+        " f(",
+        "when x =",
+        "when t =",
+        "at time",
+    ]) and is_differential_equation(record)
 
 
 def is_complex_residue(record):
@@ -217,6 +242,31 @@ def no_unmapped_numeric_for_mcq(record, row):
     }
 
 
+def final_answer_not_explanatory(record, row):
+    boxed = _boxed(row)
+    if not boxed:
+        return None
+
+    lower = boxed.lower()
+    bad_markers = [
+        "because",
+        "therefore",
+        "so ",
+        "since",
+        "final answer",
+        "we get",
+    ]
+    found = [marker for marker in bad_markers if marker in lower]
+
+    return {
+        "passed": not found,
+        "details": {
+            "bad_markers_found": found,
+            "boxed_answer": boxed[:200],
+        },
+    }
+
+
 def official_correct(record, row):
     if row.get("correct") is None:
         return None
@@ -233,6 +283,7 @@ def build_calculus_harness():
             HarnessCheck("mcq_letter_valid", mcq_letter_valid, weight=1.0),
             HarnessCheck("calculus_method_evidence", calculus_method_evidence, weight=0.75),
             HarnessCheck("no_unmapped_numeric_for_mcq", no_unmapped_numeric_for_mcq, weight=0.75),
+            HarnessCheck("final_answer_not_explanatory", final_answer_not_explanatory, weight=0.5),
             HarnessCheck("official_correct", official_correct, weight=2.0),
         ],
         metadata={
@@ -269,6 +320,12 @@ def register_category_rules():
             description="Derivative, tangent, rate, approximation, or extrema problem.",
         ),
         DerivedRule(
+            name="calculus_endpoint_extrema_check",
+            category=CATEGORY,
+            detector=is_endpoint_extrema,
+            description="Extrema problem requiring critical point and endpoint comparison.",
+        ),
+        DerivedRule(
             name="calculus_series_approximation",
             category=CATEGORY,
             detector=is_series_approximation,
@@ -279,6 +336,12 @@ def register_category_rules():
             category=CATEGORY,
             detector=is_differential_equation,
             description="Differential equation or calculus model problem.",
+        ),
+        DerivedRule(
+            name="calculus_initial_condition_check",
+            category=CATEGORY,
+            detector=is_initial_condition,
+            description="Differential equation or model requiring constants from conditions.",
         ),
         DerivedRule(
             name="calculus_complex_residue",

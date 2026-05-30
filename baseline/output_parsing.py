@@ -48,6 +48,44 @@ def _last_final_match(text):
     return matches[-1] if matches else None
 
 
+def _final_answer_sections(text):
+    text = text or ""
+    matches = list(FINAL_ANSWER_RE.finditer(text))
+    sections = []
+
+    for idx, match in enumerate(matches):
+        next_start = matches[idx + 1].start() if idx + 1 < len(matches) else len(text)
+        sections.append({
+            "match": match,
+            "section": text[match.end():next_start].strip(),
+        })
+
+    return sections
+
+
+def _final_answer_box_candidates(text):
+    candidates = []
+
+    for item in _final_answer_sections(text):
+        boxed_spans = _find_boxed_spans(item["section"])
+        for start, end, answer in boxed_spans:
+            candidates.append({
+                "match": item["match"],
+                "start": start,
+                "end": end,
+                "answer": answer.strip(),
+                "section": item["section"],
+            })
+
+    return candidates
+
+
+def _strip_think_tags(text):
+    text = text or ""
+    text = re.sub(r"</?think>", "", text, flags=re.IGNORECASE)
+    return text.replace("\ufffd", "").strip()
+
+
 def _top_level_comma_split(text):
     parts = []
     current = []
@@ -98,13 +136,17 @@ def valid_mcq_letters(record):
 
 def extract_final_answer(raw_output):
     text = raw_output or ""
-    final_match = _last_final_match(text)
+    final_candidates = _final_answer_box_candidates(text)
 
+    if final_candidates:
+        return final_candidates[-1]["answer"]
+
+    final_match = _last_final_match(text)
     if final_match:
         final_section = text[final_match.end():].strip()
         boxed = _find_boxed_contents(final_section)
         if boxed:
-            return boxed[0].strip()
+            return boxed[-1].strip()
 
         return final_section.strip().strip("`").strip()
 
@@ -129,27 +171,21 @@ def _ensure_reasoning_prefix(text):
 
 def sanitize_response(raw_output, record=None):
     text = raw_output or ""
-    final_match = _last_final_match(text)
+    final_candidates = _final_answer_box_candidates(text)
 
-    if final_match:
-        before_final = text[:final_match.start()].strip()
-        final_section = text[final_match.end():].strip()
-        boxed_spans = _find_boxed_spans(final_section)
-
-        if boxed_spans:
-            _, _, answer = boxed_spans[0]
-            before_final = _ensure_reasoning_prefix(before_final)
-            return f"{before_final}\n\nFinal Answer: \\boxed{{{answer}}}"
+    if final_candidates:
+        answer = final_candidates[-1]["answer"]
+        return f"Reasoning:\nAnswer extracted from completed final answer.\n\nFinal Answer: \\boxed{{{answer}}}"
 
     boxed_spans = _find_boxed_spans(text)
 
     if boxed_spans:
         start, end, answer = boxed_spans[-1]
-        before_box = text[:start].strip()
+        before_box = _strip_think_tags(text[:start])
         before_box = _ensure_reasoning_prefix(before_box)
         return f"{before_box}\n\nFinal Answer: \\boxed{{{answer}}}"
 
-    return text
+    return _strip_think_tags(text)
 
 
 def validate_output_schema(raw_output, record=None):
