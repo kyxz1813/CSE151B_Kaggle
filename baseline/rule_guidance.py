@@ -329,6 +329,16 @@ def register_default_ved_guidance():
             priority=10,
         ),
         RuleGuidance(
+            rule_name="calculus_endpoint_extrema_check",
+            category="calculus",
+            title="Endpoint extrema check",
+            guidance=(
+                "For absolute extrema on a closed interval, evaluate every critical point and both "
+                "endpoints before choosing the requested maximum or minimum."
+            ),
+            priority=3,
+        ),
+        RuleGuidance(
             rule_name="calculus_series_approximation",
             category="calculus",
             title="Series or approximation",
@@ -347,6 +357,16 @@ def register_default_ved_guidance():
                 "constants before answering with the requested units or value."
             ),
             priority=10,
+        ),
+        RuleGuidance(
+            rule_name="calculus_initial_condition_check",
+            category="calculus",
+            title="Initial condition check",
+            guidance=(
+                "After solving the general form, use every given initial or boundary condition to "
+                "determine constants, then substitute back once to verify."
+            ),
+            priority=3,
         ),
         RuleGuidance(
             rule_name="calculus_complex_residue",
@@ -409,6 +429,16 @@ def register_default_ved_guidance():
             priority=10,
         ),
         RuleGuidance(
+            rule_name="general_math_percentage_or_rate",
+            category="general_math",
+            title="Percentage or rate check",
+            guidance=(
+                "Verify whether the prompt asks for the percent, decimal rate, amount of change, "
+                "or final amount. Keep the requested form in the final answer."
+            ),
+            priority=4,
+        ),
+        RuleGuidance(
             rule_name="general_math_direct_formula",
             category="general_math",
             title="Direct formula use",
@@ -417,6 +447,26 @@ def register_default_ved_guidance():
                 "requested unknown."
             ),
             priority=10,
+        ),
+        RuleGuidance(
+            rule_name="general_math_ordered_answer",
+            category="general_math",
+            title="Ordered answer check",
+            guidance=(
+                "When an ordered list, ordered pair, or multiple blanks are requested, keep answers "
+                "in the exact order requested and use one comma-separated final box."
+            ),
+            priority=4,
+        ),
+        RuleGuidance(
+            rule_name="general_math_arithmetic_simplification",
+            category="general_math",
+            title="Arithmetic simplification check",
+            guidance=(
+                "Recompute the final arithmetic, simplify fractions when possible, and apply rounding "
+                "only if the prompt requests it."
+            ),
+            priority=4,
         ),
     ]
 

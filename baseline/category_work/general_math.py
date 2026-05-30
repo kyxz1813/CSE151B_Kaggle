@@ -90,6 +90,22 @@ def is_unit_or_conversion(record):
     ])
 
 
+def is_percentage_or_rate(record):
+    text = _text(record)
+    return _has_any(text, [
+        "percent",
+        "%",
+        "percentage",
+        "rate",
+        "ratio",
+        "increased by",
+        "decreased by",
+        "discount",
+        "markup",
+        "interest",
+    ])
+
+
 def is_direct_formula(record):
     text = _text(record)
     return _has_any(text, [
@@ -100,6 +116,32 @@ def is_direct_formula(record):
         "substitute",
         "where x is",
         "where ",
+    ])
+
+
+def is_ordered_answer(record):
+    text = _text(record)
+    return _has_any(text, [
+        "in order",
+        "ordered pair",
+        "from least to greatest",
+        "from greatest to least",
+        "list",
+        "comma-separated",
+    ]) or is_multi_answer(record)
+
+
+def is_arithmetic_simplification(record):
+    text = _text(record)
+    return _has_any(text, [
+        "simplify",
+        "evaluate",
+        "calculate",
+        "fraction",
+        "decimal",
+        "nearest",
+        "round",
+        "absolute value",
     ])
 
 
@@ -176,6 +218,20 @@ def multi_answer_placeholder_discipline(record, row):
     }
 
 
+def ordered_answer_discipline(record, row):
+    if not is_ordered_answer(record):
+        return None
+
+    boxed = _boxed(row)
+    return {
+        "passed": bool(boxed),
+        "details": {
+            "boxed_answer": boxed,
+            "ordered_prompt": True,
+        },
+    }
+
+
 def final_answer_not_explanatory(record, row):
     boxed = _boxed(row)
     if not boxed:
@@ -216,6 +272,7 @@ def build_general_math_harness():
             HarnessCheck("mcq_letter_valid", mcq_letter_valid, weight=1.0),
             HarnessCheck("no_unmapped_numeric_for_mcq", no_unmapped_numeric_for_mcq, weight=0.75),
             HarnessCheck("multi_answer_placeholder_discipline", multi_answer_placeholder_discipline, weight=0.75),
+            HarnessCheck("ordered_answer_discipline", ordered_answer_discipline, weight=0.5),
             HarnessCheck("final_answer_not_explanatory", final_answer_not_explanatory, weight=0.5),
             HarnessCheck("official_correct", official_correct, weight=2.0),
         ],
@@ -259,10 +316,28 @@ def register_category_rules():
             description="Fallback problem involving units, percentages, or conversion checks.",
         ),
         DerivedRule(
+            name="general_math_percentage_or_rate",
+            category=CATEGORY,
+            detector=is_percentage_or_rate,
+            description="Fallback problem involving percentage, ratio, rate, discount, markup, or interest.",
+        ),
+        DerivedRule(
             name="general_math_direct_formula",
             category=CATEGORY,
             detector=is_direct_formula,
             description="Fallback problem solved by direct substitution into a formula or model.",
+        ),
+        DerivedRule(
+            name="general_math_ordered_answer",
+            category=CATEGORY,
+            detector=is_ordered_answer,
+            description="Fallback problem requiring ordered or comma-separated final answers.",
+        ),
+        DerivedRule(
+            name="general_math_arithmetic_simplification",
+            category=CATEGORY,
+            detector=is_arithmetic_simplification,
+            description="Fallback problem requiring careful arithmetic, simplification, or rounding.",
         ),
     ]
 

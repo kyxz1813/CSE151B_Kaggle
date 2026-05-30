@@ -2,7 +2,11 @@ import csv
 import json
 import time
 from pathlib import Path
-import pandas as pd
+
+try:
+    import pandas as pd
+except ImportError:
+    pd = None
 
 from prompting.strategies import BASELINE3_CATEGORIES
 
@@ -15,6 +19,12 @@ from .scoring import summarize_results
 
 def _safe_name(value):
     return str(value).replace("/", "_").replace(" ", "_").replace(":", "_")
+
+
+def _require_pandas():
+    if pd is None:
+        raise ImportError("pandas is required for this ablation summary helper")
+    return pd
 
 
 def _read_jsonl(path):
@@ -1095,7 +1105,8 @@ def run_category_strategy_ablation(
 
 def ablation_summary_frame(ablation_result):
     try:
-        return pd.DataFrame(ablation_result.get("summary_rows") or [])
+        pandas = _require_pandas()
+        return pandas.DataFrame(ablation_result.get("summary_rows") or [])
     except Exception:
         return ablation_result.get("summary_rows") or []
 
@@ -1104,9 +1115,10 @@ def ablation_plan_frame(categories, strategies):
     plan = expand_category_strategy_plan(categories, strategies)
 
     try:
+        pandas = _require_pandas()
         return (
-            pd.DataFrame(plan["plan_rows"]),
-            pd.DataFrame(plan["skipped_rows"]),
+            pandas.DataFrame(plan["plan_rows"]),
+            pandas.DataFrame(plan["skipped_rows"]),
         )
     except Exception:
         return plan["plan_rows"], plan["skipped_rows"]
@@ -1164,7 +1176,8 @@ def ablation_wrong_rows_frame(
     )
 
     try:
-        return pd.DataFrame(rows)
+        pandas = _require_pandas()
+        return pandas.DataFrame(rows)
     except Exception:
         return rows
     
