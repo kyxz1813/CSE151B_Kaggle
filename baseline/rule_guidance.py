@@ -927,14 +927,6 @@ def register_default_remaining_category_guidance():
 
     return items
 
-
-def register_all_default_guidance():
-    items = []
-    items.extend(register_default_linear_discrete_guidance())
-    items.extend(register_default_ved_guidance())
-    items.extend(register_default_remaining_category_guidance())
-    return items
-
 def register_deep_smoke_enhancement_guidance():
     items = [
         RuleGuidance(
@@ -1217,11 +1209,243 @@ def register_deep_smoke_enhancement_guidance():
 
     return items
 
+def register_calculus_v2_guidance():
+    items = [
+        RuleGuidance(
+            rule_name="calculus_numeric_precision_freeform",
+            category="calculus",
+            title="High-precision free-form numeric answer",
+            guidance=(
+                "For free-form numeric calculus answers, output extra precision whenever possible. "
+                "If the prompt says nearest, approximate, graphically, or at least N decimals, give 6-12 significant digits unless it explicitly says round to exactly N decimals. "
+                "Avoid rounding intermediate values."
+            ),
+            priority=1,
+        ),
+        RuleGuidance(
+            rule_name="calculus_exponential_model",
+            category="calculus",
+            title="Exponential calculus model",
+            guidance=(
+                "For continuous growth/decay models, use P(t)=P0*exp(r*t) when the rate is continuous. "
+                "For Newton cooling, use T(t)=T_room+(T0-T_room)*exp(-k*t). Solve k from the given observation before evaluating. "
+                "Use exact logarithms until the final numeric answer and give high precision."
+            ),
+            priority=2,
+        ),
+        RuleGuidance(
+            rule_name="calculus_newton_cooling",
+            category="calculus",
+            title="Newton cooling model",
+            guidance=(
+                "Use T(t)=T_room+(T0-T_room)*exp(-k*t). First solve exp(-k*t_obs)=(T_obs-T_room)/(T0-T_room). "
+                "Then evaluate with full precision. For time-to-temperature, solve t=-ln((T_target-T_room)/(T0-T_room))/k."
+            ),
+            priority=1,
+        ),
+        RuleGuidance(
+            rule_name="calculus_actual_max_error",
+            category="calculus",
+            title="Actual maximum error, not just differential estimate",
+            guidance=(
+                "If the question asks for maximum error from a measurement tolerance, do not stop at the differential approximation dV. "
+                "Compute the actual endpoint difference when possible: for volume V=L^3 and length L±e, the maximum overestimate is (L+e)^3-L^3. "
+                "Give the high-precision value."
+            ),
+            priority=1,
+        ),
+        RuleGuidance(
+            rule_name="calculus_antiderivative_mcq_verify",
+            category="calculus",
+            title="Antiderivative MCQ verification",
+            guidance=(
+                "For indefinite-integral MCQ, verify by differentiating candidate forms. Pay close attention to chain-rule constants, signs, absolute values, and coefficients inside logarithms. "
+                "When choices differ only by log arguments or signs, visual matching is unsafe; differentiate the selected option mentally before boxing the letter."
+            ),
+            priority=1,
+        ),
+        RuleGuidance(
+            rule_name="calculus_definite_integral_numeric_mcq",
+            category="calculus",
+            title="Definite integral MCQ numeric comparison",
+            guidance=(
+                "For definite-integral MCQ, compute a simplified exact value or a high-precision numerical estimate, then evaluate/simplify the options and choose the matching letter. "
+                "Do not choose a logarithm expression merely because it looks similar; compare values and constants."
+            ),
+            priority=1,
+        ),
+        RuleGuidance(
+            rule_name="calculus_trig_integral",
+            category="calculus",
+            title="Trigonometric integral",
+            guidance=(
+                "For trig integrals, choose a substitution such as u=sin(kx) or u=cos(kx) when the derivative appears. Track the factor k. "
+                "Use identities carefully and verify signs in logarithmic antiderivatives."
+            ),
+            priority=2,
+        ),
+        RuleGuidance(
+            rule_name="calculus_improper_parameter_integral",
+            category="calculus",
+            title="Improper parameter integral",
+            guidance=(
+                "For integrals over -infinity to infinity, reduce to a standard formula. In particular, int_{-infty}^{infty} 1/(s^2+a^2) ds = pi/a for a>0. "
+                "Then multiply by outside factors and map the resulting expression to the MCQ option letter."
+            ),
+            priority=1,
+        ),
+        RuleGuidance(
+            rule_name="calculus_trig_derivative_simplification",
+            category="calculus",
+            title="Trigonometric derivative simplification",
+            guidance=(
+                "For trig derivative MCQs, differentiate term by term, then simplify using csc=1/sin, sec=1/cos, cot=cos/sin, and sin(2x)=2sin(x)cos(x). "
+                "Compare powers of sin and cos exactly before choosing the option."
+            ),
+            priority=2,
+        ),
+        RuleGuidance(
+            rule_name="calculus_differentiation_under_integral",
+            category="calculus",
+            title="Differentiation under the integral sign",
+            guidance=(
+                "For d/dy int_a^b f(x+y) dx, the literal Leibniz answer is int_a^b d/dy f(x+y) dx, which equals int_a^b f'(x+y) dx when simplified. "
+                "For MCQ, prefer the option whose form matches the requested derivative operator if equivalent options appear."
+            ),
+            priority=1,
+        ),
+        RuleGuidance(
+            rule_name="calculus_implicit_differentiation",
+            category="calculus",
+            title="Implicit differentiation",
+            guidance=(
+                "Differentiate both sides, collect dy/dx terms, and solve algebraically. Check whether the options ask for dy in terms of dx or dx in terms of dy. "
+                "For e^{x+y}=xy+1, remember d(e^{x+y})=e^{x+y}(dx+dy) in differential form."
+            ),
+            priority=1,
+        ),
+        RuleGuidance(
+            rule_name="calculus_piecewise_differential_equation",
+            category="calculus",
+            title="Piecewise differential equation",
+            guidance=(
+                "Solve the first interval using the initial conditions. Evaluate y and any needed derivative at the joining point. "
+                "For the second interval, solve its DE and use continuity at the join to determine constants. Then match the whole piecewise expression to the options."
+            ),
+            priority=1,
+        ),
+        RuleGuidance(
+            rule_name="calculus_first_order_ivp",
+            category="calculus",
+            title="First-order IVP",
+            guidance=(
+                "For first-order linear IVPs, rewrite as y' + p(t)y = q(t), use integrating factor when appropriate, solve the constant from the initial condition, then evaluate the requested t. "
+                "For MCQ numeric values, compute enough precision and choose the closest option."
+            ),
+            priority=2,
+        ),
+        RuleGuidance(
+            rule_name="calculus_volume_revolution",
+            category="calculus",
+            title="Volume of revolution",
+            guidance=(
+                "For volume around the x-axis, use V=pi*int y^2 dx. For rotation around the y-axis, use the appropriate shell/washer formula. "
+                "If options are numeric, evaluate the integral numerically with enough precision and pick the closest option."
+            ),
+            priority=2,
+        ),
+        RuleGuidance(
+            rule_name="calculus_surface_area_revolution",
+            category="calculus",
+            title="Surface area of revolution",
+            guidance=(
+                "For surface area around the x-axis, use S=2*pi*int y*sqrt(1+(dy/dx)^2) dx, with the correct parameterization if the curve is implicit/parametric. "
+                "For astroids or special curves, parameterize if that simplifies the expression."
+            ),
+            priority=2,
+        ),
+        RuleGuidance(
+            rule_name="calculus_area_between_curves",
+            category="calculus",
+            title="Area between curves",
+            guidance=(
+                "Find all intersection points first. Determine upper minus lower on each interval, split if needed, then integrate. "
+                "For MCQ, compare the simplified or numeric area to all choices."
+            ),
+            priority=2,
+        ),
+        RuleGuidance(
+            rule_name="calculus_optimization_geometry",
+            category="calculus",
+            title="Geometric optimization",
+            guidance=(
+                "Define the geometric variables, write the constraint, express the objective in one variable, differentiate, solve the critical point, and verify it gives the requested max/min. "
+                "For wire square/circle problems, use total length constraint and keep enough numeric precision."
+            ),
+            priority=2,
+        ),
+        RuleGuidance(
+            rule_name="calculus_domain_range_radical_rational",
+            category="calculus",
+            title="Domain/range radical rational",
+            guidance=(
+                "For domain, enforce radical nonnegativity and denominator nonzero. For range, solve y=f(x) for x or use monotonicity/limits. "
+                "Do not output None for range unless the prompt explicitly has no range answer."
+            ),
+            priority=2,
+        ),
+        RuleGuidance(
+            rule_name="calculus_fourier_sobolev_boundary",
+            category="calculus",
+            title="Fourier/Sobolev boundary term",
+            guidance=(
+                "For n*int f(x)e^{-2*pi*i*n*x} dx, use integration by parts. The leading term comes from boundary values f(1)-f(0), because e^{-2*pi*i*n}=1 for integer n. "
+                "Track the factor 2*pi*i and its sign carefully."
+            ),
+            priority=1,
+        ),
+        RuleGuidance(
+            rule_name="calculus_series_special_function",
+            category="calculus",
+            title="Special series or numeric series",
+            guidance=(
+                "Identify the known expansion if possible; otherwise compute enough partial terms for the requested error. "
+                "For MCQ options that differ in tiny decimals, compare with higher precision before selecting the letter."
+            ),
+            priority=2,
+        ),
+        RuleGuidance(
+            rule_name="calculus_discrete_series_convergence",
+            category="calculus",
+            title="Discrete-structured convergence series",
+            guidance=(
+                "When a convergence problem includes digit counts or combinatorial a(n), estimate growth by grouping n by size/length. "
+                "Find when x^{a(n)} can overpower n^p, then map the upper bound to the MCQ option."
+            ),
+            priority=1,
+        ),
+        RuleGuidance(
+            rule_name="calculus_numeric_mcq_close_options",
+            category="calculus",
+            title="Close numeric MCQ options",
+            guidance=(
+                "When MCQ options are close decimals, do not round early. Compute a high-precision numeric value and choose the closest matching option. "
+                "Check all choices rather than stopping at the first plausible one."
+            ),
+            priority=1,
+        ),
+    ]
 
-_old_register_all_default_guidance = register_all_default_guidance
+    for item in items:
+        register_rule_guidance(item)
 
+    return items
 
 def register_all_default_guidance():
-    items = _old_register_all_default_guidance()
+    items = []
+    items.extend(register_default_linear_discrete_guidance())
+    items.extend(register_default_ved_guidance())
+    items.extend(register_default_remaining_category_guidance())
     items.extend(register_deep_smoke_enhancement_guidance())
+    items.extend(register_calculus_v2_guidance())
     return items
