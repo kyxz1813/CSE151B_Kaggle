@@ -45,7 +45,7 @@ CATEGORY_GUIDANCE = {
 
 def build_baseline3_system_prompt(category):
     guidance = CATEGORY_GUIDANCE.get(category, CATEGORY_GUIDANCE["general_math"])
-    guard = f"{VED_STRICT_OUTPUT_GUARD.strip()}\n\n" if category in {"calculus", "general_math"} else ""
+    guard = f"{VED_STRICT_OUTPUT_GUARD.strip()}\n\n"
     return (
         f"{guard}"
         f"{BASELINE2_SYSTEM_PROMPT}\n"
@@ -75,8 +75,13 @@ def build_adaptive_rule_user_prompt(context):
 
     return (
         f"{guidance}\n\n"
-        f"Use the subtype-specific guidance above only when relevant. "
-        f"The final answer format requirements still take priority.\n\n"
+        "Adaptive-rule instructions:\n"
+        "- Use the subtype-specific guidance above only when relevant.\n"
+        "- First count [ANS] blanks and identify what each blank asks for.\n"
+        "- Preserve exact forms unless a decimal is explicitly required.\n"
+        "- If a decimal is needed, provide extra precision when possible.\n"
+        "- For MCQ, always map the result to exactly one option letter.\n"
+        "- The final answer format requirements still take priority.\n\n"
         f"{base_prompt}"
     )
 
@@ -94,6 +99,8 @@ Strict output rules:
 - Stop immediately after Final Answer: \\boxed{...}.
 - For MCQ, the boxed final answer must be exactly one capital letter.
 - For multiple [ANS] blanks, put all answers in one box, comma-separated and in order.
+- If the problem has many [ANS] blanks, do not collapse to only the final statistic/value.
+- If a decimal is requested, keep extra precision unless exactly-rounded output is required.
 """
 
 

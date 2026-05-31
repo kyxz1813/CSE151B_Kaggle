@@ -296,6 +296,74 @@ def is_mcq_problem(record):
     return bool(record.get("options"))
 
 
+def is_half_life_decay_exact_problem(record):
+    text = _text(record)
+    return _has_any(text, [
+        "half-life",
+        "half life",
+        "decay",
+        "decreases by",
+        "remaining",
+        "radioactive",
+    ]) and _has_any(text, ["log", "ln", "fraction", "years", "days", "percent", "%", "1963", "1999"])
+
+
+def is_rational_function_model_problem(record):
+    text = _text(record)
+    return _has_any(text, [
+        "rational function",
+        "rational model",
+        "modeled by",
+        "population",
+        "where t",
+    ]) and "/" in text
+
+
+def is_step_function_ceiling_problem(record):
+    text = _text(record)
+    return _has_any(text, [
+        "ceil",
+        "ceiling",
+        "round up",
+        "rounded up",
+        "signature",
+        "signatures",
+        "per sheet",
+        "each additional",
+        "up to",
+    ])
+
+
+def is_finance_percent_comparison_problem(record):
+    text = _text(record)
+    return _has_any(text, [
+        "paycheck",
+        "salary",
+        "percent",
+        "%",
+        "interest",
+        "investment",
+        "loan",
+        "commission",
+        "sales tax",
+    ])
+
+
+def is_exact_expression_preferred_problem(record):
+    text = _text(record)
+    return _has_any(text, [
+        "formula",
+        "function",
+        "expression",
+        "fraction",
+        "in terms of",
+        "ln",
+        "log",
+        "half-life",
+        "half life",
+    ])
+
+
 # ============================================================
 # HARNESS CHECKS
 # ============================================================
@@ -563,6 +631,40 @@ def avoids_unjustified_integer_rounding(record, row):
     }
 
 
+def exact_expression_preserved_when_preferred(record, row):
+    if not is_exact_expression_preferred_problem(record):
+        return None
+
+    boxed = _boxed(row)
+    exact_markers = ["/", "^", "ln", "log", "e^", "sqrt", "(", ")"]
+    has_exact = any(marker in boxed for marker in exact_markers)
+    has_decimal_only = bool(re.fullmatch(r"-?\d+(?:\.\d+)?(?:,-?\d+(?:\.\d+)?)*", boxed.replace(" ", "")))
+
+    return {
+        "passed": has_exact or not has_decimal_only,
+        "details": {
+            "boxed": boxed,
+            "has_exact_marker": has_exact,
+            "decimal_only": has_decimal_only,
+        },
+    }
+
+
+def ceiling_evidence_present(record, row):
+    if not is_step_function_ceiling_problem(record):
+        return None
+
+    response = _response(row).lower()
+    has_evidence = any(term in response for term in ["ceil", "ceiling", "round up", "rounded up", "smallest integer"] )
+
+    return {
+        "passed": has_evidence,
+        "details": {
+            "ceiling_evidence_present": has_evidence,
+        },
+    }
+
+
 def official_correct(record, row):
     if row.get("correct") is None:
         return None
@@ -623,6 +725,16 @@ def build_applied_word_problem_harness():
                 "avoids_unjustified_integer_rounding",
                 avoids_unjustified_integer_rounding,
                 weight=0.75,
+            ),
+            HarnessCheck(
+                "exact_expression_preserved_when_preferred",
+                exact_expression_preserved_when_preferred,
+                weight=0.5,
+            ),
+            HarnessCheck(
+                "ceiling_evidence_present",
+                ceiling_evidence_present,
+                weight=0.5,
             ),
             HarnessCheck(
                 "official_correct",
@@ -722,6 +834,36 @@ def register_category_rules():
             category=CATEGORY,
             detector=is_mcq_problem,
             description="Multiple-choice applied word problem.",
+        ),
+        DerivedRule(
+            name="applied_word_problem_half_life_decay_exact",
+            category=CATEGORY,
+            detector=is_half_life_decay_exact_problem,
+            description="Half-life or decay model where exact power/log form is preferred.",
+        ),
+        DerivedRule(
+            name="applied_word_problem_rational_function_model",
+            category=CATEGORY,
+            detector=is_rational_function_model_problem,
+            description="Applied rational-function model requiring solve/evaluate/invert.",
+        ),
+        DerivedRule(
+            name="applied_word_problem_step_function_ceiling",
+            category=CATEGORY,
+            detector=is_step_function_ceiling_problem,
+            description="Piecewise or ceiling/round-up cost/signature problem.",
+        ),
+        DerivedRule(
+            name="applied_word_problem_finance_percent_comparison",
+            category=CATEGORY,
+            detector=is_finance_percent_comparison_problem,
+            description="Finance/paycheck/percent comparison problem.",
+        ),
+        DerivedRule(
+            name="applied_word_problem_exact_expression_preferred",
+            category=CATEGORY,
+            detector=is_exact_expression_preferred_problem,
+            description="Problem where formula/log/exponential expression should be preserved if allowed.",
         ),
     ]
 

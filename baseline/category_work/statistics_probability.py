@@ -49,74 +49,40 @@ def _has_any(text, terms):
 def is_hypothesis_test(record):
     text = _text(record)
     return _has_any(text, [
-        "hypothesis",
-        "null hypothesis",
-        "alternative hypothesis",
-        "h_0",
-        "h0",
-        "h_a",
-        "ha",
-        "significance level",
-        "p-value",
-        "p value",
-        "reject",
-        "fail to reject",
-        "type i error",
-        "type ii error",
-        "power",
+        "hypothesis", "null hypothesis", "alternative hypothesis", "h_0", "h0",
+        "h_a", "ha", "significance level", "p-value", "p value",
+        "reject", "fail to reject", "type i error", "type ii error", "power",
     ])
 
 
 def is_type_i_type_ii_power(record):
     text = _text(record)
     return _has_any(text, [
-        "type i error",
-        "type ii error",
-        "power of the test",
-        "probability of a type",
-        "beta",
+        "type i error", "type ii error", "power of the test", "probability of a type", "beta",
     ])
 
 
 def is_confidence_interval(record):
     text = _text(record)
     return _has_any(text, [
-        "confidence interval",
-        "confidence level",
-        "margin of error",
-        "interval estimate",
-        "lower bound",
-        "upper bound",
+        "confidence interval", "confidence level", "margin of error", "interval estimate",
+        "lower bound", "upper bound",
     ])
 
 
 def is_regression_correlation(record):
     text = _text(record)
     return _has_any(text, [
-        "regression",
-        "correlation",
-        "least squares",
-        "slope",
-        "intercept",
-        "residual",
-        "r-squared",
-        "r^2",
-        "predict",
+        "regression", "correlation", "least squares", "slope", "intercept", "residual",
+        "r-squared", "r^2", "predict",
     ])
 
 
 def is_probability_counting(record):
     text = _text(record)
     return _has_any(text, [
-        "probability",
-        "randomly selected",
-        "without replacement",
-        "with replacement",
-        "at least",
-        "at most",
-        "exactly",
-        "conditional probability",
-        "independent",
+        "probability", "randomly selected", "without replacement", "with replacement",
+        "at least", "at most", "exactly", "conditional probability", "independent",
         "mutually exclusive",
     ])
 
@@ -124,41 +90,55 @@ def is_probability_counting(record):
 def is_distribution_problem(record):
     text = _text(record)
     return _has_any(text, [
-        "normal distribution",
-        "standard normal",
-        "z-score",
-        "z score",
-        "binomial",
-        "poisson",
-        "exponential distribution",
-        "uniform distribution",
-        "mean",
-        "standard deviation",
-        "variance",
+        "normal distribution", "standard normal", "z-score", "z score", "binomial",
+        "poisson", "exponential distribution", "uniform distribution", "mean", "standard deviation", "variance",
     ])
 
 
 def is_expected_value_variance(record):
     text = _text(record)
     return _has_any(text, [
-        "expected value",
-        "expectation",
-        "variance",
-        "standard deviation",
-        "mean of",
-        "random variable",
+        "expected value", "expectation", "variance", "standard deviation", "mean of", "random variable",
     ])
 
 
 def is_sampling_distribution(record):
     text = _text(record)
     return _has_any(text, [
-        "sample mean",
-        "sampling distribution",
-        "central limit theorem",
-        "standard error",
-        "sample size",
+        "sample mean", "sampling distribution", "central limit theorem", "standard error", "sample size",
     ])
+
+
+def is_descriptive_table(record):
+    text = _text(record)
+    return _ans_count(record) >= 4 and _has_any(text, [
+        "standard deviation", "variance", "deviation", "squared", "table", "data set", "data values",
+    ])
+
+
+def is_chi_square_goodness_fit(record):
+    text = _text(record)
+    return "chi" in text and _has_any(text, ["goodness", "expected", "observed", "fit"])
+
+
+def is_chi_square_independence(record):
+    text = _text(record)
+    return "chi" in text and _has_any(text, ["independence", "contingency", "row", "column", "expected frequencies"])
+
+
+def is_sample_size_margin_error(record):
+    text = _text(record)
+    return _has_any(text, ["sample size", "margin of error", "minimum sample", "smallest sample", "how many"])
+
+
+def is_multi_blank_table(record):
+    text = _text(record)
+    return _ans_count(record) >= 4 and _has_any(text, ["table", "row", "column", "blank", "expected", "observed"])
+
+
+def is_rounding_direction(record):
+    text = _text(record)
+    return _has_any(text, ["smallest integer", "minimum", "at least", "round up", "ceil", "nearest", "round"])
 
 
 def is_mcq_option_mapping(record):
@@ -180,115 +160,65 @@ def extractable(record, row):
 def answer_count_valid(record, row):
     expected = row.get("expected_answer_count")
     actual = row.get("actual_answer_count")
-
     if expected is None:
         expected = _ans_count(record)
-
     if expected is None or actual is None:
         return None
-
-    return {
-        "passed": expected == actual,
-        "details": {
-            "expected_answer_count": expected,
-            "actual_answer_count": actual,
-        },
-    }
+    return {"passed": expected == actual, "details": {"expected_answer_count": expected, "actual_answer_count": actual}}
 
 
 def mcq_letter_valid(record, row):
     options = record.get("options") or []
     if not options:
         return None
-
     boxed = _boxed(row).upper()
     valid = [chr(ord("A") + idx) for idx in range(len(options))]
-
-    return {
-        "passed": boxed in valid,
-        "details": {
-            "boxed_answer": boxed,
-            "valid_letters": valid,
-        },
-    }
+    return {"passed": boxed in valid, "details": {"boxed_answer": boxed, "valid_letters": valid}}
 
 
 def hypothesis_test_method_evidence(record, row):
     if not is_hypothesis_test(record):
         return None
-
     response = _response(row).lower()
-
-    evidence_terms = [
-        "null",
-        "alternative",
-        "critical",
-        "p-value",
-        "p value",
-        "reject",
-        "fail to reject",
-        "standard error",
-        "z",
-        "t",
-    ]
-
+    evidence_terms = ["null", "alternative", "critical", "p-value", "p value", "reject", "fail to reject", "standard error", "z", "t"]
     found = [term for term in evidence_terms if term in response]
-
-    return {
-        "passed": len(found) >= 2,
-        "details": {
-            "evidence_terms_found": found,
-        },
-    }
+    return {"passed": len(found) >= 2, "details": {"evidence_terms_found": found}}
 
 
 def probability_range_valid(record, row):
-    if not (
-        is_probability_counting(record)
-        or is_type_i_type_ii_power(record)
-        or is_distribution_problem(record)
-    ):
+    if not (is_probability_counting(record) or is_type_i_type_ii_power(record)):
         return None
-
+    text = _text(record)
+    if any(term in text for term in ["standard deviation", "sample size", "chi", "test statistic", "critical value"]):
+        return None
     answer = _boxed(row)
     nums = re.findall(r"-?\d+(?:\.\d+)?", answer)
-
-    if not nums:
+    if not nums or "%" in answer:
         return None
-
     suspicious = []
     for raw in nums:
         try:
             value = float(raw)
         except Exception:
             continue
-
         if value < 0 or value > 1:
             suspicious.append(value)
+    return {"passed": len(suspicious) == 0, "details": {"suspicious_values": suspicious, "boxed_answer": answer}}
 
-    if "%" in answer:
+
+def table_multi_blank_not_collapsed(record, row):
+    if not (is_descriptive_table(record) or is_multi_blank_table(record)):
         return None
-
-    return {
-        "passed": len(suspicious) == 0,
-        "details": {
-            "suspicious_values": suspicious,
-            "boxed_answer": answer,
-        },
-    }
+    expected = _ans_count(record)
+    actual = row.get("actual_answer_count")
+    return {"passed": actual == expected, "details": {"expected_table_entries": expected, "actual_answer_count": actual}}
 
 
 def final_answer_not_explanatory(record, row):
     answer = _boxed(row)
     bad_terms = ["because", "therefore", "reject", "fail to reject", "p-value is"]
     found = [term for term in bad_terms if term in answer.lower()]
-
-    return {
-        "passed": len(found) == 0,
-        "details": {
-            "bad_terms_found": found,
-        },
-    }
+    return {"passed": len(found) == 0, "details": {"bad_terms_found": found}}
 
 
 def official_correct(record, row):
@@ -307,13 +237,11 @@ def build_statistics_probability_harness():
             HarnessCheck("mcq_letter_valid", mcq_letter_valid, weight=1.0),
             HarnessCheck("hypothesis_test_method_evidence", hypothesis_test_method_evidence, weight=0.75),
             HarnessCheck("probability_range_valid", probability_range_valid, weight=0.75),
+            HarnessCheck("table_multi_blank_not_collapsed", table_multi_blank_not_collapsed, weight=0.75),
             HarnessCheck("final_answer_not_explanatory", final_answer_not_explanatory, weight=0.5),
             HarnessCheck("official_correct", official_correct, weight=2.0),
         ],
-        metadata={
-            "category": CATEGORY,
-            "kind": "statistics_probability_specialized",
-        },
+        metadata={"category": CATEGORY, "kind": "statistics_probability_specialized"},
     )
 
 
@@ -325,82 +253,29 @@ def register_category_harness():
 
 def register_category_rules():
     rules = [
-        DerivedRule(
-            name="statistics_probability_hypothesis_test",
-            category=CATEGORY,
-            detector=is_hypothesis_test,
-            description="Hypothesis test, p-value, rejection, significance-level problem.",
-        ),
-        DerivedRule(
-            name="statistics_probability_type_i_type_ii_power",
-            category=CATEGORY,
-            detector=is_type_i_type_ii_power,
-            description="Type I/II error or power problem.",
-        ),
-        DerivedRule(
-            name="statistics_probability_confidence_interval",
-            category=CATEGORY,
-            detector=is_confidence_interval,
-            description="Confidence interval or margin-of-error problem.",
-        ),
-        DerivedRule(
-            name="statistics_probability_regression_correlation",
-            category=CATEGORY,
-            detector=is_regression_correlation,
-            description="Regression/correlation/residual/prediction problem.",
-        ),
-        DerivedRule(
-            name="statistics_probability_probability_counting",
-            category=CATEGORY,
-            detector=is_probability_counting,
-            description="Probability using counting, replacement, independence, conditional probability.",
-        ),
-        DerivedRule(
-            name="statistics_probability_distribution",
-            category=CATEGORY,
-            detector=is_distribution_problem,
-            description="Distribution problem involving normal/binomial/Poisson/uniform/etc.",
-        ),
-        DerivedRule(
-            name="statistics_probability_expected_value_variance",
-            category=CATEGORY,
-            detector=is_expected_value_variance,
-            description="Expected value, variance, standard deviation of random variables.",
-        ),
-        DerivedRule(
-            name="statistics_probability_sampling_distribution",
-            category=CATEGORY,
-            detector=is_sampling_distribution,
-            description="Sample mean, standard error, CLT, or sampling distribution problem.",
-        ),
-        DerivedRule(
-            name="statistics_probability_mcq_option_mapping",
-            category=CATEGORY,
-            detector=is_mcq_option_mapping,
-            description="MCQ statistics/probability problem requiring final option-letter mapping.",
-        ),
-        DerivedRule(
-            name="statistics_probability_multi_answer",
-            category=CATEGORY,
-            detector=is_multi_answer,
-            description="Multi-answer statistics/probability problem.",
-        ),
+        DerivedRule("statistics_probability_hypothesis_test", CATEGORY, is_hypothesis_test, description="Hypothesis test, p-value, rejection, significance-level problem."),
+        DerivedRule("statistics_probability_type_i_type_ii_power", CATEGORY, is_type_i_type_ii_power, description="Type I/II error or power problem."),
+        DerivedRule("statistics_probability_confidence_interval", CATEGORY, is_confidence_interval, description="Confidence interval or margin-of-error problem."),
+        DerivedRule("statistics_probability_regression_correlation", CATEGORY, is_regression_correlation, description="Regression/correlation/residual/prediction problem."),
+        DerivedRule("statistics_probability_probability_counting", CATEGORY, is_probability_counting, description="Probability using counting, replacement, independence, conditional probability."),
+        DerivedRule("statistics_probability_distribution", CATEGORY, is_distribution_problem, description="Distribution problem involving normal/binomial/Poisson/uniform/etc."),
+        DerivedRule("statistics_probability_expected_value_variance", CATEGORY, is_expected_value_variance, description="Expected value, variance, standard deviation of random variables."),
+        DerivedRule("statistics_probability_sampling_distribution", CATEGORY, is_sampling_distribution, description="Sample mean, standard error, CLT, or sampling distribution problem."),
+        DerivedRule("statistics_probability_descriptive_table", CATEGORY, is_descriptive_table, description="Descriptive-statistics table with many blanks."),
+        DerivedRule("statistics_probability_chi_square_goodness_fit", CATEGORY, is_chi_square_goodness_fit, description="Chi-square goodness-of-fit problem."),
+        DerivedRule("statistics_probability_chi_square_independence", CATEGORY, is_chi_square_independence, description="Chi-square independence/contingency-table problem."),
+        DerivedRule("statistics_probability_sample_size_margin_error", CATEGORY, is_sample_size_margin_error, description="Sample-size or margin-of-error problem."),
+        DerivedRule("statistics_probability_multi_blank_table", CATEGORY, is_multi_blank_table, description="Statistics table/multi-blank problem."),
+        DerivedRule("statistics_probability_rounding_direction", CATEGORY, is_rounding_direction, description="Problem where rounding direction must be interpreted carefully."),
+        DerivedRule("statistics_probability_mcq_option_mapping", CATEGORY, is_mcq_option_mapping, description="MCQ statistics/probability problem requiring final option-letter mapping."),
+        DerivedRule("statistics_probability_multi_answer", CATEGORY, is_multi_answer, description="Multi-answer statistics/probability problem."),
     ]
-
     for rule in rules:
         register_rule(rule)
-
     return rules
 
 
 def register_all():
     harness = register_category_harness()
     rules = register_category_rules()
-
-    return {
-        "category": CATEGORY,
-        "default_strategy": DEFAULT_STRATEGY,
-        "candidate_strategies": CANDIDATE_STRATEGIES,
-        "harness": harness,
-        "rules": rules,
-    }
+    return {"category": CATEGORY, "default_strategy": DEFAULT_STRATEGY, "candidate_strategies": CANDIDATE_STRATEGIES, "harness": harness, "rules": rules}

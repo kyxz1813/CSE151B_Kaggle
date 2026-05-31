@@ -934,3 +934,294 @@ def register_all_default_guidance():
     items.extend(register_default_ved_guidance())
     items.extend(register_default_remaining_category_guidance())
     return items
+
+def register_deep_smoke_enhancement_guidance():
+    items = [
+        RuleGuidance(
+            rule_name="arithmetic_algebra_temperature_conversion",
+            category="arithmetic_algebra",
+            title="Temperature conversion",
+            guidance=(
+                "For temperature conversions use the exact formulas: C=(F-32)*5/9, K=C+273.15, "
+                "and Rankine R=F+459.67. Do not compute Rankine from Celsius or Kelvin by mistake. "
+                "If several temperature units are requested, output them in the same order as the blanks with extra precision."
+            ),
+            priority=1,
+        ),
+        RuleGuidance(
+            rule_name="arithmetic_algebra_bernstein_polynomial",
+            category="arithmetic_algebra",
+            title="Bernstein polynomial indexing",
+            guidance=(
+                "For a kth Bernstein polynomial of degree n in this dataset, use B_{k,n}(t)=C(n,k)t^k(1-t)^(n-k). "
+                "Do not shift to zero-indexing unless the problem explicitly says k starts at 0. Preserve all requested polynomial formulas in order."
+            ),
+            priority=1,
+        ),
+        RuleGuidance(
+            rule_name="arithmetic_algebra_base_arithmetic",
+            category="arithmetic_algebra",
+            title="Base/binary arithmetic",
+            guidance=(
+                "For binary or base arithmetic, perform the carry in the stated base. Cross-check by converting each input to decimal, "
+                "doing the arithmetic, and converting back. Final binary answers should contain only 0 and 1."
+            ),
+            priority=1,
+        ),
+        RuleGuidance(
+            rule_name="arithmetic_algebra_numeric_precision",
+            category="arithmetic_algebra",
+            title="Numeric precision",
+            guidance=(
+                "When a problem asks for a decimal approximation, give 4-8 accurate decimal digits when possible, even if the minimum requested precision is lower. "
+                "Do not round to one decimal unless the problem explicitly says exactly one decimal."
+            ),
+            priority=1,
+        ),
+        RuleGuidance(
+            rule_name="arithmetic_algebra_floor_log_sum",
+            category="arithmetic_algebra",
+            title="Floor-log summation",
+            guidance=(
+                "For sums of floor(log_b n), group integers by powers of b. For floor(log_2 n), values m occur for n in [2^m,2^(m+1)-1]. "
+                "Compute the full grouped sum, reduce modulo only at the end, and for MCQ box the matching option letter."
+            ),
+            priority=1,
+        ),
+        RuleGuidance(
+            rule_name="arithmetic_algebra_letter_set_selection",
+            category="arithmetic_algebra",
+            title="Letter-set free-form answer",
+            guidance=(
+                "If the problem asks for letter(s) but is not standard MCQ, evaluate each labeled statement and output exactly the selected letters with no extra letters."
+            ),
+            priority=1,
+        ),
+
+        RuleGuidance(
+            rule_name="applied_word_problem_half_life_decay_exact",
+            category="applied_word_problem",
+            title="Half-life/decay exact form",
+            guidance=(
+                "For half-life/decay, remaining fraction after elapsed time is (1/2)^(elapsed/half_life). For percent decay r per period, half-life is ln(0.5)/ln(1-r). "
+                "Preserve exact exponential/log form unless a decimal is explicitly required."
+            ),
+            priority=1,
+        ),
+        RuleGuidance(
+            rule_name="applied_word_problem_rational_function_model",
+            category="applied_word_problem",
+            title="Rational function model",
+            guidance=(
+                "For rational-function models, write the equation exactly, solve algebraically before rounding, and check the requested year/time/value interpretation."
+            ),
+            priority=5,
+        ),
+        RuleGuidance(
+            rule_name="applied_word_problem_step_function_ceiling",
+            category="applied_word_problem",
+            title="Ceiling or step function",
+            guidance=(
+                "For step costs, signatures, bundles, or capacity limits, use ceil(quantity/unit_size) for the number of units. Check inclusivity at thresholds such as up to, at least, and each additional."
+            ),
+            priority=1,
+        ),
+        RuleGuidance(
+            rule_name="applied_word_problem_finance_percent_comparison",
+            category="applied_word_problem",
+            title="Finance/percent comparison",
+            guidance=(
+                "Track base amounts for each percent. Compute percent increases/decreases using the correct reference quantity and give extra decimal precision for money/rates unless exact cents are requested."
+            ),
+            priority=5,
+        ),
+        RuleGuidance(
+            rule_name="applied_word_problem_exact_expression_preferred",
+            category="applied_word_problem",
+            title="Exact expression preferred",
+            guidance=(
+                "If the problem asks for a formula, expression, fraction, log, or exponential model, keep the exact expression in the final answer instead of replacing it with a rounded decimal."
+            ),
+            priority=1,
+        ),
+
+        RuleGuidance(
+            rule_name="calculus_improper_parameter_integral",
+            category="calculus",
+            title="Improper parameter integral",
+            guidance=(
+                "For improper integrals with parameters, reduce to a known standard integral and track parameter powers carefully. Check convergence and simplify before comparing to MCQ choices."
+            ),
+            priority=1,
+        ),
+        RuleGuidance(
+            rule_name="calculus_definite_integral_substitution",
+            category="calculus",
+            title="Definite integral substitution",
+            guidance=(
+                "For definite substitutions, transform both the integrand and the endpoints. Verify by differentiating the substitution and simplify before choosing an option."
+            ),
+            priority=3,
+        ),
+        RuleGuidance(
+            rule_name="calculus_equation_root_dichotomy",
+            category="calculus",
+            title="Root solving / dichotomy",
+            guidance=(
+                "For numerical roots, bracket roots carefully and output enough precision. If MCQ, choose the option matching the computed root behavior."
+            ),
+            priority=5,
+        ),
+        RuleGuidance(
+            rule_name="calculus_mcq_absent_option_fallback",
+            category="calculus",
+            title="MCQ option fallback",
+            guidance=(
+                "For calculus MCQ, even if the exact computed expression seems absent, simplify using conventions and choose the closest intended listed option. Never leave the final boxed answer blank."
+            ),
+            priority=1,
+        ),
+
+        RuleGuidance(
+            rule_name="geometry_trig_angle_of_elevation_two_angles",
+            category="geometry_trig",
+            title="Two-angle elevation height",
+            guidance=(
+                "For two angle-of-elevation/depression problems, draw the two right triangles and use tangent ratios. Height difference often has the form d(tan upper - tan lower). Return extra decimal precision."
+            ),
+            priority=1,
+        ),
+        RuleGuidance(
+            rule_name="geometry_trig_projectile_motion",
+            category="geometry_trig",
+            title="Projectile motion geometry",
+            guidance=(
+                "For projectile/trajectory problems, identify whether the requested quantity is time, height, range, or angle. Use the formula exactly before rounding."
+            ),
+            priority=5,
+        ),
+        RuleGuidance(
+            rule_name="geometry_trig_coordinate_point_exact",
+            category="geometry_trig",
+            title="Coordinate trig exact point",
+            guidance=(
+                "For quadrant coordinate trig, choose the simplest integer point matching the ratio and signs, compute r=sqrt(x^2+y^2), then compute sin/cos/tan exactly with correct signs."
+            ),
+            priority=1,
+        ),
+        RuleGuidance(
+            rule_name="geometry_trig_precision_numeric",
+            category="geometry_trig",
+            title="Geometry/trig numeric precision",
+            guidance=(
+                "When the result is numeric, keep 4-8 accurate decimal digits unless the problem explicitly asks for exact rounding to fewer digits."
+            ),
+            priority=1,
+        ),
+
+        RuleGuidance(
+            rule_name="statistics_probability_descriptive_table",
+            category="statistics_probability",
+            title="Descriptive-statistics table",
+            guidance=(
+                "For data-table descriptive statistics, fill every [ANS] cell in order: deviations, squared deviations, sums, variance, and standard deviation as requested. Do not output only the final statistic."
+            ),
+            priority=1,
+        ),
+        RuleGuidance(
+            rule_name="statistics_probability_chi_square_goodness_fit",
+            category="statistics_probability",
+            title="Chi-square goodness of fit",
+            guidance=(
+                "For chi-square goodness-of-fit, compute each expected count, then statistic sum((O-E)^2/E), degrees of freedom, critical value/p-value, and decision. Output every blank in order."
+            ),
+            priority=1,
+        ),
+        RuleGuidance(
+            rule_name="statistics_probability_chi_square_independence",
+            category="statistics_probability",
+            title="Chi-square independence",
+            guidance=(
+                "For chi-square independence, expected count = row total * column total / grand total, df=(r-1)(c-1), statistic=sum((O-E)^2/E). Output expected frequencies before the statistic/decision if blanks ask for them."
+            ),
+            priority=1,
+        ),
+        RuleGuidance(
+            rule_name="statistics_probability_sample_size_margin_error",
+            category="statistics_probability",
+            title="Sample-size / margin of error",
+            guidance=(
+                "For sample-size problems, first compute real n from the margin-of-error formula. Only apply ceiling if the problem asks for the smallest integer/sample size that works. Otherwise preserve the computed value."
+            ),
+            priority=1,
+        ),
+        RuleGuidance(
+            rule_name="statistics_probability_multi_blank_table",
+            category="statistics_probability",
+            title="Statistics multi-blank table",
+            guidance=(
+                "If a statistics problem has many [ANS] blanks, treat it as a table-fill problem and output one comma-separated entry per blank in row-major/problem order."
+            ),
+            priority=1,
+        ),
+        RuleGuidance(
+            rule_name="statistics_probability_rounding_direction",
+            category="statistics_probability",
+            title="Statistics rounding direction",
+            guidance=(
+                "Distinguish exact computed statistic, rounded display value, and required integer sample size. Do not round to an integer unless explicitly asked."
+            ),
+            priority=2,
+        ),
+
+        RuleGuidance(
+            rule_name="general_math_modular_number_theory",
+            category="general_math",
+            title="Fallback modular number theory",
+            guidance=(
+                "For modular/divisibility problems, work modulo the relevant number, track residues exactly, and box an MCQ letter if choices are provided."
+            ),
+            priority=1,
+        ),
+        RuleGuidance(
+            rule_name="general_math_complex_roots",
+            category="general_math",
+            title="Complex roots / roots of unity",
+            guidance=(
+                "For roots of unity or complex polynomial expressions, reduce powers modulo the order and evaluate the expression for each root class carefully."
+            ),
+            priority=1,
+        ),
+        RuleGuidance(
+            rule_name="general_math_set_combinatorics",
+            category="general_math",
+            title="Set/combinatorics fallback",
+            guidance=(
+                "For set/combinatorics problems, translate the condition exactly, test small cases, and preserve exact closed forms when possible."
+            ),
+            priority=1,
+        ),
+        RuleGuidance(
+            rule_name="general_math_special_definition",
+            category="general_math",
+            title="Special definition fallback",
+            guidance=(
+                "For special definitions, apply the definition literally and avoid importing unrelated assumptions. For MCQ, still box exactly one option letter."
+            ),
+            priority=1,
+        ),
+    ]
+
+    for item in items:
+        register_rule_guidance(item)
+
+    return items
+
+
+_old_register_all_default_guidance = register_all_default_guidance
+
+
+def register_all_default_guidance():
+    items = _old_register_all_default_guidance()
+    items.extend(register_deep_smoke_enhancement_guidance())
+    return items

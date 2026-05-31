@@ -157,6 +157,54 @@ def is_mcq_option_mapping(record):
     return bool(record.get("options"))
 
 
+def is_improper_parameter_integral(record):
+    text = _text(record)
+    return is_integral(record) and _has_any(text, [
+        "-infty",
+        "+infty",
+        "infinity",
+        "parameter",
+        " a ",
+        " a^",
+        "improper",
+    ])
+
+
+def is_definite_integral_substitution(record):
+    text = _text(record)
+    return is_integral(record) and _has_any(text, [
+        "int_{0}",
+        "int_0",
+        "substitution",
+        "sqrt",
+        "u=",
+        "definite",
+        "compute the integral",
+    ])
+
+
+def is_equation_root_dichotomy(record):
+    text = _text(record)
+    return _has_any(text, [
+        "find all solutions",
+        "solve",
+        "dichotomy",
+        "bisection",
+        "graphing",
+        "root",
+    ]) and _has_any(text, ["equation", "= 0", "=0"])
+
+
+def is_mcq_absent_option_risk(record):
+    text = _text(record)
+    return bool(record.get("options")) and _has_any(text, [
+        "integral",
+        "compute",
+        "evaluate",
+        "what is",
+    ])
+
+
 def schema_valid(record, row):
     return row.get("schema_valid")
 
@@ -267,6 +315,19 @@ def final_answer_not_explanatory(record, row):
     }
 
 
+def mcq_must_not_be_blank(record, row):
+    if not record.get("options"):
+        return None
+
+    boxed = _boxed(row)
+    return {
+        "passed": bool(boxed),
+        "details": {
+            "boxed": boxed,
+        },
+    }
+
+
 def official_correct(record, row):
     if row.get("correct") is None:
         return None
@@ -354,6 +415,30 @@ def register_category_rules():
             category=CATEGORY,
             detector=is_mcq_option_mapping,
             description="Calculus MCQ requiring final option-letter mapping.",
+        ),
+        DerivedRule(
+            name="calculus_improper_parameter_integral",
+            category=CATEGORY,
+            detector=is_improper_parameter_integral,
+            description="Improper integral with a parameter or infinite bounds.",
+        ),
+        DerivedRule(
+            name="calculus_definite_integral_substitution",
+            category=CATEGORY,
+            detector=is_definite_integral_substitution,
+            description="Definite integral likely requiring substitution and endpoint tracking.",
+        ),
+        DerivedRule(
+            name="calculus_equation_root_dichotomy",
+            category=CATEGORY,
+            detector=is_equation_root_dichotomy,
+            description="Equation/root-solving numerical calculus problem.",
+        ),
+        DerivedRule(
+            name="calculus_mcq_absent_option_fallback",
+            category=CATEGORY,
+            detector=is_mcq_absent_option_risk,
+            description="MCQ where computed expression must still be mapped to one option letter.",
         ),
     ]
 

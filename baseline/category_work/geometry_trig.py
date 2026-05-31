@@ -215,6 +215,50 @@ def is_mcq_option_mapping(record):
     return bool(record.get("options"))
 
 
+def is_two_angle_elevation_problem(record):
+    text = _text(record)
+    return _has_any(text, [
+        "angle of elevation",
+        "angles of elevation",
+        "angle of depression",
+    ]) and _has_any(text, ["building", "tower", "height", "feet", "meters", "from a point"])
+
+
+def is_projectile_motion_problem(record):
+    text = _text(record)
+    return _has_any(text, [
+        "projectile",
+        "trajectory",
+        "thrown",
+        "launched",
+        "height",
+        "initial velocity",
+    ])
+
+
+def is_coordinate_point_exact_problem(record):
+    text = _text(record)
+    return is_coordinate_point_trig(record) and _has_any(text, [
+        "find a point",
+        "point on",
+        "terminal side",
+        "quadrant",
+        "tan",
+    ])
+
+
+def is_geometry_numeric_precision_problem(record):
+    text = _text(record)
+    return _has_any(text, [
+        "round",
+        "nearest",
+        "decimal",
+        "if needed",
+        "accurate",
+        "calculator",
+    ])
+
+
 def schema_valid(record, row):
     return row.get("schema_valid")
 
@@ -508,6 +552,26 @@ def final_answer_not_explanatory(record, row):
     }
 
 
+def high_precision_geometry_numeric(record, row):
+    if not is_geometry_numeric_precision_problem(record):
+        return None
+
+    boxed = _boxed(row)
+    decimals = re.findall(r"\d+\.(\d+)", boxed)
+    if not decimals:
+        return None
+
+    max_digits = max(len(item) for item in decimals)
+
+    return {
+        "passed": max_digits >= 4,
+        "details": {
+            "max_decimal_digits": max_digits,
+            "boxed": boxed,
+        },
+    }
+
+
 def official_correct(record, row):
     if row.get("correct") is None:
         return None
@@ -567,6 +631,11 @@ def build_geometry_trig_harness():
             HarnessCheck(
                 "final_answer_not_explanatory",
                 final_answer_not_explanatory,
+                weight=0.5,
+            ),
+            HarnessCheck(
+                "high_precision_geometry_numeric",
+                high_precision_geometry_numeric,
                 weight=0.5,
             ),
             HarnessCheck(
@@ -681,6 +750,30 @@ def register_category_rules():
             description=(
                 "Geometry or trigonometry MCQ requiring final option-letter mapping."
             ),
+        ),
+        DerivedRule(
+            name="geometry_trig_angle_of_elevation_two_angles",
+            category=CATEGORY,
+            detector=is_two_angle_elevation_problem,
+            description="Two-angle elevation/depression height-distance problem.",
+        ),
+        DerivedRule(
+            name="geometry_trig_projectile_motion",
+            category=CATEGORY,
+            detector=is_projectile_motion_problem,
+            description="Projectile/trajectory geometry application.",
+        ),
+        DerivedRule(
+            name="geometry_trig_coordinate_point_exact",
+            category=CATEGORY,
+            detector=is_coordinate_point_exact_problem,
+            description="Coordinate-point trigonometry requiring simplest exact point and signs.",
+        ),
+        DerivedRule(
+            name="geometry_trig_precision_numeric",
+            category=CATEGORY,
+            detector=is_geometry_numeric_precision_problem,
+            description="Geometry/trig numerical answer where extra precision is safer.",
         ),
     ]
 

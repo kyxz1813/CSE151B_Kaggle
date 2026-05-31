@@ -2,7 +2,12 @@ import time
 
 from prompting.prompt_chain import build_prompt_chain
 
-from .baseline2_prompts import BASELINE2_RESPONSE_PREFILL, build_baseline2_retry_messages
+from .baseline2_prompts import (
+    BASELINE2_ASSISTANT_PREFILL,
+    BASELINE2_RETRY_ASSISTANT_PREFILL,
+    BASELINE2_RESPONSE_PREFILL,
+    build_baseline2_retry_messages,
+)
 from .datasets import save_jsonl
 from .experiments import append_comparison_row, build_comparison_row
 from .generation import GenerationConfig, generate_prompt_texts
@@ -12,11 +17,19 @@ from .runner import RunResult, save_submission_csv, write_report, maybe_limit_pr
 from .scoring import load_judger, score_records, summarize_results
 
 
-def _build_retry_prompt_text(tokenizer, record, previous_output=None, extracted_answer=None, retry_mode="short_resolve"):
+def _build_retry_prompt_text(
+    tokenizer,
+    record,
+    previous_response=None,
+    previous_output=None,
+    extracted_answer=None,
+    retry_mode=None,
+):
+    previous_response = previous_response if previous_response is not None else previous_output
     prompt_text = tokenizer.apply_chat_template(
         build_baseline2_retry_messages(
-            record=record,
-            previous_output=previous_output,
+            record,
+            previous_response=previous_response,
             extracted_answer=extracted_answer,
             retry_mode=retry_mode,
         ),
@@ -26,10 +39,13 @@ def _build_retry_prompt_text(tokenizer, record, previous_output=None, extracted_
 
     role_start = "<|im_start|>" + "assist" + "ant\n"
     thinking_prefill = f"{role_start}<think>\n"
-    answer_prefill = f"{role_start}{BASELINE2_RESPONSE_PREFILL}"
+    reasoning_prefill = f"{role_start}{BASELINE2_ASSISTANT_PREFILL}"
+    answer_prefill = f"{role_start}{BASELINE2_RETRY_ASSISTANT_PREFILL}"
 
     if prompt_text.endswith(thinking_prefill):
         prompt_text = prompt_text[:-len(thinking_prefill)] + answer_prefill
+    elif prompt_text.endswith(reasoning_prefill):
+        prompt_text = prompt_text[:-len(reasoning_prefill)] + answer_prefill
 
     return prompt_text
 
@@ -92,6 +108,71 @@ def _retry_mode_for(parsed_row):
 
 def _choose_better(current_parsed, candidate_parsed):
     return _schema_score(candidate_parsed) > _schema_score(current_parsed)
+
+
+MCQ_LETTER_RE = __import__("re").compile(r"\b([A-J])\b", __import__("re").IGNORECASE)
+BOXED_RE = __import__("re").compile(r"\\boxed\{([^{}]+)\}")
+
+
+def _valid_letters(record):
+    return [chr(ord("A") + idx) for idx, _ in enumerate(record.get("options") or [])]
+
+
+def _best_effort_final_answer(record, raw_output, parsed_row=None):
+    text = raw_output or ""
+    options = record.get("options") or []
+    extracted = ""
+
+    if parsed_row:
+        extracted = str(parsed_row.get("extracted_answer") or "").strip()
+
+    if extracted:
+        if options:
+            valid = set(_valid_letters(record))
+            if extracted.upper() in valid:
+                return extracted.upper()
+        else:
+            return extracted
+
+    boxed = BOXED_RE.findall(text)
+    if boxed:
+        candidate = boxed[-1].strip()
+        if options:
+            valid = set(_valid_letters(record))
+            if candidate.upper() in valid:
+                return candidate.upper()
+        else:
+            return candidate
+
+    if options:
+        valid = set(_valid_letters(record))
+        option_patterns = [
+            r"(?:option|choice|answer)\s*[:\-]?\s*([A-J])\b",
+            r"\b([A-J])\s*(?:is|seems|looks)\s+(?:correct|right|best)",
+            r"final\s+answer\s*[:\-]?\s*([A-J])\b",
+        ]
+        import re
+        for pattern in option_patterns:
+            matches = re.findall(pattern, text, flags=re.IGNORECASE)
+            for match in reversed(matches):
+                letter = str(match).upper()
+                if letter in valid:
+                    return letter
+
+        for letter, option in zip(_valid_letters(record), options):
+            opt = str(option).strip()
+            if opt and opt in text:
+                return letter
+
+    return ""
+
+
+def _synthesized_parsed_if_better(record, raw_output, parsed_row):
+    answer = _best_effort_final_answer(record, raw_output, parsed_row=parsed_row)
+    if not answer:
+        return None
+    synthesized = f"Reasoning:\nAnswer extracted from completed response.\n\nFinal Answer: \\boxed{{{answer}}}"
+    return parse_model_output(synthesized, record=record, sanitize=True)
 
 
 def _formatting_summary(debug_rows):
@@ -363,6 +444,18 @@ def run_baseline2_problem_set(
         parse_model_output(output, record=record, sanitize=True)
         for output, record in zip(initial_outputs, problem_set.records)
     ]
+
+    for idx, parsed_row in enumerate(list(post_sanitize_parsed)):
+        if not parsed_row.get("schema_valid"):
+            synthesized = _synthesized_parsed_if_better(
+                problem_set.records[idx],
+                initial_outputs[idx],
+                parsed_row,
+            )
+            if synthesized is not None and _choose_better(parsed_row, synthesized):
+                synthesized["sanitized"] = True
+                synthesized["schema_errors"] = []
+                post_sanitize_parsed[idx] = synthesized
 
     retry_needed_indices = [
         idx for idx, parsed_row in enumerate(post_sanitize_parsed)

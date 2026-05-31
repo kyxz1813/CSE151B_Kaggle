@@ -145,6 +145,56 @@ def is_arithmetic_simplification(record):
     ])
 
 
+def is_modular_number_theory(record):
+    text = _text(record)
+    return _has_any(text, [
+        "mod",
+        "modulo",
+        "congruent",
+        "remainder",
+        "divides",
+        "divisible",
+        "positive integer k",
+    ])
+
+
+def is_complex_roots(record):
+    text = _text(record)
+    return _has_any(text, [
+        "complex number",
+        "roots of unity",
+        "z^",
+        "root",
+        "omega",
+        "complex roots",
+    ])
+
+
+def is_set_combinatorics(record):
+    text = _text(record)
+    return _has_any(text, [
+        "set",
+        "subset",
+        "subsets",
+        "consecutive numbers",
+        "board",
+        "choose",
+        "families",
+    ])
+
+
+def is_special_definition(record):
+    text = _text(record)
+    return _has_any(text, [
+        "define",
+        "defined",
+        "let a(k)",
+        "for each positive integer",
+        "special",
+        "ambiguity",
+    ])
+
+
 def schema_valid(record, row):
     return row.get("schema_valid")
 
@@ -338,6 +388,30 @@ def register_category_rules():
             category=CATEGORY,
             detector=is_arithmetic_simplification,
             description="Fallback problem requiring careful arithmetic, simplification, or rounding.",
+        ),
+        DerivedRule(
+            name="general_math_modular_number_theory",
+            category=CATEGORY,
+            detector=is_modular_number_theory,
+            description="Fallback modular/divisibility/number-theory problem.",
+        ),
+        DerivedRule(
+            name="general_math_complex_roots",
+            category=CATEGORY,
+            detector=is_complex_roots,
+            description="Fallback complex roots or roots-of-unity problem.",
+        ),
+        DerivedRule(
+            name="general_math_set_combinatorics",
+            category=CATEGORY,
+            detector=is_set_combinatorics,
+            description="Fallback set/counting/combinatorics problem.",
+        ),
+        DerivedRule(
+            name="general_math_special_definition",
+            category=CATEGORY,
+            detector=is_special_definition,
+            description="Fallback problem with a special definition or named construction.",
         ),
     ]
 

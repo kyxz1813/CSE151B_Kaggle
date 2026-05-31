@@ -199,6 +199,67 @@ def is_table_or_sequence_problem(record):
 
 
 
+def is_temperature_conversion_problem(record):
+    text = _text(record)
+    return _has_any(text, [
+        "degrees celsius",
+        "degrees kelvin",
+        "degrees rankine",
+        "fahrenheit",
+        "celsius",
+        "kelvin",
+        "rankine",
+        "^\circ",
+    ]) and _has_any(text, ["fahrenheit", "f"])
+
+
+def is_bernstein_polynomial_problem(record):
+    text = _text(record)
+    return "bernstein" in text and "polynomial" in text
+
+
+def is_base_arithmetic_problem(record):
+    text = _text(record)
+    return _has_any(text, [
+        "binary",
+        "base",
+        "base-",
+        "add the following binary",
+    ])
+
+
+def is_numeric_precision_problem(record):
+    text = _text(record)
+    return _has_any(text, [
+        "at least",
+        "accurate to",
+        "correct to",
+        "decimal",
+        "graphically",
+        "approx",
+        "approximately",
+    ])
+
+
+def is_floor_log_sum_problem(record):
+    text = _text(record)
+    return (
+        ("floor" in text or "\\lfloor" in text)
+        and _has_any(text, ["log_2", "log2", "integer part", "remainder"])
+    )
+
+
+def is_letter_set_selection_problem(record):
+    text = _text(record)
+    return _has_any(text, [
+        "list the letter",
+        "which of the following",
+        "answer(s)",
+        "symmetry",
+        "equivalent",
+    ]) and not record.get("options")
+
+
 def schema_valid(record, row):
     return row.get("schema_valid")
 
@@ -364,6 +425,64 @@ def interval_notation_present(record, row):
     }
 
 
+def high_precision_when_requested(record, row):
+    if not is_numeric_precision_problem(record):
+        return None
+
+    boxed = _boxed(row)
+    decimals = re.findall(r"\d+\.(\d+)", boxed)
+
+    if not decimals:
+        return None
+
+    max_digits = max(len(item) for item in decimals)
+
+    return {
+        "passed": max_digits >= 4,
+        "details": {
+            "max_decimal_digits": max_digits,
+            "boxed": boxed,
+        },
+    }
+
+
+def binary_answer_digits_valid(record, row):
+    if not is_base_arithmetic_problem(record):
+        return None
+
+    boxed = _boxed(row).replace(" ", "")
+    pieces = [item for item in boxed.split(",") if item]
+
+    if not pieces:
+        return None
+
+    bad = [item for item in pieces if not re.fullmatch(r"[01]+", item)]
+
+    return {
+        "passed": len(bad) == 0,
+        "details": {
+            "bad_binary_items": bad,
+            "boxed": boxed,
+        },
+    }
+
+
+def temperature_answer_count_valid(record, row):
+    if not is_temperature_conversion_problem(record):
+        return None
+
+    expected = _ans_count(record)
+    actual = row.get("actual_answer_count")
+
+    return {
+        "passed": actual == expected,
+        "details": {
+            "expected_temperature_answers": expected,
+            "actual_answer_count": actual,
+        },
+    }
+
+
 def official_correct(record, row):
     if row.get("correct") is None:
         return None
@@ -413,6 +532,21 @@ def build_arithmetic_algebra_harness():
             HarnessCheck(
                 "interval_notation_present",
                 interval_notation_present,
+                weight=0.5,
+            ),
+            HarnessCheck(
+                "high_precision_when_requested",
+                high_precision_when_requested,
+                weight=0.5,
+            ),
+            HarnessCheck(
+                "binary_answer_digits_valid",
+                binary_answer_digits_valid,
+                weight=0.5,
+            ),
+            HarnessCheck(
+                "temperature_answer_count_valid",
+                temperature_answer_count_valid,
                 weight=0.5,
             ),
             HarnessCheck(
@@ -496,6 +630,42 @@ def register_category_rules():
             category=CATEGORY,
             detector=is_table_or_sequence_problem,
             description="Table-completion or sequence-classification problem.",
+        ),
+        DerivedRule(
+            name="arithmetic_algebra_temperature_conversion",
+            category=CATEGORY,
+            detector=is_temperature_conversion_problem,
+            description="Temperature conversion among Fahrenheit, Celsius, Kelvin, and Rankine.",
+        ),
+        DerivedRule(
+            name="arithmetic_algebra_bernstein_polynomial",
+            category=CATEGORY,
+            detector=is_bernstein_polynomial_problem,
+            description="Bernstein polynomial formula problem.",
+        ),
+        DerivedRule(
+            name="arithmetic_algebra_base_arithmetic",
+            category=CATEGORY,
+            detector=is_base_arithmetic_problem,
+            description="Binary/base arithmetic problem requiring carry in the stated base.",
+        ),
+        DerivedRule(
+            name="arithmetic_algebra_numeric_precision",
+            category=CATEGORY,
+            detector=is_numeric_precision_problem,
+            description="Numeric approximation problem where extra precision is safer.",
+        ),
+        DerivedRule(
+            name="arithmetic_algebra_floor_log_sum",
+            category=CATEGORY,
+            detector=is_floor_log_sum_problem,
+            description="Floor-logarithm summation/counting problem.",
+        ),
+        DerivedRule(
+            name="arithmetic_algebra_letter_set_selection",
+            category=CATEGORY,
+            detector=is_letter_set_selection_problem,
+            description="Free-form answer consisting of selected letters such as BCEG.",
         ),
     ]
 
