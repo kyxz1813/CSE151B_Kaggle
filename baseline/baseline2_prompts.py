@@ -33,7 +33,7 @@ Precision and exactness rules:
 - Only round to an integer if the problem explicitly says to round to an integer, whole number, or smallest integer that works.
 - Preserve exact forms such as fractions, radicals, logarithms, powers, and symbolic expressions when the prompt allows an exact answer.
 - If the prompt allows decimal or fraction/expression, exact form is usually safer.
-- If a value is computed numerically, keep 4-8 significant decimal digits unless the problem explicitly asks for exact rounding.
+- If a value is computed numerically, keep 8-15 significant decimal digits unless the problem explicitly asks for exact rounding.
 - For temperature conversions, use C=(F-32)*5/9, K=C+273.15, and R=F+459.67.
 - For binary or base arithmetic, carry in the stated base and cross-check by decimal conversion when possible.
 """
@@ -56,6 +56,8 @@ Rules:
 - Do not include markdown.
 - Do not write anything after the boxed final answer.
 - Use exactly one boxed expression.
+- Never return placeholders such as ..., ., ?, unknown, None, or an empty box.
+- If the previous response contains only a placeholder or is unreliable, solve the original problem concisely and return the best final answer.
 - For multiple-choice questions, the boxed answer must be one capital letter.
 - For multiple [ANS] blanks, the boxed answer must contain exactly one comma-separated entry per blank, in order.
 - If the previous response computed the answer but failed to box it, box that answer.

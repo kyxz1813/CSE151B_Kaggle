@@ -1441,6 +1441,669 @@ def register_calculus_v2_guidance():
 
     return items
 
+
+
+
+def register_arithmetic_v2_guidance():
+    items = [
+        RuleGuidance(
+            rule_name="arithmetic_algebra_temperature_conversion",
+            category="arithmetic_algebra",
+            title="Temperature conversion canonical precision",
+            guidance=(
+                "For Fahrenheit temperature conversions use exact formulas: C=(F-32)*5/9, "
+                "K=C+273.15, and Rankine R=F+459.67. Output Celsius and Kelvin with 12-15 "
+                "significant digits when possible, and Rankine with the exact decimal from F+459.67. "
+                "Do not round C/K to 4 decimals unless the prompt explicitly says exactly 4 decimals."
+            ),
+            priority=1,
+        ),
+        RuleGuidance(
+            rule_name="arithmetic_algebra_bernstein_polynomial",
+            category="arithmetic_algebra",
+            title="Bernstein polynomial canonical syntax",
+            guidance=(
+                "For Bernstein polynomial answers, use exactly the form C(n,k)*t^k*(1-t)^(n-k). "
+                "In this dataset, '1st' means k=1, not k=0. Use explicit * signs. Do not write "
+                "implicit multiplication like 3t. Do not omit exponent 1: write t^1 and (1-t)^1 when the exponent is 1."
+            ),
+            priority=1,
+        ),
+        RuleGuidance(
+            rule_name="arithmetic_algebra_base_arithmetic",
+            category="arithmetic_algebra",
+            title="Binary/base arithmetic direct mode",
+            guidance=(
+                "For binary/base arithmetic, avoid long carry narration. Convert each addend to decimal, add, "
+                "convert the result back to the requested base, and finish. Final answers must contain only digits "
+                "valid in the base. For binary, final entries must contain only 0 and 1."
+            ),
+            priority=1,
+        ),
+        RuleGuidance(
+            rule_name="arithmetic_algebra_numeric_precision",
+            category="arithmetic_algebra",
+            title="Numeric precision discipline",
+            guidance=(
+                "If the prompt says 'at least N decimal places', 'accurate to', 'correct to', 'graphically', "
+                "or asks for a decimal approximation, give 4-8 decimal places or 8-15 significant digits when possible. "
+                "Do not interpret 'at least 1 decimal place' as 'round to exactly 1 decimal place'."
+            ),
+            priority=1,
+        ),
+        RuleGuidance(
+            rule_name="arithmetic_algebra_exponential_log_solve",
+            category="arithmetic_algebra",
+            title="Exponential/log solve precision",
+            guidance=(
+                "For equations like p=a*b^q, solve q=ln(p/a)/ln(b). Do not stop at a one-decimal graphical estimate. "
+                "Return at least 4 decimal places when possible, e.g. 2.2892 rather than 2.3."
+            ),
+            priority=1,
+        ),
+        RuleGuidance(
+            rule_name="arithmetic_algebra_formula_then_evaluate",
+            category="arithmetic_algebra",
+            title="Formula blanks before numeric evaluation",
+            guidance=(
+                "If the problem first asks for formula pieces like A=[ANS] and B=[ANS], keep those answers symbolic. "
+                "Do not substitute the later numerical values into formula blanks. Only substitute numbers for the later evaluation blank. "
+                "Example: if A and B contain variables S,T,W, answer A and B with expressions in S,T,W, then give the numerical decimal for R."
+            ),
+            priority=1,
+        ),
+        RuleGuidance(
+            rule_name="arithmetic_algebra_letter_set_selection",
+            category="arithmetic_algebra",
+            title="Free-form letter-set formatting",
+            guidance=(
+                "When the final answer is a set/list of letters in a free-form problem, concatenate uppercase letters with no commas or spaces, "
+                "unless the prompt explicitly requests commas. Use BCEG, not B,C,E,G."
+            ),
+            priority=1,
+        ),
+        RuleGuidance(
+            rule_name="arithmetic_algebra_ordered_pair_answer",
+            category="arithmetic_algebra",
+            title="Ordered pair formatting",
+            guidance=(
+                "If the requested answer is a point, coordinate, or ordered pair, preserve tuple parentheses and order. "
+                "Use (x,y), not y,x and not x,y without parentheses."
+            ),
+            priority=1,
+        ),
+        RuleGuidance(
+            rule_name="arithmetic_algebra_canonical_symbolic_syntax",
+            category="arithmetic_algebra",
+            title="Canonical symbolic syntax",
+            guidance=(
+                "For symbolic final answers, use explicit multiplication with *, powers with ^, and parentheses around compound factors. "
+                "Prefer e^(...) or exp(...) over informal exponent notation. Avoid implicit multiplication like 6e^{16x} or 3t."
+            ),
+            priority=2,
+        ),
+        RuleGuidance(
+            rule_name="arithmetic_algebra_scientific_expression_style",
+            category="arithmetic_algebra",
+            title="Exponential expression style",
+            guidance=(
+                "For expressions involving exponentials, use canonical plain-text syntax such as 6*e^(16*x) or 6*exp(16*x). "
+                "If a separate coefficient/value is requested, keep it as a separate comma-separated answer."
+            ),
+            priority=2,
+        ),
+        RuleGuidance(
+            rule_name="arithmetic_algebra_multi_answer",
+            category="arithmetic_algebra",
+            title="Multi-answer blank audit",
+            guidance=(
+                "Before solving, count every [ANS] blank and label each blank as formula, number, letter-list, pair, interval, or text. "
+                "Final answer must contain exactly one entry per blank in the same order. Do not collapse formula blanks into substituted numbers."
+            ),
+            priority=1,
+        ),
+        RuleGuidance(
+            rule_name="arithmetic_algebra_symbolic_manipulation",
+            category="arithmetic_algebra",
+            title="Symbolic manipulation canonical form",
+            guidance=(
+                "Preserve exact symbolic structure. Use explicit * for products, ^ for powers, and parentheses around sums/products. "
+                "Do not decimalize symbolic answers unless a decimal is explicitly requested."
+            ),
+            priority=3,
+        ),
+        RuleGuidance(
+            rule_name="arithmetic_algebra_conversion_representation",
+            category="arithmetic_algebra",
+            title="Conversion representation",
+            guidance=(
+                "Track requested representation exactly: fraction, decimal, percent, base notation, exponential notation, or unit. "
+                "For decimal conversion tasks, output extra precision unless exact rounding is specified."
+            ),
+            priority=3,
+        ),
+    ]
+
+    for item in items:
+        register_rule_guidance(item)
+
+    return items
+
+def register_statistics_v2_guidance():
+    items = [
+        RuleGuidance(
+            rule_name="statistics_probability_descriptive_table",
+            category="statistics_probability",
+            title="Descriptive-statistics table",
+            guidance=(
+                "Fill every blank in order. For a standard-deviation table, output each deviation, each squared deviation, "
+                "the sum of squared deviations, the sample variance using N-1 when shown, and the standard deviation. "
+                "Use plain integers for integer cells when exact, and give the final statistic with 10-15 significant digits."
+            ),
+            priority=1,
+        ),
+        RuleGuidance(
+            rule_name="statistics_probability_stat_table_high_precision",
+            category="statistics_probability",
+            title="High-precision statistics table",
+            guidance=(
+                "For table-based descriptive statistics, do not over-round final computed values. Keep exact integer entries as integers, "
+                "but give final variance/standard-deviation values with high precision."
+            ),
+            priority=1,
+        ),
+        RuleGuidance(
+            rule_name="statistics_probability_chi_square_goodness_fit",
+            category="statistics_probability",
+            title="Chi-square goodness-of-fit",
+            guidance=(
+                "Compute expected counts, then chi-square statistic=sum((O-E)^2/E), df=k-1, critical value or p-value as requested. "
+                "For final support-the-claim questions, output only YES or NO unless another blank explicitly asks for reject/fail-to-reject."
+            ),
+            priority=1,
+        ),
+        RuleGuidance(
+            rule_name="statistics_probability_chi_square_independence",
+            category="statistics_probability",
+            title="Chi-square independence",
+            guidance=(
+                "Expected frequency = row total * column total / grand total. Output expected frequencies in row-major table order, "
+                "then the chi-square statistic, then the critical value, then one final YES/NO decision. Do not add Reject H0 as an extra final entry."
+            ),
+            priority=1,
+        ),
+        RuleGuidance(
+            rule_name="statistics_probability_chi_square_decision_contract",
+            category="statistics_probability",
+            title="Chi-square decision answer contract",
+            guidance=(
+                "When the final wording asks 'Is there sufficient data to support the claim?', the final decision blank expects YES or NO. "
+                "Do not include Reject H0, fail to reject, null hypothesis text, or explanatory phrases in the boxed answer unless explicitly requested."
+            ),
+            priority=1,
+        ),
+        RuleGuidance(
+            rule_name="statistics_probability_chi_square_assumption_letters",
+            category="statistics_probability",
+            title="Chi-square assumption letters",
+            guidance=(
+                "For assumption checks: Assumption 1 is all expected frequencies >= 1. Assumption 2 is at most 20 percent of expected frequencies < 5. "
+                "Compute expected frequencies, decide which assumptions hold, then output only the embedded option letters in order."
+            ),
+            priority=1,
+        ),
+        RuleGuidance(
+            rule_name="statistics_probability_sample_size_margin_error",
+            category="statistics_probability",
+            title="Sample size / margin of error",
+            guidance=(
+                "Use the standard margin-of-error formula. For one mean, n=(z*sigma/E)^2. For equal-size difference of means, "
+                "n=z^2*(sigma1^2+sigma2^2)/E^2. In this dataset, output the raw computed n with high precision unless the problem explicitly says integer, whole number, smallest integer, or round up."
+            ),
+            priority=1,
+        ),
+        RuleGuidance(
+            rule_name="statistics_probability_sample_size_raw_value",
+            category="statistics_probability",
+            title="Raw sample-size value",
+            guidance=(
+                "Do not automatically ceil sample-size calculations. If the answer blank is n=[ANS] and no exact integer rounding instruction appears, "
+                "return the raw decimal value with 10-15 significant digits."
+            ),
+            priority=1,
+        ),
+        RuleGuidance(
+            rule_name="statistics_probability_type_i_type_ii_power",
+            category="statistics_probability",
+            title="Type I/II error or power",
+            guidance=(
+                "For Type II error, first find the non-rejection interval under H0 using the correct alpha/tails, then compute the probability of that interval under the true alternative mean. "
+                "Output beta with 10-15 significant digits."
+            ),
+            priority=1,
+        ),
+        RuleGuidance(
+            rule_name="statistics_probability_type_ii_error_beta",
+            category="statistics_probability",
+            title="Type II error beta precision",
+            guidance=(
+                "For two-sided z tests, lower=mu0-zcrit*sigma/sqrt(n), upper=mu0+zcrit*sigma/sqrt(n). "
+                "Beta=P(lower <= Xbar <= upper | mu=mu1). Keep high precision in the final probability."
+            ),
+            priority=1,
+        ),
+        RuleGuidance(
+            rule_name="statistics_probability_probability_threshold_log",
+            category="statistics_probability",
+            title="Probability threshold via logarithms",
+            guidance=(
+                "For p=a^n or p=(1-c)^n threshold problems, solve with n=ln(target)/ln(base). "
+                "If the question asks for 'fewer than [ANS]' or a threshold value, output the raw threshold with high precision unless integer rounding is explicitly requested."
+            ),
+            priority=1,
+        ),
+        RuleGuidance(
+            rule_name="statistics_probability_embedded_letter_choices",
+            category="statistics_probability",
+            title="Embedded letter-choice blanks",
+            guidance=(
+                "If each [ANS] blank has its own A/B/C/D choices inside a free-form problem, solve each mini-question separately and output only the letters in order, comma-separated. "
+                "Do not include explanations or option text in the final answer."
+            ),
+            priority=1,
+        ),
+        RuleGuidance(
+            rule_name="statistics_probability_f_critical_embedded_choices",
+            category="statistics_probability",
+            title="F critical embedded choices",
+            guidance=(
+                "For F-curve right-tail critical values, use the given numerator and denominator degrees of freedom in order. "
+                "Compare the computed/table critical value against the embedded choices and output only the correct letter for each part."
+            ),
+            priority=2,
+        ),
+        RuleGuidance(
+            rule_name="statistics_probability_uppercase_categorical",
+            category="statistics_probability",
+            title="Uppercase categorical answers",
+            guidance=(
+                "Use uppercase canonical categorical words in final answers: YES, NO, INCREASING, DECREASING. "
+                "Do not output lowercase variants."
+            ),
+            priority=1,
+        ),
+        RuleGuidance(
+            rule_name="statistics_probability_high_precision_numeric",
+            category="statistics_probability",
+            title="High-precision statistics numeric answer",
+            guidance=(
+                "For probabilities, critical values, test statistics, sample sizes, regression values, and standard deviations, "
+                "give 10-15 significant digits when possible unless exact rounding is explicitly requested."
+            ),
+            priority=1,
+        ),
+        RuleGuidance(
+            rule_name="statistics_probability_long_regression_vector",
+            category="statistics_probability",
+            title="Long regression vector task",
+            guidance=(
+                "For long x=c(...), y=c(...) regression tasks, avoid narrating element counting. Use compact computation steps and prioritize producing the final ordered list of requested statistics. "
+                "Count all blanks first and keep high precision."
+            ),
+            priority=3,
+        ),
+        RuleGuidance(
+            rule_name="statistics_probability_multi_answer",
+            category="statistics_probability",
+            title="Multi-answer statistics/probability",
+            guidance=(
+                "Count answer blanks, but handle known statistics decision templates carefully: if duplicated final placeholders only represent a decision sentence, output the single requested YES/NO decision rather than adding Reject H0 as another answer."
+            ),
+            priority=1,
+        ),
+
+        RuleGuidance(
+            rule_name="statistics_probability_representative_choice_letters",
+            category="statistics_probability",
+            title="Representative/non-representative answer codes",
+            guidance=(
+                "For representative/non-representative prompts with embedded A/B choices, output only the A/B letter for each blank. "
+                "Do not output REPRESENTATIVE or NON-REPRESENTATIVE in the final box."
+            ),
+            priority=1,
+        ),
+        RuleGuidance(
+            rule_name="statistics_probability_measurement_scale_abbreviation",
+            category="statistics_probability",
+            title="Measurement-scale abbreviations",
+            guidance=(
+                "For Nominal/Ordinal/Interval/Ratio classification blanks, output compact abbreviations: "
+                "N for Nominal, O for Ordinal, I for Interval, R for Ratio. Do not spell out the words in the final box."
+            ),
+            priority=1,
+        ),
+        RuleGuidance(
+            rule_name="statistics_probability_true_false_abbreviation",
+            category="statistics_probability",
+            title="True/False abbreviations",
+            guidance=(
+                "For True/False statement prompts, output T or F for each blank. "
+                "Do not output YES/NO or TRUE/FALSE in the final box."
+            ),
+            priority=1,
+        ),
+        RuleGuidance(
+            rule_name="statistics_probability_coded_categorical_answer",
+            category="statistics_probability",
+            title="Coded categorical answer format",
+            guidance=(
+                "When a statistics problem asks for categorical classifications with embedded choices or conventional codes, "
+                "return the compact code letters only, comma-separated, in the same order as the blanks."
+            ),
+            priority=1,
+        ),
+        RuleGuidance(
+            rule_name="statistics_probability_two_mean_equal_sample_size",
+            category="statistics_probability",
+            title="Two-mean equal-sample-size formula",
+            guidance=(
+                "For estimating the difference between two means with independent equal-size samples, use the prompt notation carefully. "
+                "If the problem gives variances sigma_1^2 and sigma_2^2, use those variances directly in the numerator; do not square them again. "
+                "Use the margin-of-error formula for a two-mean difference and return the raw n unless integer rounding is explicitly requested."
+            ),
+            priority=1,
+        ),
+    ]
+
+    for item in items:
+        register_rule_guidance(item)
+
+    return items
+
+def register_applied_word_problem_v2_guidance():
+    items = [
+        RuleGuidance(
+            rule_name="applied_word_problem_half_life_decay_exact",
+            category="applied_word_problem",
+            title="Half-life / decay exact form",
+            guidance=(
+                "For half-life and decay problems, preserve exact expressions unless a decimal approximation is explicitly requested. "
+                "For fraction remaining after years, use (1/2)^[(target_year-start_year)/half_life]. "
+                "For half-life from a daily percent decay r, use [ln(0.5)]/[ln(1-r)]."
+            ),
+            priority=1,
+        ),
+        RuleGuidance(
+            rule_name="applied_word_problem_half_life_fraction_remaining",
+            category="applied_word_problem",
+            title="Fraction remaining exact power",
+            guidance=(
+                "If the question asks what fraction remains after a time interval, output the exact power expression, not a decimal. "
+                "Example: (1/2)^[(1999-1963)/31]."
+            ),
+            priority=1,
+        ),
+        RuleGuidance(
+            rule_name="applied_word_problem_half_life_percent_decay_log",
+            category="applied_word_problem",
+            title="Percent decay half-life log form",
+            guidance=(
+                "For an element that decays by r percent each day, solve (1-r)^t=0.5 and output [ln(0.5)]/[ln(1-r)] unless a decimal is explicitly requested."
+            ),
+            priority=1,
+        ),
+        RuleGuidance(
+            rule_name="applied_word_problem_finance_percent_comparison",
+            category="applied_word_problem",
+            title="Finance / paycheck percent comparison",
+            guidance=(
+                "Set up the exact ratio equation. Do not round money answers to cents unless the prompt explicitly asks for cents or dollars-and-cents. "
+                "Give 10-15 significant digits for raw paycheck, salary, and total values."
+            ),
+            priority=1,
+        ),
+        RuleGuidance(
+            rule_name="applied_word_problem_high_precision_money",
+            category="applied_word_problem",
+            title="High-precision money answer",
+            guidance=(
+                "For salary/paycheck/monthly income word problems, return the raw decimal value with high precision unless the prompt explicitly requests nearest cent or nearest dollar."
+            ),
+            priority=1,
+        ),
+        RuleGuidance(
+            rule_name="applied_word_problem_mixture_exact_expression",
+            category="applied_word_problem",
+            title="Mixture exact ratio",
+            guidance=(
+                "For mixture/concentration problems, set solute equation exactly and prefer exact ratio expressions when no rounding is requested. "
+                "Do not replace an exact expression with a short decimal."
+            ),
+            priority=1,
+        ),
+        RuleGuidance(
+            rule_name="applied_word_problem_real_world_invertibility",
+            category="applied_word_problem",
+            title="Real-world invertibility",
+            guidance=(
+                "For real-world invertibility questions, decide whether each input gives a unique output and whether the output determines the input. "
+                "Volume of water vs kg is invertible; accumulated rainfall during the storm is treated as invertible if cumulative rainfall increases; postage cost by weight is not invertible because it is stepwise. "
+                "Use lowercase yes/no in the final answer."
+            ),
+            priority=1,
+        ),
+        RuleGuidance(
+            rule_name="applied_word_problem_step_function_ceiling",
+            category="applied_word_problem",
+            title="Step-function / ceiling convention",
+            guidance=(
+                "For step-function cost problems, distinguish the formula blank from the separate rounded up/down blank. "
+                "If the formula blank is followed by a separate 'rounded (up/down)' blank, put the simple proportional expression in the formula blank and put up in the direction blank."
+            ),
+            priority=1,
+        ),
+        RuleGuidance(
+            rule_name="applied_word_problem_printing_signature_formula_convention",
+            category="applied_word_problem",
+            title="Printing signature formula convention",
+            guidance=(
+                "For printing-signature problems like 16 pages per signature and $0.16 per signature, the dataset often expects C(p)=0.16*p/16 in the formula blank, then up in the separate rounding blank. "
+                "Do not put ceil(...) in the formula blank when there is a separate up/down answer blank."
+            ),
+            priority=1,
+        ),
+        RuleGuidance(
+            rule_name="applied_word_problem_counting_mcq",
+            category="applied_word_problem",
+            title="Applied counting MCQ",
+            guidance=(
+                "For digit/counting MCQs, derive a compact counting formula and compare to answer choices. "
+                "Always finish with a single boxed option letter even if the reasoning is long."
+            ),
+            priority=2,
+        ),
+        RuleGuidance(
+            rule_name="applied_word_problem_modular_crypto_mcq",
+            category="applied_word_problem",
+            title="Modular crypto MCQ",
+            guidance=(
+                "For cryptography/modular arithmetic MCQs, compute the modular operation carefully and compare the numeric plaintext/ciphertext to the options. "
+                "Output only the option letter in the final box."
+            ),
+            priority=2,
+        ),
+        RuleGuidance(
+            rule_name="applied_word_problem_exact_or_high_precision",
+            category="applied_word_problem",
+            title="Exact or high-precision applied answer",
+            guidance=(
+                "If no rounding instruction appears, avoid short rounded decimals. Prefer exact expressions or high-precision decimal values according to the requested answer type."
+            ),
+            priority=1,
+        ),
+    ]
+
+    for item in items:
+        register_rule_guidance(item)
+
+    return items
+
+def register_geometry_trig_v2_guidance():
+    items = [
+        RuleGuidance(
+            rule_name="geometry_trig_trig_equation",
+            category="geometry_trig",
+            title="Trig equation answer form",
+            guidance=(
+                "For trig equations, match the blank structure exactly. If the problem gives theta=[ANS]+[ANS] n, "
+                "the first blank should be a principal value and the second blank should be the period such as pi or 2*pi."
+            ),
+            priority=1,
+        ),
+        RuleGuidance(
+            rule_name="geometry_trig_general_solution_exact_period",
+            category="geometry_trig",
+            title="General trig solution exact period",
+            guidance=(
+                "For tan(theta)=a with theta=[ANS]+[ANS]n, use atan(a), pi. "
+                "Do not replace atan(a) or pi with rounded decimals when exact symbolic entries are accepted."
+            ),
+            priority=1,
+        ),
+        RuleGuidance(
+            rule_name="geometry_trig_arc_length_sector",
+            category="geometry_trig",
+            title="Arc length and sector formulas",
+            guidance=(
+                "Use s=r*theta with theta in radians. Convert degrees by theta=degrees*pi/180. "
+                "If the answer blank asks for a numeric radius in feet/meters and exact form is not explicitly required, output a high-precision decimal."
+            ),
+            priority=1,
+        ),
+        RuleGuidance(
+            rule_name="geometry_trig_arc_radius_decimal_preferred",
+            category="geometry_trig",
+            title="Arc radius decimal answer",
+            guidance=(
+                "For arc length radius problems with degree angle, r=s/(theta*pi/180). "
+                "Even if an expression with pi is mathematically equivalent, prefer a high-precision decimal when the blank is [ANS] feet/meters."
+            ),
+            priority=1,
+        ),
+        RuleGuidance(
+            rule_name="geometry_trig_coordinate_point",
+            category="geometry_trig",
+            title="Coordinate point trig",
+            guidance=(
+                "For quadrant point problems, choose a simple integer point that has the correct tangent/signs. "
+                "Format coordinate points with no spaces, e.g. (-1,-3)."
+            ),
+            priority=1,
+        ),
+        RuleGuidance(
+            rule_name="geometry_trig_coordinate_point_decimal_value",
+            category="geometry_trig",
+            title="Coordinate point plus decimal trig value",
+            guidance=(
+                "If the problem asks for one valid point and then a trig value, output the point exactly as a coordinate pair and use a high-precision decimal for the trig value unless exact form is explicitly requested."
+            ),
+            priority=1,
+        ),
+        RuleGuidance(
+            rule_name="geometry_trig_exact_sqrt_plain_text",
+            category="geometry_trig",
+            title="Plain sqrt exact form",
+            guidance=(
+                "When the prompt says exact form and says to type sqrt, use plain text expressions like -2*sqrt(14)/9. "
+                "Avoid LaTeX \\frac or \\dfrac in the final answer."
+            ),
+            priority=1,
+        ),
+        RuleGuidance(
+            rule_name="geometry_trig_angle_of_elevation_two_angles",
+            category="geometry_trig",
+            title="Two-angle elevation height",
+            guidance=(
+                "For two angles of elevation from the same horizontal distance d, height difference = d*(tan(top_angle)-tan(bottom_angle)). "
+                "Use degrees when the angles are given in degrees, and keep at least 4 decimal places unless the prompt explicitly requires fewer."
+            ),
+            priority=1,
+        ),
+        RuleGuidance(
+            rule_name="geometry_trig_pythagorean_equation_canonical",
+            category="geometry_trig",
+            title="Canonical Pythagorean equation",
+            guidance=(
+                "For wire/tree Pythagorean equations where x is the wire/hypotenuse and the height is x-4, write the equation as "
+                "13^2 + (x-4)^2 = x^2. Preserve this visual/canonical order in the final answer."
+            ),
+            priority=1,
+        ),
+        RuleGuidance(
+            rule_name="geometry_trig_bearing_vector_contract",
+            category="geometry_trig",
+            title="Bearing vector answer contract",
+            guidance=(
+                "For bearing problems, decompose into north/east components and then output exactly four entries: "
+                "distance, first direction letter, angle, second direction letter. If the two travel legs are perpendicular, the distance may simplify to sqrt(a^2+b^2)."
+            ),
+            priority=1,
+        ),
+        RuleGuidance(
+            rule_name="geometry_trig_direct_numeric_trig_values",
+            category="geometry_trig",
+            title="Direct numeric trig values",
+            guidance=(
+                "For sin(0.6), cos(0.6), tan(0.6), treat the input as radians unless degrees are explicitly stated. "
+                "Compute each value directly from the original input, not from rounded intermediate sin/cos values. Give 10-15 significant digits."
+            ),
+            priority=1,
+        ),
+        RuleGuidance(
+            rule_name="geometry_trig_high_precision_decimal_preferred",
+            category="geometry_trig",
+            title="High-precision geometry decimal",
+            guidance=(
+                "For geometry/trig numeric answers, use at least 4 decimal places unless the problem explicitly says to round to a smaller precision. "
+                "If wording says 'if needed', keep extra precision."
+            ),
+            priority=1,
+        ),
+        RuleGuidance(
+            rule_name="geometry_trig_mcq_long_reasoning",
+            category="geometry_trig",
+            title="Geometry MCQ finalization",
+            guidance=(
+                "For geometry/trig MCQs, always end with exactly one boxed option letter. If time is running out, choose the best matching option and finalize."
+            ),
+            priority=2,
+        ),
+        RuleGuidance(
+            rule_name="geometry_trig_parallel_triangle_area_mcq",
+            category="geometry_trig",
+            title="Parallel triangle area MCQ",
+            guidance=(
+                "For DE parallel AB with intersecting cevians and given areas, use similarity and area-ratio relationships compactly, compare with answer choices, and finalize with one letter."
+            ),
+            priority=2,
+        ),
+        RuleGuidance(
+            rule_name="geometry_trig_fourier_series_mcq",
+            category="geometry_trig",
+            title="Fourier series MCQ",
+            guidance=(
+                "For periodic extension Fourier series questions, derive the coefficient/form expression and compare symbolically to choices. "
+                "Be careful about sign: (e^(2*pi*alpha)+1)/(e^(2*pi*alpha)-1) is different from its reciprocal/sign-flipped variants."
+            ),
+            priority=2,
+        ),
+    ]
+
+    for item in items:
+        register_rule_guidance(item)
+
+    return items
+
 def register_all_default_guidance():
     items = []
     items.extend(register_default_linear_discrete_guidance())
@@ -1448,4 +2111,8 @@ def register_all_default_guidance():
     items.extend(register_default_remaining_category_guidance())
     items.extend(register_deep_smoke_enhancement_guidance())
     items.extend(register_calculus_v2_guidance())
+    items.extend(register_arithmetic_v2_guidance())
+    items.extend(register_statistics_v2_guidance())
+    items.extend(register_applied_word_problem_v2_guidance())
+    items.extend(register_geometry_trig_v2_guidance())
     return items

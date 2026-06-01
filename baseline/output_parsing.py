@@ -116,6 +116,30 @@ def _top_level_comma_split(text):
     return parts
 
 
+PLACEHOLDER_ANSWER_RE = re.compile(
+    r"^(?:\s|\.|…|\?|_|-|--|—|n/?a|na|none|unknown|not sure|cannot determine|\\text\{?none\}?)+$",
+    re.IGNORECASE,
+)
+
+
+def is_placeholder_answer(answer):
+    text = str(answer or "").strip()
+    if not text:
+        return True
+
+    compact = re.sub(r"\s+", "", text).lower()
+    placeholder_values = {
+        ".", "..", "...", "…", "?", "??", "???", "_", "__", "___",
+        "-", "--", "—", "n/a", "na", "none", "null", "unknown",
+        "todo", "tbd", "notenoughinformation", "cannotdetermine",
+        "\\text{none}", "\\mathrm{none}",
+    }
+    if compact in placeholder_values:
+        return True
+
+    return bool(PLACEHOLDER_ANSWER_RE.fullmatch(text))
+
+
 def expected_answer_count(record):
     if not record:
         return 1
@@ -219,7 +243,7 @@ def validate_output_schema(raw_output, record=None):
             "boxed_answers_after_final": [],
             "expected_answer_count": expected_answer_count(record),
             "actual_answer_count": 0,
-            "extractable": bool(extracted_answer),
+            "extractable": bool(extracted_answer) and not is_placeholder_answer(extracted_answer),
             "well_formed": False,
             "strict_well_formed": False,
             "schema_valid": False,
@@ -234,6 +258,8 @@ def validate_output_schema(raw_output, record=None):
 
     if not boxed_answer:
         errors.append("empty_boxed_answer")
+    elif is_placeholder_answer(boxed_answer):
+        errors.append("placeholder_boxed_answer")
 
     if start != 0:
         errors.append("text_before_final_box")
@@ -243,7 +269,7 @@ def validate_output_schema(raw_output, record=None):
         errors.append("trailing_text_after_final_box")
 
     expected_count = expected_answer_count(record)
-    actual_count = 1
+    actual_count = 0 if is_placeholder_answer(boxed_answer) else 1
 
     if record and record.get("options"):
         letters = valid_mcq_letters(record)
@@ -268,6 +294,7 @@ def validate_output_schema(raw_output, record=None):
         "unclosed_boxed_answer",
         "multiple_boxed_answers_after_final",
         "empty_boxed_answer",
+        "placeholder_boxed_answer",
         "text_before_final_box",
         "trailing_text_after_final_box",
     }
@@ -282,7 +309,7 @@ def validate_output_schema(raw_output, record=None):
         "boxed_answers_after_final": boxed_answers,
         "expected_answer_count": expected_count,
         "actual_answer_count": actual_count,
-        "extractable": bool(boxed_answer),
+        "extractable": bool(boxed_answer) and not is_placeholder_answer(boxed_answer),
         "well_formed": well_formed,
         "strict_well_formed": well_formed,
         "schema_valid": schema_valid,

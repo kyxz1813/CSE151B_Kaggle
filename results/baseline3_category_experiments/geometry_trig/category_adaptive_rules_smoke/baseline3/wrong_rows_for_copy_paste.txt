@@ -1,0 +1,857 @@
+WRONG ROWS FOR ANALYSIS
+n_wrong_total: 32
+====================================================================================================
+
+====================================================================================================
+WRONG ROW 1
+====================================================================================================
+id: 16
+category: geometry_trig
+route_name: geometry_trig_free_form
+template_name: baseline3_geometry_trig_free_form
+is_mcq: False
+gold: ['atan(4.76)', 'pi']
+boxed_answer: 1.360,3.142
+extracted_final_answer: 1.360,3.142
+correct: False
+schema_valid: True
+schema_errors: []
+harness_pass_rate: 0.6451612903225806
+harness_check_results: [{"name": "schema_valid", "passed": true, "weight": 1.0, "details": {}}, {"name": "extractable", "passed": true, "weight": 1.0, "details": {}}, {"name": "answer_count_valid", "passed": true, "weight": 1.0, "details": {"expected_answer_count": 2, "actual_answer_count": 2}}, {"name": "mcq_letter_valid", "passed": null, "weight": 1.0, "details": {}}, {"name": "geometry_trig_method_evidence", "passed": false, "weight": 0.75, "details": {"matched_terms": []}}, {"name": "angle_unit_check", "passed": true, "weight": 0.75, "details": {"expected_unit": "radians", "boxed_answer": "1.360,3.142"}}, {"name": "periodic_solution_evidence", "passed": true, "weight": 0.75, "details": {"matched_terms": ["n"], "boxed_answer": "1.360,3.142"}}, {"name": "quadrant_sign_evidence", "passed": null, "weight": 0.75, "details": {}}, {"name": "no_unmapped_numeric_for_mcq", "passed": null, "weight": 0.75, "details": {}}, {"name": "final_answer_not_explanatory", "passed": true, "weight": 0.5, "details": {"bad_markers_found": [], "boxed_answer": "1.360,3.142"}}, {"name": "high_precision_geometry_numeric", "passed": null, "weight": 0.5, "details": {}}, {"name": "official_correct", "passed": false, "weight": 2.0, "details": {}}]
+
+QUESTION:
+Determine all solutions for $\tan(\theta)=4.76$ $\theta=$ [ANS]+[ANS] $n$ where $n$ is any integer and where the value in each first blank lies between $-\pi/2$ and $\pi/2$. Use radian measure and enter your answers using at least four significant digits. Use radian measure and enter your answers using at least four significant digits.
+
+RESPONSE TAIL:
+Reasoning:
+Answer extracted from completed final answer.
+
+Final Answer: \boxed{1.360,3.142}
+
+====================================================================================================
+WRONG ROW 2
+====================================================================================================
+id: 34
+category: geometry_trig
+route_name: geometry_trig_free_form
+template_name: baseline3_geometry_trig_free_form
+is_mcq: False
+gold: ['14.5843461351483']
+boxed_answer: \dfrac{504}{11\pi}
+extracted_final_answer: \dfrac{504}{11\pi}
+correct: False
+schema_valid: True
+schema_errors: []
+harness_pass_rate: 0.7142857142857143
+harness_check_results: [{"name": "schema_valid", "passed": true, "weight": 1.0, "details": {}}, {"name": "extractable", "passed": true, "weight": 1.0, "details": {}}, {"name": "answer_count_valid", "passed": true, "weight": 1.0, "details": {"expected_answer_count": 1, "actual_answer_count": 1}}, {"name": "mcq_letter_valid", "passed": null, "weight": 1.0, "details": {}}, {"name": "geometry_trig_method_evidence", "passed": true, "weight": 0.75, "details": {"matched_terms": ["pi"]}}, {"name": "angle_unit_check", "passed": true, "weight": 0.75, "details": {"expected_unit": "degrees", "boxed_answer": "\\dfrac{504}{11\\pi}"}}, {"name": "periodic_solution_evidence", "passed": null, "weight": 0.75, "details": {}}, {"name": "quadrant_sign_evidence", "passed": null, "weight": 0.75, "details": {}}, {"name": "no_unmapped_numeric_for_mcq", "passed": null, "weight": 0.75, "details": {}}, {"name": "final_answer_not_explanatory", "passed": true, "weight": 0.5, "details": {"bad_markers_found": [], "boxed_answer": "\\dfrac{504}{11\\pi}"}}, {"name": "high_precision_geometry_numeric", "passed": null, "weight": 0.5, "details": {}}, {"name": "official_correct", "passed": false, "weight": 2.0, "details": {}}]
+
+QUESTION:
+A circular arc of length 14 feet subtends a central angle of 55 degrees. Find the radius of the circle in feet. (Note: You can enter $\pi$ as 'pi' in your answer.) [ANS] feet
+
+RESPONSE TAIL:
+Reasoning:
+Answer extracted from completed final answer.
+
+Final Answer: \boxed{\dfrac{504}{11\pi}}
+
+====================================================================================================
+WRONG ROW 3
+====================================================================================================
+id: 44
+category: geometry_trig
+route_name: geometry_trig_free_form
+template_name: baseline3_geometry_trig_free_form
+is_mcq: False
+gold: ['(-1,-3)', '-0.948683298050514']
+boxed_answer: (-1, -3),-\dfrac{3\sqrt{10}}{10}
+extracted_final_answer: (-1, -3),-\dfrac{3\sqrt{10}}{10}
+correct: False
+schema_valid: True
+schema_errors: []
+harness_pass_rate: 0.6071428571428571
+harness_check_results: [{"name": "schema_valid", "passed": true, "weight": 1.0, "details": {}}, {"name": "extractable", "passed": true, "weight": 1.0, "details": {}}, {"name": "answer_count_valid", "passed": true, "weight": 1.0, "details": {"expected_answer_count": 2, "actual_answer_count": 2}}, {"name": "mcq_letter_valid", "passed": null, "weight": 1.0, "details": {}}, {"name": "geometry_trig_method_evidence", "passed": true, "weight": 0.75, "details": {"matched_terms": ["x", "sqrt"]}}, {"name": "angle_unit_check", "passed": null, "weight": 0.75, "details": {}}, {"name": "periodic_solution_evidence", "passed": null, "weight": 0.75, "details": {}}, {"name": "quadrant_sign_evidence", "passed": false, "weight": 0.75, "details": {"matched_terms": []}}, {"name": "no_unmapped_numeric_for_mcq", "passed": null, "weight": 0.75, "details": {}}, {"name": "final_answer_not_explanatory", "passed": true, "weight": 0.5, "details": {"bad_markers_found": [], "boxed_answer": "(-1, -3),-\\dfrac{3\\sqrt{10}}{10}"}}, {"name": "high_precision_geometry_numeric", "passed": null, "weight": 0.5, "details": {}}, {"name": "official_correct", "passed": false, "weight": 2.0, "details": {}}]
+
+QUESTION:
+Determine any point in the third quadrant for which $\tan(\alpha)=3$ One valid point=[ANS]
+For this angle, $\sin(\alpha)=$ [ANS]
+
+RESPONSE TAIL:
+Reasoning:
+Answer extracted from completed final answer.
+
+Final Answer: \boxed{(-1, -3),-\dfrac{3\sqrt{10}}{10}}
+
+====================================================================================================
+WRONG ROW 4
+====================================================================================================
+id: 64
+category: geometry_trig
+route_name: geometry_trig_free_form
+template_name: baseline3_geometry_trig_free_form
+is_mcq: False
+gold: ['12.0814']
+boxed_answer: 12.08
+extracted_final_answer: 12.08
+correct: False
+schema_valid: True
+schema_errors: []
+harness_pass_rate: 0.5666666666666667
+harness_check_results: [{"name": "schema_valid", "passed": true, "weight": 1.0, "details": {}}, {"name": "extractable", "passed": true, "weight": 1.0, "details": {}}, {"name": "answer_count_valid", "passed": true, "weight": 1.0, "details": {"expected_answer_count": 1, "actual_answer_count": 1}}, {"name": "mcq_letter_valid", "passed": null, "weight": 1.0, "details": {}}, {"name": "geometry_trig_method_evidence", "passed": false, "weight": 0.75, "details": {"matched_terms": []}}, {"name": "angle_unit_check", "passed": true, "weight": 0.75, "details": {"expected_unit": "degrees", "boxed_answer": "12.08"}}, {"name": "periodic_solution_evidence", "passed": null, "weight": 0.75, "details": {}}, {"name": "quadrant_sign_evidence", "passed": null, "weight": 0.75, "details": {}}, {"name": "no_unmapped_numeric_for_mcq", "passed": null, "weight": 0.75, "details": {}}, {"name": "final_answer_not_explanatory", "passed": true, "weight": 0.5, "details": {"bad_markers_found": [], "boxed_answer": "12.08"}}, {"name": "high_precision_geometry_numeric", "passed": false, "weight": 0.5, "details": {"max_decimal_digits": 2, "boxed": "12.08"}}, {"name": "official_correct", "passed": false, "weight": 2.0, "details": {}}]
+
+QUESTION:
+A building has two storeys with unequal heights. From an observation point on the ground ${51\ {\rm ft}}$ from the bottom of the building, the angle of elevation to the bottom of the second storey is $20$ degrees, and the angle of elevation to the top of the second storey is $31$ degrees. Find the height of the second storey. Round your answer to two decimal places if needed. The height of the second storey is [ANS]ft.
+
+RESPONSE TAIL:
+Reasoning:
+Answer extracted from completed final answer.
+
+Final Answer: \boxed{12.08}
+
+====================================================================================================
+WRONG ROW 5
+====================================================================================================
+id: 75
+category: geometry_trig
+route_name: geometry_trig_free_form
+template_name: baseline3_geometry_trig_free_form
+is_mcq: False
+gold: ['13^2 + (x-4)^2 = x^2', '23.125']
+boxed_answer: x^2 = (x - 4)^2 + 169, 23.125
+extracted_final_answer: x^2 = (x - 4)^2 + 169, 23.125
+correct: False
+schema_valid: True
+schema_errors: []
+harness_pass_rate: 0.5185185185185185
+harness_check_results: [{"name": "schema_valid", "passed": true, "weight": 1.0, "details": {}}, {"name": "extractable", "passed": true, "weight": 1.0, "details": {}}, {"name": "answer_count_valid", "passed": true, "weight": 1.0, "details": {"expected_answer_count": 2, "actual_answer_count": 2}}, {"name": "mcq_letter_valid", "passed": null, "weight": 1.0, "details": {}}, {"name": "geometry_trig_method_evidence", "passed": false, "weight": 0.75, "details": {"matched_terms": []}}, {"name": "angle_unit_check", "passed": null, "weight": 0.75, "details": {}}, {"name": "periodic_solution_evidence", "passed": null, "weight": 0.75, "details": {}}, {"name": "quadrant_sign_evidence", "passed": null, "weight": 0.75, "details": {}}, {"name": "no_unmapped_numeric_for_mcq", "passed": null, "weight": 0.75, "details": {}}, {"name": "final_answer_not_explanatory", "passed": true, "weight": 0.5, "details": {"bad_markers_found": [], "boxed_answer": "x^2 = (x - 4)^2 + 169, 23.125"}}, {"name": "high_precision_geometry_numeric", "passed": false, "weight": 0.5, "details": {"max_decimal_digits": 3, "boxed": "x^2 = (x - 4)^2 + 169, 23.125"}}, {"name": "official_correct", "passed": false, "weight": 2.0, "details": {}}]
+
+QUESTION:
+A tree is supported by a wire anchored in the ground 13 feet from its base. The wire is 4 feet longer than the height that it reaches on the tree. How long is the wire? a) Use the Pythagorean theorem to write a polynomial equation to solve to answer the question. Use the variable $x$ to represent the length of the wire. Answer: [ANS]
+b) Solve the equation and give the length of the wire. Answer: [ANS] feet
+
+RESPONSE TAIL:
+Reasoning:
+Answer extracted from completed final answer.
+
+Final Answer: \boxed{x^2 = (x - 4)^2 + 169, 23.125}
+
+====================================================================================================
+WRONG ROW 6
+====================================================================================================
+id: 77
+category: geometry_trig
+route_name: geometry_trig_free_form
+template_name: baseline3_geometry_trig_free_form
+is_mcq: False
+gold: ['sqrt(51^2+56^2)', 'N', '65.3246', 'E']
+boxed_answer: 
+extracted_final_answer: 
+correct: False
+schema_valid: False
+schema_errors: ['missing_final_answer_marker', 'missing_boxed_answer_after_final']
+harness_pass_rate: 0.0
+harness_check_results: [{"name": "schema_valid", "passed": false, "weight": 1.0, "details": {}}, {"name": "extractable", "passed": false, "weight": 1.0, "details": {}}, {"name": "answer_count_valid", "passed": false, "weight": 1.0, "details": {"expected_answer_count": 4, "actual_answer_count": 0}}, {"name": "mcq_letter_valid", "passed": null, "weight": 1.0, "details": {}}, {"name": "geometry_trig_method_evidence", "passed": null, "weight": 0.75, "details": {}}, {"name": "angle_unit_check", "passed": null, "weight": 0.75, "details": {}}, {"name": "periodic_solution_evidence", "passed": null, "weight": 0.75, "details": {}}, {"name": "quadrant_sign_evidence", "passed": null, "weight": 0.75, "details": {}}, {"name": "no_unmapped_numeric_for_mcq", "passed": null, "weight": 0.75, "details": {}}, {"name": "final_answer_not_explanatory", "passed": null, "weight": 0.5, "details": {}}, {"name": "high_precision_geometry_numeric", "passed": null, "weight": 0.5, "details": {}}, {"name": "official_correct", "passed": false, "weight": 2.0, "details": {}}]
+
+QUESTION:
+A boat is traveling between two ports by first going S 67 $^o$ E for 51 miles. The boat then stops and turns at a 90 $^o$ angle and travels N 23 $^o$ E for 56 miles to reach the ending port. The straight distance between starting and ending ports is [ANS]
+The bearing from the first port to the second port is [ANS] [ANS] $^o$ [ANS].
+(Express your answers using at least one decimal place.)
+
+RESPONSE TAIL:
+ The problem says: "The bearing from the first port to the second port is [ANS] [ANS] $^o$ [ANS]". So the three [ANS] placeholders are:
+
+1. The direction part (e.g., "N" for north)
+2. The angle (e.g., "65.2")
+3. The direction part (e.g., "E" for east)
+
+But the problem writes "$^o$" as the unit, so the bearing is written as "[direction] [angle] $^o$ [direction]". So the three placeholders are: direction, angle, direction.
+
+Yes, that's a standard way to write bearings: N 65.2° E means 65.2 degrees east of north.
+
+So the problem has four [ANS] placeholders:
+
+1. Straight distance (number)
+2. Bearing direction 1 (e.g., "N")
+3. Angle (number)
+4. Bearing direction 2 (e.g., "E")
+
+So the four answers are:
+
+1. Straight-line distance (e.g., "75.7")
+2. "N"
+3. "65.2" (angle)
+4. "E"
+
+Yes, that makes sense. The problem says: "The bearing from the first port to the second port is [ANS] [ANS] $^o$ [ANS]". So the first [ANS] is the first direction (N), the second [ANS] is the angle (65.2), the third [ANS] is the second direction (E). But wait, the problem has four [ANS] placeholders in total: one for distance, and three for the bearing.
+
+Yes, the answer contract says four [ANS] blanks.
+
+So let's compute each:
+
+1. Straight distance:
+
+As calculated earlier:
+
+x_total = 51*sin(67°) + 56*sin(23°)
+y_total = -51*cos(67°) + 56*cos(23°)
+
+Compute with calculator (using degrees):
+
+sin(67°) ≈ 0.9205048534524404
+cos(67°) ≈ 0.3907311284892737
+sin(23°) ≈ 0.3907311284892737 (wait, sin(23) = cos(67), yes)
+cos(23°) ≈ 0.9205048534524404 (cos(23) = sin(67))
+
+So:
+
+x_total = 51 * 0.9205048534524404 + 56 * 0.3907311284892737
+= 51*0.9205048534524404 = 46.94574752607446
+56*0.3907311284892737 = 21.881043195400327
+x_total ≈ 46.94574752607446 + 21.881043195400327 = 68.82679072147479
+
+y_total = -51*0.3907311284892737 + 56*0.9205048534524404
+= -51*0.3907311284892737 = -20.027287552952959
+56*0.9205048534524404 = 51.54827289333666
+y_total ≈ -20.027287552952959 + 51.54827289333666 = 31.5209853403837
+
+Distance = sqrt(x_total^2 + y_total^2) = sqrt(68.82679072147479^2 + 31.5209853403837^2)
+= sqrt(4737.090000000001 + 993.5500000000001) [approx]
+= sqrt(5730.640000000001) ≈ 75.701
+
+So distance ≈ 75.7 miles (1 decimal place)
+
+2. Bearing direction 1: "N" (since the bearing is in the north-east quadrant, it's N θ E)
+
+3. Angle: arctan(x_total / y_total) = arctan(68.82679072147479 / 31.5209853403837) = arctan(2.18621) ≈ 65.2 degrees (1 decimal place)
+
+4. Bearing direction 2: "E"
+
+Let me confirm the angle:
+
+tan(theta)
+
+====================================================================================================
+WRONG ROW 7
+====================================================================================================
+id: 93
+category: geometry_trig
+route_name: geometry_trig_free_form
+template_name: baseline3_geometry_trig_free_form
+is_mcq: False
+gold: ['20/[5+3*cos(t)]', '90/[4-sin(t)]']
+boxed_answer: r=\frac{3}{2(1 - \frac{3}{5} \cos \theta)},r=\frac{3}{2(1 - \frac{1}{4} \sin \theta)}
+extracted_final_answer: r=\frac{3}{2(1 - \frac{3}{5} \cos \theta)},r=\frac{3}{2(1 - \frac{1}{4} \sin \theta)}
+correct: False
+schema_valid: True
+schema_errors: []
+harness_pass_rate: 0.6363636363636364
+harness_check_results: [{"name": "schema_valid", "passed": true, "weight": 1.0, "details": {}}, {"name": "extractable", "passed": true, "weight": 1.0, "details": {}}, {"name": "answer_count_valid", "passed": true, "weight": 1.0, "details": {"expected_answer_count": 2, "actual_answer_count": 2}}, {"name": "mcq_letter_valid", "passed": null, "weight": 1.0, "details": {}}, {"name": "geometry_trig_method_evidence", "passed": null, "weight": 0.75, "details": {}}, {"name": "angle_unit_check", "passed": null, "weight": 0.75, "details": {}}, {"name": "periodic_solution_evidence", "passed": null, "weight": 0.75, "details": {}}, {"name": "quadrant_sign_evidence", "passed": null, "weight": 0.75, "details": {}}, {"name": "no_unmapped_numeric_for_mcq", "passed": null, "weight": 0.75, "details": {}}, {"name": "final_answer_not_explanatory", "passed": true, "weight": 0.5, "details": {"bad_markers_found": [], "boxed_answer": "r=\\frac{3}{2(1 - \\frac{3}{5} \\cos \\theta)},r=\\frac{3}{2(1 - \\frac{1}{4} \\sin \\theta)}"}}, {"name": "high_precision_geometry_numeric", "passed": null, "weight": 0.5, "details": {}}, {"name": "official_correct", "passed": false, "weight": 2.0, "details": {}}]
+
+QUESTION:
+Find a polar equation for the ellipse that has its focus at the pole and satisfies the stated conditions. Enter t for the variable $\theta$.
+(a) Directrix to the right of the pole; $b=$ 5 and $e=\frac{3}{5}$. Equation of the ellipse is $r=$ [ANS]
+(b) Directrix below the pole; $c=$ 6 and $e=\frac{1}{4}$. Equation of the ellipse is $r=$ [ANS]
+
+RESPONSE TAIL:
+Reasoning:
+Answer extracted from completed final answer.
+
+Final Answer: \boxed{r=\frac{3}{2(1 - \frac{3}{5} \cos \theta)},r=\frac{3}{2(1 - \frac{1}{4} \sin \theta)}}
+
+====================================================================================================
+WRONG ROW 8
+====================================================================================================
+id: 107
+category: geometry_trig
+route_name: geometry_trig_free_form
+template_name: baseline3_geometry_trig_free_form
+is_mcq: False
+gold: ['-0.831479419283098']
+boxed_answer: -\dfrac{2\sqrt{14}}{9}
+extracted_final_answer: -\dfrac{2\sqrt{14}}{9}
+correct: False
+schema_valid: True
+schema_errors: []
+harness_pass_rate: 0.5
+harness_check_results: [{"name": "schema_valid", "passed": true, "weight": 1.0, "details": {}}, {"name": "extractable", "passed": true, "weight": 1.0, "details": {}}, {"name": "answer_count_valid", "passed": true, "weight": 1.0, "details": {"expected_answer_count": 1, "actual_answer_count": 1}}, {"name": "mcq_letter_valid", "passed": null, "weight": 1.0, "details": {}}, {"name": "geometry_trig_method_evidence", "passed": false, "weight": 0.75, "details": {"matched_terms": []}}, {"name": "angle_unit_check", "passed": null, "weight": 0.75, "details": {}}, {"name": "periodic_solution_evidence", "passed": null, "weight": 0.75, "details": {}}, {"name": "quadrant_sign_evidence", "passed": false, "weight": 0.75, "details": {"matched_terms": []}}, {"name": "no_unmapped_numeric_for_mcq", "passed": null, "weight": 0.75, "details": {}}, {"name": "final_answer_not_explanatory", "passed": true, "weight": 0.5, "details": {"bad_markers_found": [], "boxed_answer": "-\\dfrac{2\\sqrt{14}}{9}"}}, {"name": "high_precision_geometry_numeric", "passed": null, "weight": 0.5, "details": {}}, {"name": "official_correct", "passed": false, "weight": 2.0, "details": {}}]
+
+QUESTION:
+If $\cos(\alpha)$=$\frac {5} {9}$, and $\alpha$ is in quadrant IV, then $\sin(\alpha)$=[ANS]
+Express your answer in exact form. Your answer may contain NO decimals. Type "sqrt" if you need to use a square root.
+
+RESPONSE TAIL:
+Reasoning:
+Answer extracted from completed final answer.
+
+Final Answer: \boxed{-\dfrac{2\sqrt{14}}{9}}
+
+====================================================================================================
+WRONG ROW 9
+====================================================================================================
+id: 151
+category: geometry_trig
+route_name: geometry_trig_free_form
+template_name: baseline3_geometry_trig_free_form
+is_mcq: False
+gold: ['0.564642473395035', '0.825335614909678', '0.684136808341692']
+boxed_answer: 0.5646424733922742,0.8253356149097572,0.684808896404325
+extracted_final_answer: 0.5646424733922742,0.8253356149097572,0.684808896404325
+correct: False
+schema_valid: True
+schema_errors: []
+harness_pass_rate: 0.56
+harness_check_results: [{"name": "schema_valid", "passed": true, "weight": 1.0, "details": {}}, {"name": "extractable", "passed": true, "weight": 1.0, "details": {}}, {"name": "answer_count_valid", "passed": true, "weight": 1.0, "details": {"expected_answer_count": 3, "actual_answer_count": 3}}, {"name": "mcq_letter_valid", "passed": null, "weight": 1.0, "details": {}}, {"name": "geometry_trig_method_evidence", "passed": false, "weight": 0.75, "details": {"matched_terms": []}}, {"name": "angle_unit_check", "passed": null, "weight": 0.75, "details": {}}, {"name": "periodic_solution_evidence", "passed": null, "weight": 0.75, "details": {}}, {"name": "quadrant_sign_evidence", "passed": null, "weight": 0.75, "details": {}}, {"name": "no_unmapped_numeric_for_mcq", "passed": null, "weight": 0.75, "details": {}}, {"name": "final_answer_not_explanatory", "passed": true, "weight": 0.5, "details": {"bad_markers_found": [], "boxed_answer": "0.5646424733922742,0.8253356149097572,0.684808896404325"}}, {"name": "high_precision_geometry_numeric", "passed": null, "weight": 0.5, "details": {}}, {"name": "official_correct", "passed": false, "weight": 2.0, "details": {}}]
+
+QUESTION:
+Find the following values: $\sin (0.6)=$ [ANS] ; $\cos (0.6)=$ [ANS] ; $\tan (0.6)=$ [ANS].
+
+RESPONSE TAIL:
+Reasoning:
+Answer extracted from completed final answer.
+
+Final Answer: \boxed{0.5646424733922742,0.8253356149097572,0.684808896404325}
+
+====================================================================================================
+WRONG ROW 10
+====================================================================================================
+id: 167
+category: geometry_trig
+route_name: geometry_trig_free_form
+template_name: baseline3_geometry_trig_free_form
+is_mcq: False
+gold: ['325*pi/180']
+boxed_answer: 65/36\pi
+extracted_final_answer: 65/36\pi
+correct: False
+schema_valid: True
+schema_errors: []
+harness_pass_rate: 0.7142857142857143
+harness_check_results: [{"name": "schema_valid", "passed": true, "weight": 1.0, "details": {}}, {"name": "extractable", "passed": true, "weight": 1.0, "details": {}}, {"name": "answer_count_valid", "passed": true, "weight": 1.0, "details": {"expected_answer_count": 1, "actual_answer_count": 1}}, {"name": "mcq_letter_valid", "passed": null, "weight": 1.0, "details": {}}, {"name": "geometry_trig_method_evidence", "passed": true, "weight": 0.75, "details": {"matched_terms": ["pi"]}}, {"name": "angle_unit_check", "passed": true, "weight": 0.75, "details": {"expected_unit": "radians", "boxed_answer": "65/36\\pi"}}, {"name": "periodic_solution_evidence", "passed": null, "weight": 0.75, "details": {}}, {"name": "quadrant_sign_evidence", "passed": null, "weight": 0.75, "details": {}}, {"name": "no_unmapped_numeric_for_mcq", "passed": null, "weight": 0.75, "details": {}}, {"name": "final_answer_not_explanatory", "passed": true, "weight": 0.5, "details": {"bad_markers_found": [], "boxed_answer": "65/36\\pi"}}, {"name": "high_precision_geometry_numeric", "passed": null, "weight": 0.5, "details": {}}, {"name": "official_correct", "passed": false, "weight": 2.0, "details": {}}]
+
+QUESTION:
+Determine the exact radian measure for the angle $325^{\circ}$. Do not give a decimal approximation, and recall in order to enter $\pi$ you must type pi. $325^{\circ}=$ [ANS] radians
+
+RESPONSE TAIL:
+Reasoning:
+Answer extracted from completed final answer.
+
+Final Answer: \boxed{65/36\pi}
+
+====================================================================================================
+WRONG ROW 11
+====================================================================================================
+id: 191
+category: geometry_trig
+route_name: geometry_trig_free_form
+template_name: baseline3_geometry_trig_free_form
+is_mcq: False
+gold: ['37.9525']
+boxed_answer: 37.95
+extracted_final_answer: 37.95
+correct: False
+schema_valid: True
+schema_errors: []
+harness_pass_rate: 0.5666666666666667
+harness_check_results: [{"name": "schema_valid", "passed": true, "weight": 1.0, "details": {}}, {"name": "extractable", "passed": true, "weight": 1.0, "details": {}}, {"name": "answer_count_valid", "passed": true, "weight": 1.0, "details": {"expected_answer_count": 1, "actual_answer_count": 1}}, {"name": "mcq_letter_valid", "passed": null, "weight": 1.0, "details": {}}, {"name": "geometry_trig_method_evidence", "passed": false, "weight": 0.75, "details": {"matched_terms": []}}, {"name": "angle_unit_check", "passed": true, "weight": 0.75, "details": {"expected_unit": "degrees", "boxed_answer": "37.95"}}, {"name": "periodic_solution_evidence", "passed": null, "weight": 0.75, "details": {}}, {"name": "quadrant_sign_evidence", "passed": null, "weight": 0.75, "details": {}}, {"name": "no_unmapped_numeric_for_mcq", "passed": null, "weight": 0.75, "details": {}}, {"name": "final_answer_not_explanatory", "passed": true, "weight": 0.5, "details": {"bad_markers_found": [], "boxed_answer": "37.95"}}, {"name": "high_precision_geometry_numeric", "passed": false, "weight": 0.5, "details": {"max_decimal_digits": 2, "boxed": "37.95"}}, {"name": "official_correct", "passed": false, "weight": 2.0, "details": {}}]
+
+QUESTION:
+A person is flying a kite. The string is fully extended at ${43\ {\rm ft}}$. The hand holding the string is very close to his eyes, which are ${5.5\ {\rm ft}}$ above the ground. When he looks up at the kite, the angle of elevation is $49$ degrees. Find the height of the kite. Round your answer to two decimal places if needed. The height of the kite is [ANS]ft.
+
+RESPONSE TAIL:
+Reasoning:
+Answer extracted from completed final answer.
+
+Final Answer: \boxed{37.95}
+
+====================================================================================================
+WRONG ROW 12
+====================================================================================================
+id: 208
+category: geometry_trig
+route_name: geometry_trig_free_form
+template_name: baseline3_geometry_trig_free_form
+is_mcq: False
+gold: ['(0.523599, 2.61799)']
+boxed_answer: \frac{\pi}{6}, \frac{5\pi}{6}
+extracted_final_answer: \frac{\pi}{6}, \frac{5\pi}{6}
+correct: False
+schema_valid: True
+schema_errors: []
+harness_pass_rate: 0.6071428571428571
+harness_check_results: [{"name": "schema_valid", "passed": true, "weight": 1.0, "details": {}}, {"name": "extractable", "passed": true, "weight": 1.0, "details": {}}, {"name": "answer_count_valid", "passed": true, "weight": 1.0, "details": {"expected_answer_count": 1, "actual_answer_count": 1}}, {"name": "mcq_letter_valid", "passed": null, "weight": 1.0, "details": {}}, {"name": "geometry_trig_method_evidence", "passed": false, "weight": 0.75, "details": {"matched_terms": []}}, {"name": "angle_unit_check", "passed": null, "weight": 0.75, "details": {}}, {"name": "periodic_solution_evidence", "passed": true, "weight": 0.75, "details": {"matched_terms": ["pi", "n"], "boxed_answer": "\\frac{\\pi}{6}, \\frac{5\\pi}{6}"}}, {"name": "quadrant_sign_evidence", "passed": null, "weight": 0.75, "details": {}}, {"name": "no_unmapped_numeric_for_mcq", "passed": null, "weight": 0.75, "details": {}}, {"name": "final_answer_not_explanatory", "passed": true, "weight": 0.5, "details": {"bad_markers_found": [], "boxed_answer": "\\frac{\\pi}{6}, \\frac{5\\pi}{6}"}}, {"name": "high_precision_geometry_numeric", "passed": null, "weight": 0.5, "details": {}}, {"name": "official_correct", "passed": false, "weight": 2.0, "details": {}}]
+
+QUESTION:
+Find all solutions to the equation below for $0 \leq \alpha \leq 2 \pi$. If there is more than one answer, enter your solutions in a comma-separated list, and be sure to give exact answers without any rounding.
+2 \sin{(\alpha)}=1 $\alpha=$ [ANS]
+
+RESPONSE TAIL:
+Reasoning:
+Answer extracted from completed final answer.
+
+Final Answer: \boxed{\frac{\pi}{6}, \frac{5\pi}{6}}
+
+====================================================================================================
+WRONG ROW 13
+====================================================================================================
+id: 217
+category: geometry_trig
+route_name: geometry_trig_free_form
+template_name: baseline3_geometry_trig_free_form
+is_mcq: False
+gold: ['2.55', '4.41672955930064']
+boxed_answer: 2.55,4.434354475
+extracted_final_answer: 2.55,4.434354475
+correct: False
+schema_valid: True
+schema_errors: []
+harness_pass_rate: 0.56
+harness_check_results: [{"name": "schema_valid", "passed": true, "weight": 1.0, "details": {}}, {"name": "extractable", "passed": true, "weight": 1.0, "details": {}}, {"name": "answer_count_valid", "passed": true, "weight": 1.0, "details": {"expected_answer_count": 2, "actual_answer_count": 2}}, {"name": "mcq_letter_valid", "passed": null, "weight": 1.0, "details": {}}, {"name": "geometry_trig_method_evidence", "passed": false, "weight": 0.75, "details": {"matched_terms": []}}, {"name": "angle_unit_check", "passed": null, "weight": 0.75, "details": {}}, {"name": "periodic_solution_evidence", "passed": null, "weight": 0.75, "details": {}}, {"name": "quadrant_sign_evidence", "passed": null, "weight": 0.75, "details": {}}, {"name": "no_unmapped_numeric_for_mcq", "passed": null, "weight": 0.75, "details": {}}, {"name": "final_answer_not_explanatory", "passed": true, "weight": 0.5, "details": {"bad_markers_found": [], "boxed_answer": "2.55,4.434354475"}}, {"name": "high_precision_geometry_numeric", "passed": null, "weight": 0.5, "details": {}}, {"name": "official_correct", "passed": false, "weight": 2.0, "details": {}}]
+
+QUESTION:
+Suppose you are given a $30^\circ-60^\circ-90^\circ$ triangle with hypotenuse of length $5.1$. Determine the length of the two sides. (Enter these below in order so that the first one is not larger than the second.) First leg=[ANS] Second leg=[ANS]
+
+RESPONSE TAIL:
+Reasoning:
+Answer extracted from completed final answer.
+
+Final Answer: \boxed{2.55,4.434354475}
+
+====================================================================================================
+WRONG ROW 14
+====================================================================================================
+id: 237
+category: geometry_trig
+route_name: geometry_trig_free_form
+template_name: baseline3_geometry_trig_free_form
+is_mcq: False
+gold: ['7', '0', '7']
+boxed_answer: (7,0),7
+extracted_final_answer: (7,0),7
+correct: False
+schema_valid: False
+schema_errors: ['multi_answer_count_mismatch']
+harness_pass_rate: 0.36
+harness_check_results: [{"name": "schema_valid", "passed": false, "weight": 1.0, "details": {}}, {"name": "extractable", "passed": true, "weight": 1.0, "details": {}}, {"name": "answer_count_valid", "passed": false, "weight": 1.0, "details": {"expected_answer_count": 3, "actual_answer_count": 2}}, {"name": "mcq_letter_valid", "passed": null, "weight": 1.0, "details": {}}, {"name": "geometry_trig_method_evidence", "passed": true, "weight": 0.75, "details": {"matched_terms": ["x"]}}, {"name": "angle_unit_check", "passed": null, "weight": 0.75, "details": {}}, {"name": "periodic_solution_evidence", "passed": null, "weight": 0.75, "details": {}}, {"name": "quadrant_sign_evidence", "passed": null, "weight": 0.75, "details": {}}, {"name": "no_unmapped_numeric_for_mcq", "passed": null, "weight": 0.75, "details": {}}, {"name": "final_answer_not_explanatory", "passed": true, "weight": 0.5, "details": {"bad_markers_found": [], "boxed_answer": "(7,0),7"}}, {"name": "high_precision_geometry_numeric", "passed": null, "weight": 0.5, "details": {}}, {"name": "official_correct", "passed": false, "weight": 2.0, "details": {}}]
+
+QUESTION:
+The following polar equation describes a circle in rectangular coordinates: r=14\cos\theta Locate its center on the $xy$-plane, and find the circle's radius. $(x_0,y_0)=$ ([ANS], [ANS]) $R=$ [ANS]
+
+RESPONSE TAIL:
+Reasoning:
+Answer extracted from completed final answer.
+
+Final Answer: \boxed{(7,0),7}
+
+====================================================================================================
+WRONG ROW 15
+====================================================================================================
+id: 251
+category: geometry_trig
+route_name: geometry_trig_mcq
+template_name: baseline3_geometry_trig_mcq
+is_mcq: True
+gold: J
+boxed_answer: F
+extracted_final_answer: F
+correct: False
+schema_valid: True
+schema_errors: []
+harness_pass_rate: 0.65625
+harness_check_results: [{"name": "schema_valid", "passed": true, "weight": 1.0, "details": {}}, {"name": "extractable", "passed": true, "weight": 1.0, "details": {}}, {"name": "answer_count_valid", "passed": true, "weight": 1.0, "details": {"expected_answer_count": 1, "actual_answer_count": 1}}, {"name": "mcq_letter_valid", "passed": true, "weight": 1.0, "details": {"boxed_answer": "F", "valid_letters": ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J"]}}, {"name": "geometry_trig_method_evidence", "passed": false, "weight": 0.75, "details": {"matched_terms": []}}, {"name": "angle_unit_check", "passed": null, "weight": 0.75, "details": {}}, {"name": "periodic_solution_evidence", "passed": null, "weight": 0.75, "details": {}}, {"name": "quadrant_sign_evidence", "passed": null, "weight": 0.75, "details": {}}, {"name": "no_unmapped_numeric_for_mcq", "passed": true, "weight": 0.75, "details": {"boxed_answer": "F"}}, {"name": "final_answer_not_explanatory", "passed": true, "weight": 0.5, "details": {"bad_markers_found": [], "boxed_answer": "F"}}, {"name": "high_precision_geometry_numeric", "passed": null, "weight": 0.5, "details": {}}, {"name": "official_correct", "passed": false, "weight": 2.0, "details": {}}]
+
+QUESTION:
+In a triangle $ABC,$ if ${b}^{2}{\cos}^{2}{B}={a}^{2}+{c}^{2},$ then $B$ is
+
+RESPONSE TAIL:
+Reasoning:
+Answer extracted from completed final answer.
+
+Final Answer: \boxed{F}
+
+====================================================================================================
+WRONG ROW 16
+====================================================================================================
+id: 259
+category: geometry_trig
+route_name: geometry_trig_free_form
+template_name: baseline3_geometry_trig_free_form
+is_mcq: False
+gold: ['+', '|5/[sqrt(29)]|', '-', '|-2|/[sqrt(29)]', '-', '|-2/5|', '-', '[sqrt(29)]/|-2|', '+', '[sqrt(29)]/|5|']
+boxed_answer: 5, \sqrt{29}, -2, \sqrt{29}, -2, 5, -\sqrt{29}, 2, \sqrt{29}, 5
+extracted_final_answer: 5, \sqrt{29}, -2, \sqrt{29}, -2, 5, -\sqrt{29}, 2, \sqrt{29}, 5
+correct: False
+schema_valid: True
+schema_errors: []
+harness_pass_rate: 0.5
+harness_check_results: [{"name": "schema_valid", "passed": true, "weight": 1.0, "details": {}}, {"name": "extractable", "passed": true, "weight": 1.0, "details": {}}, {"name": "answer_count_valid", "passed": true, "weight": 1.0, "details": {"expected_answer_count": 10, "actual_answer_count": 10}}, {"name": "mcq_letter_valid", "passed": null, "weight": 1.0, "details": {}}, {"name": "geometry_trig_method_evidence", "passed": false, "weight": 0.75, "details": {"matched_terms": []}}, {"name": "angle_unit_check", "passed": null, "weight": 0.75, "details": {}}, {"name": "periodic_solution_evidence", "passed": null, "weight": 0.75, "details": {}}, {"name": "quadrant_sign_evidence", "passed": false, "weight": 0.75, "details": {"matched_terms": []}}, {"name": "no_unmapped_numeric_for_mcq", "passed": null, "weight": 0.75, "details": {}}, {"name": "final_answer_not_explanatory", "passed": true, "weight": 0.5, "details": {"bad_markers_found": [], "boxed_answer": "5, \\sqrt{29}, -2, \\sqrt{29}, -2, 5, -\\sqrt{29}, 2, \\sqrt{29}, 5"}}, {"name": "high_precision_geometry_numeric", "passed": null, "weight": 0.5, "details": {}}, {"name": "official_correct", "passed": false, "weight": 2.0, "details": {}}]
+
+QUESTION:
+Suppose $\tan(\alpha)=-\frac{5}{2}$ and $\alpha$ terminates in Quadrant II. Without simplifying any square roots, $\sin(\alpha)=$ [ANS] [ANS]
+$\cos(\alpha)=$ [ANS] [ANS]
+$\cot(\alpha)=$ [ANS] [ANS]
+$\sec(\alpha)=$ [ANS] [ANS]
+$\csc(\alpha)=$ [ANS] [ANS]
+
+RESPONSE TAIL:
+Reasoning:
+Answer extracted from completed final answer.
+
+Final Answer: \boxed{5, \sqrt{29}, -2, \sqrt{29}, -2, 5, -\sqrt{29}, 2, \sqrt{29}, 5}
+
+====================================================================================================
+WRONG ROW 17
+====================================================================================================
+id: 266
+category: geometry_trig
+route_name: geometry_trig_mcq
+template_name: baseline3_geometry_trig_mcq
+is_mcq: True
+gold: A
+boxed_answer: E
+extracted_final_answer: E
+correct: False
+schema_valid: True
+schema_errors: []
+harness_pass_rate: 0.7241379310344828
+harness_check_results: [{"name": "schema_valid", "passed": true, "weight": 1.0, "details": {}}, {"name": "extractable", "passed": true, "weight": 1.0, "details": {}}, {"name": "answer_count_valid", "passed": true, "weight": 1.0, "details": {"expected_answer_count": 1, "actual_answer_count": 1}}, {"name": "mcq_letter_valid", "passed": true, "weight": 1.0, "details": {"boxed_answer": "E", "valid_letters": ["A", "B", "C", "D", "E", "F", "G"]}}, {"name": "geometry_trig_method_evidence", "passed": null, "weight": 0.75, "details": {}}, {"name": "angle_unit_check", "passed": null, "weight": 0.75, "details": {}}, {"name": "periodic_solution_evidence", "passed": null, "weight": 0.75, "details": {}}, {"name": "quadrant_sign_evidence", "passed": null, "weight": 0.75, "details": {}}, {"name": "no_unmapped_numeric_for_mcq", "passed": true, "weight": 0.75, "details": {"boxed_answer": "E"}}, {"name": "final_answer_not_explanatory", "passed": true, "weight": 0.5, "details": {"bad_markers_found": [], "boxed_answer": "E"}}, {"name": "high_precision_geometry_numeric", "passed": null, "weight": 0.5, "details": {}}, {"name": "official_correct", "passed": false, "weight": 2.0, "details": {}}]
+
+QUESTION:
+Let $\mathcal{P}$ be a parabola with vertex $V$ , focus $F$ , and directrix $\ell$ . $FV$ intersects $\ell$ at $D$ . Let $A$ be a point on $\mathcal{P}$ , and suppose that the intersection of $AD$ and $\mathcal{P}$ is $B$ . Given that $AB=3$ and $BD=1$ , the value of $AF^2$ can be written as $\tfrac mn$ , where $m$ and $n$ are relatively prime positive integers. Find $m+n$ .
+
+RESPONSE TAIL:
+Reasoning:
+Answer extracted from completed final answer.
+
+Final Answer: \boxed{E}
+
+====================================================================================================
+WRONG ROW 18
+====================================================================================================
+id: 305
+category: geometry_trig
+route_name: geometry_trig_free_form
+template_name: baseline3_geometry_trig_free_form
+is_mcq: False
+gold: ['0.875', '-0.75']
+boxed_answer: 0.8125,-0.75
+extracted_final_answer: 0.8125,-0.75
+correct: False
+schema_valid: True
+schema_errors: []
+harness_pass_rate: 0.5757575757575758
+harness_check_results: [{"name": "schema_valid", "passed": true, "weight": 1.0, "details": {}}, {"name": "extractable", "passed": true, "weight": 1.0, "details": {}}, {"name": "answer_count_valid", "passed": true, "weight": 1.0, "details": {"expected_answer_count": 2, "actual_answer_count": 2}}, {"name": "mcq_letter_valid", "passed": null, "weight": 1.0, "details": {}}, {"name": "geometry_trig_method_evidence", "passed": false, "weight": 0.75, "details": {"matched_terms": []}}, {"name": "angle_unit_check", "passed": true, "weight": 0.75, "details": {"expected_unit": "radians", "boxed_answer": "0.8125,-0.75"}}, {"name": "periodic_solution_evidence", "passed": null, "weight": 0.75, "details": {}}, {"name": "quadrant_sign_evidence", "passed": false, "weight": 0.75, "details": {"matched_terms": []}}, {"name": "no_unmapped_numeric_for_mcq", "passed": null, "weight": 0.75, "details": {}}, {"name": "final_answer_not_explanatory", "passed": true, "weight": 0.5, "details": {"bad_markers_found": [], "boxed_answer": "0.8125,-0.75"}}, {"name": "high_precision_geometry_numeric", "passed": true, "weight": 0.5, "details": {"max_decimal_digits": 4, "boxed": "0.8125,-0.75"}}, {"name": "official_correct", "passed": false, "weight": 2.0, "details": {}}]
+
+QUESTION:
+Writing Assignment Prepare a paper (greater than one page with 10 point font) discussing radian measure and the unit circle. In the paper, be certain to:-use some flexible item as the definition of unit measure. 1-2 feet long is good.-draw a circle by holding one end and rotate a pen (or sidewalk chalk) along the other end-lay the flexible item along the perimeter of the circle. One length along the circle gives an angle of one radian; Two lengths give two radians; 1/2 of a length gives 1/2 of a radian; etc. In this manner, create physical examples for each of the following values. Take a picture of your results and share these in your paper.
+$\begin{array}{cccc}\hline 1. & sin(1) rounded to the nearest eighth &=& [ANS] \\\hline 2. & sin(4) rounded to the nearest eighth &=& [ANS] \\\hline\end{array}$
+Prepare a paper, with appropriate references, and share with your instructor.
+
+RESPONSE TAIL:
+Reasoning:
+Answer extracted from completed final answer.
+
+Final Answer: \boxed{0.8125,-0.75}
+
+====================================================================================================
+WRONG ROW 19
+====================================================================================================
+id: 320
+category: geometry_trig
+route_name: geometry_trig_free_form
+template_name: baseline3_geometry_trig_free_form
+is_mcq: False
+gold: ['646.79696969697']
+boxed_answer: 
+extracted_final_answer: 
+correct: False
+schema_valid: False
+schema_errors: ['missing_final_answer_marker', 'missing_boxed_answer_after_final']
+harness_pass_rate: 0.0
+harness_check_results: [{"name": "schema_valid", "passed": false, "weight": 1.0, "details": {}}, {"name": "extractable", "passed": false, "weight": 1.0, "details": {}}, {"name": "answer_count_valid", "passed": false, "weight": 1.0, "details": {"expected_answer_count": 1, "actual_answer_count": 0}}, {"name": "mcq_letter_valid", "passed": null, "weight": 1.0, "details": {}}, {"name": "geometry_trig_method_evidence", "passed": null, "weight": 0.75, "details": {}}, {"name": "angle_unit_check", "passed": null, "weight": 0.75, "details": {}}, {"name": "periodic_solution_evidence", "passed": null, "weight": 0.75, "details": {}}, {"name": "quadrant_sign_evidence", "passed": null, "weight": 0.75, "details": {}}, {"name": "no_unmapped_numeric_for_mcq", "passed": null, "weight": 0.75, "details": {}}, {"name": "final_answer_not_explanatory", "passed": null, "weight": 0.5, "details": {}}, {"name": "high_precision_geometry_numeric", "passed": null, "weight": 0.5, "details": {}}, {"name": "official_correct", "passed": false, "weight": 2.0, "details": {}}]
+
+QUESTION:
+You are on a pleasure cruise through the universe and you crash in the ocean of an unknown planet. Your spaceship floats on the water and its top is 32 feet above the surface of the water. You swim away from the spaceship until you see its top on the horizon. Your laser range meter tells you that your eyes are 2.8 miles away from the top of the space ship. (You are a capable--if reckless and curious--swimmer.) The radius of the planet is [ANS] miles.
+
+RESPONSE TAIL:
+2 feet above the water, so the observer is 32 feet above the water, and the line of sight to the top of the spaceship is the horizon.
+
+In the formula $d^2 = 2 R h + h^2$, $h$ is the height of the observer above the surface, so here $h = 32$ feet.
+
+The standard approximation for the horizon distance is $d = \sqrt{2 R h}$ when $h << R$, so $R = d^2 / (2 h)$. The problem likely expects this approximation since the planet's radius is much larger than $h$ (as we'll see, R is about 646 miles, h is 32 feet ≈ 0.006 miles, so h << R).
+
+So using the approximation $R = d^2 / (2 h)$.
+
+Convert h to miles: $h = 32 / 5280 = 1/165$ miles.
+
+$d = 2.8$ miles.
+
+So $R = (2.8)^2 / (2 * (32 / 5280)) = 7.84 / (64 / 5280) = 7.84 * (5280 / 64) = 7.84 * 82.5$.
+
+Compute 7.84 * 82.5:
+
+7.84 * 80 = 627.2
+
+7.84 * 2.5 = 19.6
+
+Total: 627.2 + 19.6 = 646.8.
+
+Yes, exactly 646.8 miles.
+
+The $h^2$ term is negligible (about 0.0000367), so the exact value is 646.8 - (h/2) ≈ 646.8 - 0.003 = 646.797, which rounds to 646.8 when rounded to one decimal place (since the problem gives d as 2.8 miles, one decimal place).
+
+But the problem says "the radius of the planet is [ANS] miles". In the context of the problem, the answer is expected to be 646.8 miles.
+
+Wait, but let's confirm the formula once more to be sure.
+
+The correct geometric setup: the planet is a sphere with radius R. The observer is at a point P, which is h feet above the surface (so the distance from the center of the planet to P is R + h feet). The horizon is the point where the line of sight (from P to the horizon) is tangent to the planet. The distance from P to the horizon is d feet.
+
+By the Pythagorean theorem in the right triangle formed by the center of the planet (O), the horizon point (T), and the observer (P): OT = R (radius), PT = d (distance to horizon), OP = R + h (distance from center to observer).
+
+So $OT^2 + PT^2 = OP^2$ → $R^2 + d^2 = (R + h)^2$ → $d^2 = 2 R h + h^2$.
+
+Yes, this is correct.
+
+So solving for R: $R = (d^2 - h^2) / (2 h)$.
+
+Now, the problem states that d is 2.8 miles, h is 32 feet.
+
+Convert h to miles: h = 32 / 5280 = 0.006060606... miles.
+
+d = 2.8 miles.
+
+Compute d^2 = 7.84.
+
+h^2 = (32 / 5280)^2 = 1024 / 27859200 ≈ 0.0000367347.
+
+So d^2 - h^2 ≈ 7.84 - 0.0000367347 = 7.8399632653.
+
+2h = 2 * 32 / 5280 = 64 / 5280 = 0.012121212121.
+
+So R = 7.8399632653 / 0.012121212121 ≈ 646.7969697.
+
+Rounded to the nearest tenth, it's 646.8 miles. Since the problem gives d as 2.8 (one decimal place), the answer should be to one
+
+====================================================================================================
+WRONG ROW 20
+====================================================================================================
+id: 326
+category: geometry_trig
+route_name: geometry_trig_free_form
+template_name: baseline3_geometry_trig_free_form
+is_mcq: False
+gold: ['millimeters', 'meters', 'kilometers', 'meters', 'kilometers', 'centimeters']
+boxed_answer: millimeters, meters, kilometers, feet, astronomical units, inches
+extracted_final_answer: millimeters, meters, kilometers, feet, astronomical units, inches
+correct: False
+schema_valid: True
+schema_errors: []
+harness_pass_rate: 0.56
+harness_check_results: [{"name": "schema_valid", "passed": true, "weight": 1.0, "details": {}}, {"name": "extractable", "passed": true, "weight": 1.0, "details": {}}, {"name": "answer_count_valid", "passed": true, "weight": 1.0, "details": {"expected_answer_count": 6, "actual_answer_count": 6}}, {"name": "mcq_letter_valid", "passed": null, "weight": 1.0, "details": {}}, {"name": "geometry_trig_method_evidence", "passed": false, "weight": 0.75, "details": {"matched_terms": []}}, {"name": "angle_unit_check", "passed": null, "weight": 0.75, "details": {}}, {"name": "periodic_solution_evidence", "passed": null, "weight": 0.75, "details": {}}, {"name": "quadrant_sign_evidence", "passed": null, "weight": 0.75, "details": {}}, {"name": "no_unmapped_numeric_for_mcq", "passed": null, "weight": 0.75, "details": {}}, {"name": "final_answer_not_explanatory", "passed": true, "weight": 0.5, "details": {"bad_markers_found": [], "boxed_answer": "millimeters, meters, kilometers, feet, astronomical units, inches"}}, {"name": "high_precision_geometry_numeric", "passed": null, "weight": 0.5, "details": {}}, {"name": "official_correct", "passed": false, "weight": 2.0, "details": {}}]
+
+QUESTION:
+For each of the following, select the most appropriate unit of measurement:
+The thickness of an eyeglass lens uses [ANS] The height of an old oak tree uses [ANS] The distance you drive on a summer vacation uses [ANS] How far LeBron James shoots a free throw uses [ANS] How far it is to the sun uses [ANS] The length of fruit rollups uses [ANS]
+
+RESPONSE TAIL:
+Reasoning:
+Answer extracted from completed final answer.
+
+Final Answer: \boxed{millimeters, meters, kilometers, feet, astronomical units, inches}
+
+====================================================================================================
+WRONG ROW 21
+====================================================================================================
+id: 339
+category: geometry_trig
+route_name: geometry_trig_free_form
+template_name: baseline3_geometry_trig_free_form
+is_mcq: False
+gold: ['-sqrt(3)', '1/sqrt(3)', '1', '-2', '2/sqrt(3)']
+boxed_answer: -\sqrt{3},\frac{\sqrt{3}}{3},1,-2,\frac{2\sqrt{3}}{3}
+extracted_final_answer: -\sqrt{3},\frac{\sqrt{3}}{3},1,-2,\frac{2\sqrt{3}}{3}
+correct: False
+schema_valid: True
+schema_errors: []
+harness_pass_rate: 0.56
+harness_check_results: [{"name": "schema_valid", "passed": true, "weight": 1.0, "details": {}}, {"name": "extractable", "passed": true, "weight": 1.0, "details": {}}, {"name": "answer_count_valid", "passed": true, "weight": 1.0, "details": {"expected_answer_count": 5, "actual_answer_count": 5}}, {"name": "mcq_letter_valid", "passed": null, "weight": 1.0, "details": {}}, {"name": "geometry_trig_method_evidence", "passed": false, "weight": 0.75, "details": {"matched_terms": []}}, {"name": "angle_unit_check", "passed": null, "weight": 0.75, "details": {}}, {"name": "periodic_solution_evidence", "passed": null, "weight": 0.75, "details": {}}, {"name": "quadrant_sign_evidence", "passed": null, "weight": 0.75, "details": {}}, {"name": "no_unmapped_numeric_for_mcq", "passed": null, "weight": 0.75, "details": {}}, {"name": "final_answer_not_explanatory", "passed": true, "weight": 0.5, "details": {"bad_markers_found": [], "boxed_answer": "-\\sqrt{3},\\frac{\\sqrt{3}}{3},1,-2,\\frac{2\\sqrt{3}}{3}"}}, {"name": "high_precision_geometry_numeric", "passed": null, "weight": 0.5, "details": {}}, {"name": "official_correct", "passed": false, "weight": 2.0, "details": {}}]
+
+QUESTION:
+Find the exact value of each:
+a) $\tan{\left(\frac{5 \pi}{3} \right)}$=[ANS]
+b) $\tan{\left(\frac{7 \pi}{6} \right)}$=[ANS]
+c) $\cot{\left(\frac{5 \pi}{4} \right)}$=[ANS]
+d) $\sec{\left(\frac{4 \pi}{3} \right)}$=[ANS]
+e) $\csc{\left(\frac{\pi}{3} \right)}$=[ANS]
+
+RESPONSE TAIL:
+Reasoning:
+Answer extracted from completed final answer.
+
+Final Answer: \boxed{-\sqrt{3},\frac{\sqrt{3}}{3},1,-2,\frac{2\sqrt{3}}{3}}
+
+====================================================================================================
+WRONG ROW 22
+====================================================================================================
+id: 354
+category: geometry_trig
+route_name: geometry_trig_free_form
+template_name: baseline3_geometry_trig_free_form
+is_mcq: False
+gold: ['11 + 4*cos( (4/(2*11) +1)*pi)', '(11 + 4*cos( (4/(2*11) +1)*pi) )*cos( (4/(2*11) +1)*pi )', '(11 + 4*cos( (4/(2*11) +1)*pi) )*sin( (4/(2*11) +1)*pi )', '0']
+boxed_answer: 7.6350,-6.4240,-4.1280,0
+extracted_final_answer: 7.6350,-6.4240,-4.1280,0
+correct: False
+schema_valid: True
+schema_errors: []
+harness_pass_rate: 0.68
+harness_check_results: [{"name": "schema_valid", "passed": true, "weight": 1.0, "details": {}}, {"name": "extractable", "passed": true, "weight": 1.0, "details": {}}, {"name": "answer_count_valid", "passed": true, "weight": 1.0, "details": {"expected_answer_count": 4, "actual_answer_count": 4}}, {"name": "mcq_letter_valid", "passed": null, "weight": 1.0, "details": {}}, {"name": "geometry_trig_method_evidence", "passed": true, "weight": 0.75, "details": {"matched_terms": ["x"]}}, {"name": "angle_unit_check", "passed": null, "weight": 0.75, "details": {}}, {"name": "periodic_solution_evidence", "passed": null, "weight": 0.75, "details": {}}, {"name": "quadrant_sign_evidence", "passed": null, "weight": 0.75, "details": {}}, {"name": "no_unmapped_numeric_for_mcq", "passed": null, "weight": 0.75, "details": {}}, {"name": "final_answer_not_explanatory", "passed": true, "weight": 0.5, "details": {"bad_markers_found": [], "boxed_answer": "7.6350,-6.4240,-4.1280,0"}}, {"name": "high_precision_geometry_numeric", "passed": null, "weight": 0.5, "details": {}}, {"name": "official_correct", "passed": false, "weight": 2.0, "details": {}}]
+
+QUESTION:
+A curve in polar coordinates is given by: $r=11+4 \cos \theta.$ Point $P$ is at $\theta=\frac{26 \pi}{22}.$
+a.) Find polar coordinate $r$ for $P$, with $r > 0$ and $\pi < \theta < \frac{3 \pi}{2}.$ $r=$ [ANS]
+b.) Find cartesian coordinates for point $P.$ $x=$ [ANS]
+$y=$ [ANS]
+c.) How may times does the curve pass through the origin when $0 < \theta < 2 \pi?$ Answer: [ANS]
+
+RESPONSE TAIL:
+Reasoning:
+Answer extracted from completed final answer.
+
+Final Answer: \boxed{7.6350,-6.4240,-4.1280,0}
+
+====================================================================================================
+WRONG ROW 23
+====================================================================================================
+id: 375
+category: geometry_trig
+route_name: geometry_trig_mcq
+template_name: baseline3_geometry_trig_mcq
+is_mcq: True
+gold: G
+boxed_answer: J
+extracted_final_answer: J
+correct: False
+schema_valid: True
+schema_errors: []
+harness_pass_rate: 0.7241379310344828
+harness_check_results: [{"name": "schema_valid", "passed": true, "weight": 1.0, "details": {}}, {"name": "extractable", "passed": true, "weight": 1.0, "details": {}}, {"name": "answer_count_valid", "passed": true, "weight": 1.0, "details": {"expected_answer_count": 1, "actual_answer_count": 1}}, {"name": "mcq_letter_valid", "passed": true, "weight": 1.0, "details": {"boxed_answer": "J", "valid_letters": ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J"]}}, {"name": "geometry_trig_method_evidence", "passed": null, "weight": 0.75, "details": {}}, {"name": "angle_unit_check", "passed": null, "weight": 0.75, "details": {}}, {"name": "periodic_solution_evidence", "passed": null, "weight": 0.75, "details": {}}, {"name": "quadrant_sign_evidence", "passed": null, "weight": 0.75, "details": {}}, {"name": "no_unmapped_numeric_for_mcq", "passed": true, "weight": 0.75, "details": {"boxed_answer": "J"}}, {"name": "final_answer_not_explanatory", "passed": true, "weight": 0.5, "details": {"bad_markers_found": [], "boxed_answer": "J"}}, {"name": "high_precision_geometry_numeric", "passed": null, "weight": 0.5, "details": {}}, {"name": "official_correct", "passed": false, "weight": 2.0, "details": {}}]
+
+QUESTION:
+The height "y" and the distance x along horizontal for a body projected in the vertical plane are given by $2y = 6t - 3t^2$ and $x = 4t$. Then the initial velocity and angle of projection are
+
+RESPONSE TAIL:
+Reasoning:
+Answer extracted from completed final answer.
+
+Final Answer: \boxed{J}
+
+====================================================================================================
+WRONG ROW 24
+====================================================================================================
+id: 379
+category: geometry_trig
+route_name: geometry_trig_free_form
+template_name: baseline3_geometry_trig_free_form
+is_mcq: False
+gold: ['7.95110055275369']
+boxed_answer: 7.9511
+extracted_final_answer: 7.9511
+correct: False
+schema_valid: True
+schema_errors: []
+harness_pass_rate: 0.6363636363636364
+harness_check_results: [{"name": "schema_valid", "passed": true, "weight": 1.0, "details": {}}, {"name": "extractable", "passed": true, "weight": 1.0, "details": {}}, {"name": "answer_count_valid", "passed": true, "weight": 1.0, "details": {"expected_answer_count": 1, "actual_answer_count": 1}}, {"name": "mcq_letter_valid", "passed": null, "weight": 1.0, "details": {}}, {"name": "geometry_trig_method_evidence", "passed": null, "weight": 0.75, "details": {}}, {"name": "angle_unit_check", "passed": null, "weight": 0.75, "details": {}}, {"name": "periodic_solution_evidence", "passed": null, "weight": 0.75, "details": {}}, {"name": "quadrant_sign_evidence", "passed": null, "weight": 0.75, "details": {}}, {"name": "no_unmapped_numeric_for_mcq", "passed": null, "weight": 0.75, "details": {}}, {"name": "final_answer_not_explanatory", "passed": true, "weight": 0.5, "details": {"bad_markers_found": [], "boxed_answer": "7.9511"}}, {"name": "high_precision_geometry_numeric", "passed": null, "weight": 0.5, "details": {}}, {"name": "official_correct", "passed": false, "weight": 2.0, "details": {}}]
+
+QUESTION:
+Two perpendicular sides of a triangle are 5.1 mm and 6.1 mm long respectively. Determine the length of the remaining side of the triangle. [ANS] mm
+
+RESPONSE TAIL:
+Reasoning:
+Answer extracted from completed final answer.
+
+Final Answer: \boxed{7.9511}
+
+====================================================================================================
+WRONG ROW 25
+====================================================================================================
+id: 395
+category: geometry_trig
+route_name: geometry_trig_mcq
+template_name: baseline3_geometry_trig_mcq
+is_mcq: True
+gold: B
+boxed_answer: 
+extracted_final_answer: 
+correct: False
+schema_valid: False
+schema_errors: ['missing_final_answer_marker', 'missing_boxed_answer_after_final']
+harness_pass_rate: 0.0
+harness_check_results: [{"name": "schema_valid", "passed": false, "weight": 1.0, "details": {}}, {"name": "extractable", "passed": false, "weight": 1.0, "details": {}}, {"name": "answer_count_valid", "passed": false, "weight": 1.0, "details": {"expected_answer_count": 1, "actual_answer_count": 0}}, {"name": "mcq_letter_valid", "passed": false, "weight": 1.0, "details": {"boxed_answer": "", "valid_letters": ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J"]}}, {"name": "geometry_trig_method_evidence", "passed": null, "weight": 0.75, "details": {}}, {"name": "angle_unit_check", "passed": null, "weight": 0.75, "details": {}}, {"name": "periodic_solution_evidence", "passed": null, "weight": 0.75, "details": {}}, {"name": "quadrant_sign_evidence", "passed": null, "weight": 0.75, "details": {}}, {"name": "no_unmapped_numeric_for_mcq", "passed": false, "weight": 0.75, "details": {"boxed_answer": ""}}, {"name": "final_answer_not_explanatory", "passed": null, "weight": 0.5, "details": {}}, {"name": "high_precision_geometry_numeric", "passed": null, "weight": 0.5, "details": {}}, {"name": "official_correct", "passed": false, "weight": 2.0, "details": {}}]
+
+QUESTION:
+Suppose that $\Omega_1$ and $\Omega_2$ are two circles with radii $9$ and $16$ , respectively, and that they are externally tangent at $P$ . A common external tangent $\ell$ meets $\Omega_1$ at $X$ and $\Omega_2$ at $Y$ . $\overleftrightarrow{XP}$ meets $\Omega_2$ again at $W$ , and $\overleftrightarrow{YP}$ meets $\Omega_1$ again at $Z$ . If $WZ$ can be expressed as $a \sqrt b$ for positive integers $a$ and $b$ with $b$ squarefree, compute $a+ b$ .
+
+RESPONSE TAIL:
+nce between $O_1$ and $O_2$ is $25$, which we have: $\sqrt{24^2 + 7^2} = 25$, correct.
+
+The point $P$ is the tangency point of the two circles, so it lies on the line $O_1O_2$, and the distance from $O_1$ to $P$ is 9 (radius of $\Omega_1$), and from $O_2$ to $P$ is 16 (radius of $\Omega_2$).
+
+Let $P = (24t, 9 + 7t)$. Then the distance from $O_1$ to $P$ is 9:
+
+$\sqrt{(24t - 0)^2 + (9 + 7t - 9)^2} = 9$ => $\sqrt{(24t)^2 + (7t)^2} = 9$ => $25t = 9$ => $t = 9/25$
+
+So $P = (24*(9/25), 9 + 7*(9/25)) = (216/25, (225 + 63)/25) = (216/25, 288/25)$
+
+Check distance from $O_2$ to $P$: should be 16.
+
+$\sqrt{(24 - 216/25)^2 + (16 - 288/25)^2} = \sqrt{(600/25 - 216/25)^2 + (400/25 - 288/25)^2} = \sqrt{(384/25)^2 + (112/25)^2} = (1/25)\sqrt{384^2 + 112^2} = (1/25)\sqrt{147456 + 12544} = (1/25)\sqrt{160000} = 400/25 = 16$. Correct!
+
+Great, so we have coordinates:
+
+- $X = (0, 0)$ (on $\ell$, tangent point for $\Omega_1$)
+- $Y = (24, 0)$ (on $\ell$, tangent point for $\Omega_2$)
+- $O_1 = (0, 9)$ (center of $\Omega_1$)
+- $O_2 = (24, 16)$ (center of $\Omega_2$)
+- $P = (216/25, 288/25)$ (tangency point of the circles)
+
+Now, we need to find:
+
+- $\overleftrightarrow{XP}$ meets $\Omega_2$ again at $W$
+- $\overleftrightarrow{YP}$ meets $\Omega_1$ again at $Z$
+- Then find $WZ$ and express as $a\sqrt{b}$, then $a + b$
+
+First, find equations for lines $XP$ and $YP$.
+
+Line $XP$: connects $X = (0, 0)$ and $P = (216/25, 288/25)$. This line has slope $(288/25)/(216/25) = 288/216 = 4/3$. So equation is $y = (4/3)x$.
+
+This line intersects $\Omega_2$ (center $O_2 = (24, 16)$, radius 16) again at $W$. We know it passes through $P$, which is on $\Omega_2$ (since the circles are tangent at $P$), so $P$ is one intersection point, and $W$ is the other.
+
+The equation of $\Omega_2$ is $(x - 24)^2 + (y - 16)^2 = 16^2 = 256$.
+
+Substitute $y = (4/3)x$ into $\Omega_2$:
+
+$(x - 24)^2 + ( (4/3)x - 16 )^2 = 256$
+
+Simplify:
+
+$(x - 24)^2 + ( (4x - 48)/3 )^2 = 256$
+
+$(x - 24)^2 + (4(x - 12)/3)^2 = 256$
+
+$(x - 24)^2 + (16(x - 12)^2)/9 = 256$
+
+Multiply through by 9 to eliminate denominator:
+
+$9(x - 24)^2 + 16(x - 12)^2 = 2304$
+
+Expand:
+
+$9(x^2 - 48x + 576) + 16(x^2 - 24x + 144) = 2304$
+
+$9x^2 - 432x + 5184 + 16x^2 - 384x + 2304 = 2304$
+
+$25x^2 - 816x + 5184 = 0$
+
+We know $x = 216/25$ is a root (since $P$ is on both the line and the circle), so let's factor it or use sum of roots.
+
+Sum of roots: $816/25$ (from quadratic $25x^2 - 816x + 5184 = 0$), so the other root (for $W$) is $x_W$ such that $x_W + 216/25 = 81
+

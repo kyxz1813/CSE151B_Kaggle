@@ -1,0 +1,725 @@
+WRONG ROWS FOR ANALYSIS
+n_wrong_total: 30
+====================================================================================================
+
+====================================================================================================
+WRONG ROW 1
+====================================================================================================
+id: 8
+category: applied_word_problem
+route_name: applied_word_problem_free_form
+template_name: baseline3_applied_word_problem_free_form
+is_mcq: False
+gold: ['(1/2)^[(1999-1963)/31]']
+boxed_answer: 0.4382
+extracted_final_answer: 0.4382
+correct: False
+schema_valid: True
+schema_errors: []
+harness_pass_rate: 0.5
+harness_check_results: [{"name": "schema_valid", "passed": true, "weight": 1.0, "details": {}}, {"name": "extractable", "passed": true, "weight": 1.0, "details": {}}, {"name": "answer_count_valid", "passed": true, "weight": 1.0, "details": {"expected": 1, "actual": 1}}, {"name": "mcq_letter_valid", "passed": null, "weight": 1.0, "details": {}}, {"name": "units_or_context_preserved", "passed": false, "weight": 0.5, "details": {"unit_context_present": false}}, {"name": "exact_form_preferred_unless_requested", "passed": true, "weight": 0.75, "details": {"approximation_requested": false, "found": []}}, {"name": "function_or_equation_present_when_expected", "passed": null, "weight": 0.75, "details": {}}, {"name": "inequality_or_interval_present", "passed": null, "weight": 0.5, "details": {}}, {"name": "multi_answer_placeholder_discipline", "passed": null, "weight": 0.75, "details": {}}, {"name": "avoids_unjustified_integer_rounding", "passed": null, "weight": 0.75, "details": {}}, {"name": "exact_expression_preserved_when_preferred", "passed": false, "weight": 0.5, "details": {"boxed": "0.4382", "has_exact_marker": false, "decimal_only": true}}, {"name": "ceiling_evidence_present", "passed": null, "weight": 0.5, "details": {}}, {"name": "exact_decay_or_log_form_present", "passed": false, "weight": 0.75, "details": {"boxed": "0.4382", "exact_decay_marker_present": false}}, {"name": "high_precision_money_answer", "passed": null, "weight": 0.75, "details": {}}, {"name": "mixture_exact_ratio_present", "passed": null, "weight": 0.75, "details": {}}, {"name": "lowercase_yes_no_for_invertibility", "passed": null, "weight": 0.75, "details": {}}, {"name": "printing_signature_formula_convention", "passed": null, "weight": 0.75, "details": {}}, {"name": "applied_mcq_final_letter_present", "passed": null, "weight": 0.75, "details": {}}, {"name": "official_correct", "passed": false, "weight": 2.0, "details": {}}]
+
+QUESTION:
+In the early 1960s, radioactive strontium-90 was released during atmospheric testing of nuclear weapons and got into the bones of people alive at the time. If the half-life of strontium-90 is 31 years, what fraction of the strontium-90 absorbed in 1963 remained in people's bones in 1999? fraction=[ANS]
+(Enter your answer as a decimal or fraction.) (Enter your answer as a decimal or fraction.)
+
+RESPONSE TAIL:
+Reasoning:
+Answer extracted from completed final answer.
+
+Final Answer: \boxed{0.4382}
+
+====================================================================================================
+WRONG ROW 2
+====================================================================================================
+id: 12
+category: applied_word_problem
+route_name: applied_word_problem_free_form
+template_name: baseline3_applied_word_problem_free_form
+is_mcq: False
+gold: ['380', '315', '13', '310']
+boxed_answer: 380,315,14,310
+extracted_final_answer: 380,315,14,310
+correct: False
+schema_valid: True
+schema_errors: []
+harness_pass_rate: 0.5769230769230769
+harness_check_results: [{"name": "schema_valid", "passed": true, "weight": 1.0, "details": {}}, {"name": "extractable", "passed": true, "weight": 1.0, "details": {}}, {"name": "answer_count_valid", "passed": true, "weight": 1.0, "details": {"expected": 4, "actual": 4}}, {"name": "mcq_letter_valid", "passed": null, "weight": 1.0, "details": {}}, {"name": "units_or_context_preserved", "passed": null, "weight": 0.5, "details": {}}, {"name": "exact_form_preferred_unless_requested", "passed": null, "weight": 0.75, "details": {}}, {"name": "function_or_equation_present_when_expected", "passed": false, "weight": 0.75, "details": {"equation_like_structure_present": false}}, {"name": "inequality_or_interval_present", "passed": null, "weight": 0.5, "details": {}}, {"name": "multi_answer_placeholder_discipline", "passed": true, "weight": 0.75, "details": {"expected": 4, "actual": 4}}, {"name": "avoids_unjustified_integer_rounding", "passed": null, "weight": 0.75, "details": {}}, {"name": "exact_expression_preserved_when_preferred", "passed": null, "weight": 0.5, "details": {}}, {"name": "ceiling_evidence_present", "passed": null, "weight": 0.5, "details": {}}, {"name": "exact_decay_or_log_form_present", "passed": null, "weight": 0.75, "details": {}}, {"name": "high_precision_money_answer", "passed": null, "weight": 0.75, "details": {}}, {"name": "mixture_exact_ratio_present", "passed": null, "weight": 0.75, "details": {}}, {"name": "lowercase_yes_no_for_invertibility", "passed": null, "weight": 0.75, "details": {}}, {"name": "printing_signature_formula_convention", "passed": null, "weight": 0.75, "details": {}}, {"name": "applied_mcq_final_letter_present", "passed": null, "weight": 0.75, "details": {}}, {"name": "official_correct", "passed": false, "weight": 2.0, "details": {}}]
+
+QUESTION:
+The population of deer in a forest can be modeled by
+${P(x)={\frac{2480x+2660}{8x+7}}}$ where $x$ is the number of years in the future. Answer the following questions. 1) How many deer live in this forest this year? [ANS]
+2) How many deer will live in this forest $12$ years later? Round your answer to an integer. [ANS]
+3) After how many years, the deer population will be $314$? Round your answer to an integer. [ANS]
+4) Use a calculator to answer this question: Many years in the future, about how many deer will live in this forest? [ANS]
+
+RESPONSE TAIL:
+Reasoning:
+Answer extracted from completed final answer.
+
+Final Answer: \boxed{380,315,14,310}
+
+====================================================================================================
+WRONG ROW 3
+====================================================================================================
+id: 22
+category: applied_word_problem
+route_name: applied_word_problem_free_form
+template_name: baseline3_applied_word_problem_free_form
+is_mcq: False
+gold: ['1.6', '1.76', '0.16*p/16', 'up', '1', '0.16']
+boxed_answer: 1.60,1.76,0.16*ceil(p/16),up,16,0.16
+extracted_final_answer: 1.60,1.76,0.16*ceil(p/16),up,16,0.16
+correct: False
+schema_valid: True
+schema_errors: []
+harness_pass_rate: 0.7333333333333333
+harness_check_results: [{"name": "schema_valid", "passed": true, "weight": 1.0, "details": {}}, {"name": "extractable", "passed": true, "weight": 1.0, "details": {}}, {"name": "answer_count_valid", "passed": true, "weight": 1.0, "details": {"expected": 6, "actual": 6}}, {"name": "mcq_letter_valid", "passed": null, "weight": 1.0, "details": {}}, {"name": "units_or_context_preserved", "passed": null, "weight": 0.5, "details": {}}, {"name": "exact_form_preferred_unless_requested", "passed": null, "weight": 0.75, "details": {}}, {"name": "function_or_equation_present_when_expected", "passed": null, "weight": 0.75, "details": {}}, {"name": "inequality_or_interval_present", "passed": true, "weight": 0.5, "details": {"inequality_or_interval_present": true}}, {"name": "multi_answer_placeholder_discipline", "passed": true, "weight": 0.75, "details": {"expected": 6, "actual": 6}}, {"name": "avoids_unjustified_integer_rounding", "passed": null, "weight": 0.75, "details": {}}, {"name": "exact_expression_preserved_when_preferred", "passed": null, "weight": 0.5, "details": {}}, {"name": "ceiling_evidence_present", "passed": true, "weight": 0.5, "details": {"ceiling_evidence_present": true}}, {"name": "exact_decay_or_log_form_present", "passed": null, "weight": 0.75, "details": {}}, {"name": "high_precision_money_answer", "passed": null, "weight": 0.75, "details": {}}, {"name": "mixture_exact_ratio_present", "passed": null, "weight": 0.75, "details": {}}, {"name": "lowercase_yes_no_for_invertibility", "passed": null, "weight": 0.75, "details": {}}, {"name": "printing_signature_formula_convention", "passed": true, "weight": 0.75, "details": {"has_ceil_in_first_answer": false, "has_up_down": true, "boxed": "1.60,1.76,0.16*ceil(p/16),up,16,0.16"}}, {"name": "applied_mcq_final_letter_present", "passed": null, "weight": 0.75, "details": {}}, {"name": "official_correct", "passed": false, "weight": 2.0, "details": {}}]
+
+QUESTION:
+Many printing presses are designed with large plates that print a fixed number of pages as a unit. Each unit is called a signature. A particular press prints signatures of 16 pages each. Suppose $C(p)$ is the cost of printing a book of $p$ pages, assuming each signature printed costs \$0.16.
+(a) What is the cost of printing a book of 160 pages? \$ [ANS]
+What if there are 161 pages? \$ [ANS]
+What if there are $p$ pages? $C(p)=$ \$ [ANS] where the cost is rounded (up/down) [ANS] for the next signature. (b) What are the domain and range of $C(p)$? Domain: all nonnegative integer multiples of (1 through 16) [ANS] Range:   all nonnegative integer multiples of (0.01 through 0.20) [ANS] (c) On a piece of paper, sketch a graph of $C(p)$.
+
+RESPONSE TAIL:
+Reasoning:
+Answer extracted from completed final answer.
+
+Final Answer: \boxed{1.60,1.76,0.16*ceil(p/16),up,16,0.16}
+
+====================================================================================================
+WRONG ROW 4
+====================================================================================================
+id: 27
+category: applied_word_problem
+route_name: applied_word_problem_free_form
+template_name: baseline3_applied_word_problem_free_form
+is_mcq: False
+gold: ['[ln(0.5)]/[ln(0.96584)]']
+boxed_answer: 20
+extracted_final_answer: 20
+correct: False
+schema_valid: True
+schema_errors: []
+harness_pass_rate: 0.5806451612903226
+harness_check_results: [{"name": "schema_valid", "passed": true, "weight": 1.0, "details": {}}, {"name": "extractable", "passed": true, "weight": 1.0, "details": {}}, {"name": "answer_count_valid", "passed": true, "weight": 1.0, "details": {"expected": 1, "actual": 1}}, {"name": "mcq_letter_valid", "passed": null, "weight": 1.0, "details": {}}, {"name": "units_or_context_preserved", "passed": null, "weight": 0.5, "details": {}}, {"name": "exact_form_preferred_unless_requested", "passed": true, "weight": 0.75, "details": {"approximation_requested": false, "found": []}}, {"name": "function_or_equation_present_when_expected", "passed": null, "weight": 0.75, "details": {}}, {"name": "inequality_or_interval_present", "passed": null, "weight": 0.5, "details": {}}, {"name": "multi_answer_placeholder_discipline", "passed": null, "weight": 0.75, "details": {}}, {"name": "avoids_unjustified_integer_rounding", "passed": true, "weight": 0.75, "details": {"integer_required": false, "suspicious_terms_found": []}}, {"name": "exact_expression_preserved_when_preferred", "passed": false, "weight": 0.5, "details": {"boxed": "20", "has_exact_marker": false, "decimal_only": true}}, {"name": "ceiling_evidence_present", "passed": null, "weight": 0.5, "details": {}}, {"name": "exact_decay_or_log_form_present", "passed": false, "weight": 0.75, "details": {"boxed": "20", "exact_decay_marker_present": false}}, {"name": "high_precision_money_answer", "passed": null, "weight": 0.75, "details": {}}, {"name": "mixture_exact_ratio_present", "passed": null, "weight": 0.75, "details": {}}, {"name": "lowercase_yes_no_for_invertibility", "passed": null, "weight": 0.75, "details": {}}, {"name": "printing_signature_formula_convention", "passed": null, "weight": 0.75, "details": {}}, {"name": "applied_mcq_final_letter_present", "passed": null, "weight": 0.75, "details": {}}, {"name": "official_correct", "passed": false, "weight": 2.0, "details": {}}]
+
+QUESTION:
+Find the half-life of an element which decays by 3.416\% each day. The half-life is [ANS] days.
+
+RESPONSE TAIL:
+Reasoning:
+Answer extracted from completed final answer.
+
+Final Answer: \boxed{20}
+
+====================================================================================================
+WRONG ROW 5
+====================================================================================================
+id: 29
+category: applied_word_problem
+route_name: applied_word_problem_free_form
+template_name: baseline3_applied_word_problem_free_form
+is_mcq: False
+gold: ['442.857142857143', '332.142857142857']
+boxed_answer: 442.86,332.14
+extracted_final_answer: 442.86,332.14
+correct: False
+schema_valid: True
+schema_errors: []
+harness_pass_rate: 0.6176470588235294
+harness_check_results: [{"name": "schema_valid", "passed": true, "weight": 1.0, "details": {}}, {"name": "extractable", "passed": true, "weight": 1.0, "details": {}}, {"name": "answer_count_valid", "passed": true, "weight": 1.0, "details": {"expected": 2, "actual": 2}}, {"name": "mcq_letter_valid", "passed": null, "weight": 1.0, "details": {}}, {"name": "units_or_context_preserved", "passed": false, "weight": 0.5, "details": {"unit_context_present": false}}, {"name": "exact_form_preferred_unless_requested", "passed": true, "weight": 0.75, "details": {"approximation_requested": false, "found": []}}, {"name": "function_or_equation_present_when_expected", "passed": null, "weight": 0.75, "details": {}}, {"name": "inequality_or_interval_present", "passed": null, "weight": 0.5, "details": {}}, {"name": "multi_answer_placeholder_discipline", "passed": true, "weight": 0.75, "details": {"expected": 2, "actual": 2}}, {"name": "avoids_unjustified_integer_rounding", "passed": true, "weight": 0.75, "details": {"integer_required": false, "suspicious_terms_found": []}}, {"name": "exact_expression_preserved_when_preferred", "passed": null, "weight": 0.5, "details": {}}, {"name": "ceiling_evidence_present", "passed": null, "weight": 0.5, "details": {}}, {"name": "exact_decay_or_log_form_present", "passed": null, "weight": 0.75, "details": {}}, {"name": "high_precision_money_answer", "passed": false, "weight": 0.75, "details": {"max_decimal_digits": 2, "boxed": "442.86,332.14"}}, {"name": "mixture_exact_ratio_present", "passed": null, "weight": 0.75, "details": {}}, {"name": "lowercase_yes_no_for_invertibility", "passed": null, "weight": 0.75, "details": {}}, {"name": "printing_signature_formula_convention", "passed": null, "weight": 0.75, "details": {}}, {"name": "applied_mcq_final_letter_present", "passed": null, "weight": 0.75, "details": {}}, {"name": "official_correct", "passed": false, "weight": 2.0, "details": {}}]
+
+QUESTION:
+Your weekly paycheck is $25$ percent less than your coworker's. Your two paychecks total $775$. Find the amount of each paycheck.
+Your coworker's is: [ANS] and yours is [ANS].
+
+RESPONSE TAIL:
+Reasoning:
+Answer extracted from completed final answer.
+
+Final Answer: \boxed{442.86,332.14}
+
+====================================================================================================
+WRONG ROW 6
+====================================================================================================
+id: 32
+category: applied_word_problem
+route_name: applied_word_problem_free_form
+template_name: baseline3_applied_word_problem_free_form
+is_mcq: False
+gold: ['7091.66666666667']
+boxed_answer: 7091.67
+extracted_final_answer: 7091.67
+correct: False
+schema_valid: True
+schema_errors: []
+harness_pass_rate: 0.5806451612903226
+harness_check_results: [{"name": "schema_valid", "passed": true, "weight": 1.0, "details": {}}, {"name": "extractable", "passed": true, "weight": 1.0, "details": {}}, {"name": "answer_count_valid", "passed": true, "weight": 1.0, "details": {"expected": 1, "actual": 1}}, {"name": "mcq_letter_valid", "passed": null, "weight": 1.0, "details": {}}, {"name": "units_or_context_preserved", "passed": false, "weight": 0.5, "details": {"unit_context_present": false}}, {"name": "exact_form_preferred_unless_requested", "passed": true, "weight": 0.75, "details": {"approximation_requested": false, "found": []}}, {"name": "function_or_equation_present_when_expected", "passed": null, "weight": 0.75, "details": {}}, {"name": "inequality_or_interval_present", "passed": null, "weight": 0.5, "details": {}}, {"name": "multi_answer_placeholder_discipline", "passed": null, "weight": 0.75, "details": {}}, {"name": "avoids_unjustified_integer_rounding", "passed": true, "weight": 0.75, "details": {"integer_required": false, "suspicious_terms_found": []}}, {"name": "exact_expression_preserved_when_preferred", "passed": null, "weight": 0.5, "details": {}}, {"name": "ceiling_evidence_present", "passed": null, "weight": 0.5, "details": {}}, {"name": "exact_decay_or_log_form_present", "passed": null, "weight": 0.75, "details": {}}, {"name": "high_precision_money_answer", "passed": false, "weight": 0.75, "details": {"max_decimal_digits": 2, "boxed": "7091.67"}}, {"name": "mixture_exact_ratio_present", "passed": null, "weight": 0.75, "details": {}}, {"name": "lowercase_yes_no_for_invertibility", "passed": null, "weight": 0.75, "details": {}}, {"name": "printing_signature_formula_convention", "passed": null, "weight": 0.75, "details": {}}, {"name": "applied_mcq_final_letter_present", "passed": null, "weight": 0.75, "details": {}}, {"name": "official_correct", "passed": false, "weight": 2.0, "details": {}}]
+
+QUESTION:
+An executive in an engineering firm earns a monthly salary plus a Christmas bonus of $7300$ dollars. If she earns a total of $92400$ dollars per year, what is her monthly salary in dollars?
+Your answer is: [ANS]
+
+RESPONSE TAIL:
+Reasoning:
+Answer extracted from completed final answer.
+
+Final Answer: \boxed{7091.67}
+
+====================================================================================================
+WRONG ROW 7
+====================================================================================================
+id: 79
+category: applied_word_problem
+route_name: applied_word_problem_free_form
+template_name: baseline3_applied_word_problem_free_form
+is_mcq: False
+gold: ['2.5/0.9']
+boxed_answer: 2.78
+extracted_final_answer: 2.78
+correct: False
+schema_valid: True
+schema_errors: []
+harness_pass_rate: 0.6206896551724138
+harness_check_results: [{"name": "schema_valid", "passed": true, "weight": 1.0, "details": {}}, {"name": "extractable", "passed": true, "weight": 1.0, "details": {}}, {"name": "answer_count_valid", "passed": true, "weight": 1.0, "details": {"expected": 1, "actual": 1}}, {"name": "mcq_letter_valid", "passed": null, "weight": 1.0, "details": {}}, {"name": "units_or_context_preserved", "passed": null, "weight": 0.5, "details": {}}, {"name": "exact_form_preferred_unless_requested", "passed": true, "weight": 0.75, "details": {"approximation_requested": false, "found": []}}, {"name": "function_or_equation_present_when_expected", "passed": null, "weight": 0.75, "details": {}}, {"name": "inequality_or_interval_present", "passed": null, "weight": 0.5, "details": {}}, {"name": "multi_answer_placeholder_discipline", "passed": null, "weight": 0.75, "details": {}}, {"name": "avoids_unjustified_integer_rounding", "passed": true, "weight": 0.75, "details": {"integer_required": false, "suspicious_terms_found": []}}, {"name": "exact_expression_preserved_when_preferred", "passed": null, "weight": 0.5, "details": {}}, {"name": "ceiling_evidence_present", "passed": null, "weight": 0.5, "details": {}}, {"name": "exact_decay_or_log_form_present", "passed": null, "weight": 0.75, "details": {}}, {"name": "high_precision_money_answer", "passed": null, "weight": 0.75, "details": {}}, {"name": "mixture_exact_ratio_present", "passed": false, "weight": 0.75, "details": {"boxed": "2.78", "exact_ratio_marker_present": false}}, {"name": "lowercase_yes_no_for_invertibility", "passed": null, "weight": 0.75, "details": {}}, {"name": "printing_signature_formula_convention", "passed": null, "weight": 0.75, "details": {}}, {"name": "applied_mcq_final_letter_present", "passed": null, "weight": 0.75, "details": {}}, {"name": "official_correct", "passed": false, "weight": 2.0, "details": {}}]
+
+QUESTION:
+How many cups of grapefruit juice must be added to $50$ cups of a punch that is $5$ \% grapefruit juice to obtain a punch that is $10$ \% grapefruit juice? Amount (in cups): [ANS]
+
+RESPONSE TAIL:
+Reasoning:
+Answer extracted from completed final answer.
+
+Final Answer: \boxed{2.78}
+
+====================================================================================================
+WRONG ROW 8
+====================================================================================================
+id: 83
+category: applied_word_problem
+route_name: applied_word_problem_free_form
+template_name: baseline3_applied_word_problem_free_form
+is_mcq: False
+gold: ['yes', 'yes', 'no']
+boxed_answer: Yes,No,No
+extracted_final_answer: Yes,No,No
+correct: False
+schema_valid: True
+schema_errors: []
+harness_pass_rate: 0.5897435897435898
+harness_check_results: [{"name": "schema_valid", "passed": true, "weight": 1.0, "details": {}}, {"name": "extractable", "passed": true, "weight": 1.0, "details": {}}, {"name": "answer_count_valid", "passed": true, "weight": 1.0, "details": {"expected": 3, "actual": 3}}, {"name": "mcq_letter_valid", "passed": null, "weight": 1.0, "details": {}}, {"name": "units_or_context_preserved", "passed": false, "weight": 0.5, "details": {"unit_context_present": false}}, {"name": "exact_form_preferred_unless_requested", "passed": true, "weight": 0.75, "details": {"approximation_requested": false, "found": []}}, {"name": "function_or_equation_present_when_expected", "passed": false, "weight": 0.75, "details": {"equation_like_structure_present": false}}, {"name": "inequality_or_interval_present", "passed": null, "weight": 0.5, "details": {}}, {"name": "multi_answer_placeholder_discipline", "passed": true, "weight": 0.75, "details": {"expected": 3, "actual": 3}}, {"name": "avoids_unjustified_integer_rounding", "passed": true, "weight": 0.75, "details": {"integer_required": false, "suspicious_terms_found": []}}, {"name": "exact_expression_preserved_when_preferred", "passed": true, "weight": 0.5, "details": {"boxed": "Yes,No,No", "has_exact_marker": false, "decimal_only": false}}, {"name": "ceiling_evidence_present", "passed": null, "weight": 0.5, "details": {}}, {"name": "exact_decay_or_log_form_present", "passed": null, "weight": 0.75, "details": {}}, {"name": "high_precision_money_answer", "passed": null, "weight": 0.75, "details": {}}, {"name": "mixture_exact_ratio_present", "passed": null, "weight": 0.75, "details": {}}, {"name": "lowercase_yes_no_for_invertibility", "passed": false, "weight": 0.75, "details": {"parts": ["Yes", "No", "No"], "expected": "lowercase yes/no", "boxed": "Yes,No,No"}}, {"name": "printing_signature_formula_convention", "passed": null, "weight": 0.75, "details": {}}, {"name": "applied_mcq_final_letter_present", "passed": null, "weight": 0.75, "details": {}}, {"name": "official_correct", "passed": false, "weight": 2.0, "details": {}}]
+
+QUESTION:
+Are the following functions invertible? 1. $f(x)$ is the volume of $x$ kg of water at 4 degrees C. Is this invertible? [ANS] 2. $f(t)$ is the total accumulated rainfall in inches $t$ minutes into a sudden rainstorm in July, 2005. Is this invertible? [ANS] 3. $f(w)$ is the cost of mailing a letter weighing $w$ grams. Is this invertible? [ANS]
+
+RESPONSE TAIL:
+Reasoning:
+Answer extracted from completed final answer.
+
+Final Answer: \boxed{Yes,No,No}
+
+====================================================================================================
+WRONG ROW 9
+====================================================================================================
+id: 176
+category: applied_word_problem
+route_name: applied_word_problem_mcq
+template_name: baseline3_applied_word_problem_mcq
+is_mcq: True
+gold: C
+boxed_answer: A
+extracted_final_answer: A
+correct: False
+schema_valid: True
+schema_errors: []
+harness_pass_rate: 0.7333333333333333
+harness_check_results: [{"name": "schema_valid", "passed": true, "weight": 1.0, "details": {}}, {"name": "extractable", "passed": true, "weight": 1.0, "details": {}}, {"name": "answer_count_valid", "passed": true, "weight": 1.0, "details": {"expected": 1, "actual": 1}}, {"name": "mcq_letter_valid", "passed": true, "weight": 1.0, "details": {"boxed": "A", "valid_letters": ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J"]}}, {"name": "units_or_context_preserved", "passed": null, "weight": 0.5, "details": {}}, {"name": "exact_form_preferred_unless_requested", "passed": true, "weight": 0.75, "details": {"approximation_requested": false, "found": []}}, {"name": "function_or_equation_present_when_expected", "passed": null, "weight": 0.75, "details": {}}, {"name": "inequality_or_interval_present", "passed": null, "weight": 0.5, "details": {}}, {"name": "multi_answer_placeholder_discipline", "passed": null, "weight": 0.75, "details": {}}, {"name": "avoids_unjustified_integer_rounding", "passed": null, "weight": 0.75, "details": {}}, {"name": "exact_expression_preserved_when_preferred", "passed": null, "weight": 0.5, "details": {}}, {"name": "ceiling_evidence_present", "passed": null, "weight": 0.5, "details": {}}, {"name": "exact_decay_or_log_form_present", "passed": null, "weight": 0.75, "details": {}}, {"name": "high_precision_money_answer", "passed": null, "weight": 0.75, "details": {}}, {"name": "mixture_exact_ratio_present", "passed": null, "weight": 0.75, "details": {}}, {"name": "lowercase_yes_no_for_invertibility", "passed": null, "weight": 0.75, "details": {}}, {"name": "printing_signature_formula_convention", "passed": null, "weight": 0.75, "details": {}}, {"name": "applied_mcq_final_letter_present", "passed": true, "weight": 0.75, "details": {"boxed": "A", "valid": ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J"]}}, {"name": "official_correct", "passed": false, "weight": 2.0, "details": {}}]
+
+QUESTION:
+Sender chooses $\mathrm{p}=1 0 7, \mathrm{e_1}=2, \mathrm{d}=6 7$, and the random integer is r=45. Find the plaintext to be transmitted if the ciphertext is (28,9).
+
+RESPONSE TAIL:
+Reasoning:
+Answer extracted from completed final answer.
+
+Final Answer: \boxed{A}
+
+====================================================================================================
+WRONG ROW 10
+====================================================================================================
+id: 178
+category: applied_word_problem
+route_name: applied_word_problem_free_form
+template_name: baseline3_applied_word_problem_free_form
+is_mcq: False
+gold: ['165000', '17000', '74000', '91000']
+boxed_answer: S, D, 74000, 91000
+extracted_final_answer: S, D, 74000, 91000
+correct: False
+schema_valid: True
+schema_errors: []
+harness_pass_rate: 0.6388888888888888
+harness_check_results: [{"name": "schema_valid", "passed": true, "weight": 1.0, "details": {}}, {"name": "extractable", "passed": true, "weight": 1.0, "details": {}}, {"name": "answer_count_valid", "passed": true, "weight": 1.0, "details": {"expected": 4, "actual": 4}}, {"name": "mcq_letter_valid", "passed": null, "weight": 1.0, "details": {}}, {"name": "units_or_context_preserved", "passed": false, "weight": 0.5, "details": {"unit_context_present": false}}, {"name": "exact_form_preferred_unless_requested", "passed": true, "weight": 0.75, "details": {"approximation_requested": false, "found": []}}, {"name": "function_or_equation_present_when_expected", "passed": false, "weight": 0.75, "details": {"equation_like_structure_present": false}}, {"name": "inequality_or_interval_present", "passed": null, "weight": 0.5, "details": {}}, {"name": "multi_answer_placeholder_discipline", "passed": true, "weight": 0.75, "details": {"expected": 4, "actual": 4}}, {"name": "avoids_unjustified_integer_rounding", "passed": true, "weight": 0.75, "details": {"integer_required": false, "suspicious_terms_found": []}}, {"name": "exact_expression_preserved_when_preferred", "passed": true, "weight": 0.5, "details": {"boxed": "S, D, 74000, 91000", "has_exact_marker": false, "decimal_only": false}}, {"name": "ceiling_evidence_present", "passed": null, "weight": 0.5, "details": {}}, {"name": "exact_decay_or_log_form_present", "passed": null, "weight": 0.75, "details": {}}, {"name": "high_precision_money_answer", "passed": null, "weight": 0.75, "details": {}}, {"name": "mixture_exact_ratio_present", "passed": null, "weight": 0.75, "details": {}}, {"name": "lowercase_yes_no_for_invertibility", "passed": null, "weight": 0.75, "details": {}}, {"name": "printing_signature_formula_convention", "passed": null, "weight": 0.75, "details": {}}, {"name": "applied_mcq_final_letter_present", "passed": null, "weight": 0.75, "details": {}}, {"name": "official_correct", "passed": false, "weight": 2.0, "details": {}}]
+
+QUESTION:
+Suppose the next time you buy a house including the land it sits on for 165000 Dollars. The real estate agent tells you that the land costs 17000 more than the house. You apply your formula derived in the previous problem. To do so you set $S=$ [ANS] dollars and $D=$ [ANS] dollars. and you find out that the price of the house is [ANS] dollars and the price of the land is [ANS] dollars.
+
+RESPONSE TAIL:
+Reasoning:
+Answer extracted from completed final answer.
+
+Final Answer: \boxed{S, D, 74000, 91000}
+
+====================================================================================================
+WRONG ROW 11
+====================================================================================================
+id: 179
+category: applied_word_problem
+route_name: applied_word_problem_free_form
+template_name: baseline3_applied_word_problem_free_form
+is_mcq: False
+gold: ['23.0789659628024']
+boxed_answer: 22.16
+extracted_final_answer: 22.16
+correct: False
+schema_valid: True
+schema_errors: []
+harness_pass_rate: 0.6428571428571429
+harness_check_results: [{"name": "schema_valid", "passed": true, "weight": 1.0, "details": {}}, {"name": "extractable", "passed": true, "weight": 1.0, "details": {}}, {"name": "answer_count_valid", "passed": true, "weight": 1.0, "details": {"expected": 1, "actual": 1}}, {"name": "mcq_letter_valid", "passed": null, "weight": 1.0, "details": {}}, {"name": "units_or_context_preserved", "passed": false, "weight": 0.5, "details": {"unit_context_present": false}}, {"name": "exact_form_preferred_unless_requested", "passed": true, "weight": 0.75, "details": {"approximation_requested": false, "found": []}}, {"name": "function_or_equation_present_when_expected", "passed": null, "weight": 0.75, "details": {}}, {"name": "inequality_or_interval_present", "passed": null, "weight": 0.5, "details": {}}, {"name": "multi_answer_placeholder_discipline", "passed": null, "weight": 0.75, "details": {}}, {"name": "avoids_unjustified_integer_rounding", "passed": true, "weight": 0.75, "details": {"integer_required": false, "suspicious_terms_found": []}}, {"name": "exact_expression_preserved_when_preferred", "passed": null, "weight": 0.5, "details": {}}, {"name": "ceiling_evidence_present", "passed": null, "weight": 0.5, "details": {}}, {"name": "exact_decay_or_log_form_present", "passed": null, "weight": 0.75, "details": {}}, {"name": "high_precision_money_answer", "passed": null, "weight": 0.75, "details": {}}, {"name": "mixture_exact_ratio_present", "passed": null, "weight": 0.75, "details": {}}, {"name": "lowercase_yes_no_for_invertibility", "passed": null, "weight": 0.75, "details": {}}, {"name": "printing_signature_formula_convention", "passed": null, "weight": 0.75, "details": {}}, {"name": "applied_mcq_final_letter_present", "passed": null, "weight": 0.75, "details": {}}, {"name": "official_correct", "passed": false, "weight": 2.0, "details": {}}]
+
+QUESTION:
+An infectious strain of bacteria increases in number at a relative growth rate of 250 percent per hour. When a certain critical number of bacteria are present in the bloodstream, a person becomes ill. If a single bacterium infects a person, the critical level is reached in 24 hours. How long will it take for the critical level to be reached if the same person is infected with 10 bacteria? Your answer is [ANS] hours.
+
+RESPONSE TAIL:
+Reasoning:
+Answer extracted from completed final answer.
+
+Final Answer: \boxed{22.16}
+
+====================================================================================================
+WRONG ROW 12
+====================================================================================================
+id: 190
+category: applied_word_problem
+route_name: applied_word_problem_free_form
+template_name: baseline3_applied_word_problem_free_form
+is_mcq: False
+gold: ['5.01187233627272']
+boxed_answer: 5.01
+extracted_final_answer: 5.01
+correct: False
+schema_valid: True
+schema_errors: []
+harness_pass_rate: 0.6428571428571429
+harness_check_results: [{"name": "schema_valid", "passed": true, "weight": 1.0, "details": {}}, {"name": "extractable", "passed": true, "weight": 1.0, "details": {}}, {"name": "answer_count_valid", "passed": true, "weight": 1.0, "details": {"expected": 1, "actual": 1}}, {"name": "mcq_letter_valid", "passed": null, "weight": 1.0, "details": {}}, {"name": "units_or_context_preserved", "passed": null, "weight": 0.5, "details": {}}, {"name": "exact_form_preferred_unless_requested", "passed": true, "weight": 0.75, "details": {"approximation_requested": false, "found": []}}, {"name": "function_or_equation_present_when_expected", "passed": null, "weight": 0.75, "details": {}}, {"name": "inequality_or_interval_present", "passed": null, "weight": 0.5, "details": {}}, {"name": "multi_answer_placeholder_discipline", "passed": null, "weight": 0.75, "details": {}}, {"name": "avoids_unjustified_integer_rounding", "passed": true, "weight": 0.75, "details": {"integer_required": false, "suspicious_terms_found": []}}, {"name": "exact_expression_preserved_when_preferred", "passed": false, "weight": 0.5, "details": {"boxed": "5.01", "has_exact_marker": false, "decimal_only": true}}, {"name": "ceiling_evidence_present", "passed": null, "weight": 0.5, "details": {}}, {"name": "exact_decay_or_log_form_present", "passed": null, "weight": 0.75, "details": {}}, {"name": "high_precision_money_answer", "passed": null, "weight": 0.75, "details": {}}, {"name": "mixture_exact_ratio_present", "passed": null, "weight": 0.75, "details": {}}, {"name": "lowercase_yes_no_for_invertibility", "passed": null, "weight": 0.75, "details": {}}, {"name": "printing_signature_formula_convention", "passed": null, "weight": 0.75, "details": {}}, {"name": "applied_mcq_final_letter_present", "passed": null, "weight": 0.75, "details": {}}, {"name": "official_correct", "passed": false, "weight": 2.0, "details": {}}]
+
+QUESTION:
+A sound intensity $I$ is measured by the decibel scale \beta=10 \log_{10}\frac{I}{I_0} where $I_0$ is a reference intensity. Thus adding 10 decibels to $\beta$ multiplies $I$ with 10. Adding 7 decibels multiplies $I$ with [ANS].
+
+RESPONSE TAIL:
+Reasoning:
+Answer extracted from completed final answer.
+
+Final Answer: \boxed{5.01}
+
+====================================================================================================
+WRONG ROW 13
+====================================================================================================
+id: 211
+category: applied_word_problem
+route_name: applied_word_problem_free_form
+template_name: baseline3_applied_word_problem_free_form
+is_mcq: False
+gold: ['462446', '2000']
+boxed_answer: 462446,2006
+extracted_final_answer: 462446,2006
+correct: False
+schema_valid: True
+schema_errors: []
+harness_pass_rate: 0.6176470588235294
+harness_check_results: [{"name": "schema_valid", "passed": true, "weight": 1.0, "details": {}}, {"name": "extractable", "passed": true, "weight": 1.0, "details": {}}, {"name": "answer_count_valid", "passed": true, "weight": 1.0, "details": {"expected": 2, "actual": 2}}, {"name": "mcq_letter_valid", "passed": null, "weight": 1.0, "details": {}}, {"name": "units_or_context_preserved", "passed": null, "weight": 0.5, "details": {}}, {"name": "exact_form_preferred_unless_requested", "passed": true, "weight": 0.75, "details": {"approximation_requested": false, "found": []}}, {"name": "function_or_equation_present_when_expected", "passed": false, "weight": 0.75, "details": {"equation_like_structure_present": false}}, {"name": "inequality_or_interval_present", "passed": null, "weight": 0.5, "details": {}}, {"name": "multi_answer_placeholder_discipline", "passed": true, "weight": 0.75, "details": {"expected": 2, "actual": 2}}, {"name": "avoids_unjustified_integer_rounding", "passed": true, "weight": 0.75, "details": {"integer_required": false, "suspicious_terms_found": []}}, {"name": "exact_expression_preserved_when_preferred", "passed": false, "weight": 0.5, "details": {"boxed": "462446,2006", "has_exact_marker": false, "decimal_only": true}}, {"name": "ceiling_evidence_present", "passed": null, "weight": 0.5, "details": {}}, {"name": "exact_decay_or_log_form_present", "passed": null, "weight": 0.75, "details": {}}, {"name": "high_precision_money_answer", "passed": null, "weight": 0.75, "details": {}}, {"name": "mixture_exact_ratio_present", "passed": null, "weight": 0.75, "details": {}}, {"name": "lowercase_yes_no_for_invertibility", "passed": null, "weight": 0.75, "details": {}}, {"name": "printing_signature_formula_convention", "passed": null, "weight": 0.75, "details": {}}, {"name": "applied_mcq_final_letter_present", "passed": null, "weight": 0.75, "details": {}}, {"name": "official_correct", "passed": false, "weight": 2.0, "details": {}}]
+
+QUESTION:
+The polynomial function f(x)=-2212x^2+57,575x+107,896 models the cumulative number of deaths from AIDS in the United States, $f(x)$, where $x$ is the number of years after 1990.
+a) Find $f(10)$=[ANS]
+b) In what year is the cumulative number of AIDS deaths in the United States equal to your answer in part a)? Answer: [ANS]
+
+RESPONSE TAIL:
+Reasoning:
+Answer extracted from completed final answer.
+
+Final Answer: \boxed{462446,2006}
+
+====================================================================================================
+WRONG ROW 14
+====================================================================================================
+id: 252
+category: applied_word_problem
+route_name: applied_word_problem_free_form
+template_name: baseline3_applied_word_problem_free_form
+is_mcq: False
+gold: ['7000(x-7)+165000']
+boxed_answer: 7000x
+extracted_final_answer: 7000x
+correct: False
+schema_valid: True
+schema_errors: []
+harness_pass_rate: 0.6764705882352942
+harness_check_results: [{"name": "schema_valid", "passed": true, "weight": 1.0, "details": {}}, {"name": "extractable", "passed": true, "weight": 1.0, "details": {}}, {"name": "answer_count_valid", "passed": true, "weight": 1.0, "details": {"expected": 1, "actual": 1}}, {"name": "mcq_letter_valid", "passed": null, "weight": 1.0, "details": {}}, {"name": "units_or_context_preserved", "passed": null, "weight": 0.5, "details": {}}, {"name": "exact_form_preferred_unless_requested", "passed": true, "weight": 0.75, "details": {"approximation_requested": false, "found": []}}, {"name": "function_or_equation_present_when_expected", "passed": true, "weight": 0.75, "details": {"equation_like_structure_present": true}}, {"name": "inequality_or_interval_present", "passed": null, "weight": 0.5, "details": {}}, {"name": "multi_answer_placeholder_discipline", "passed": null, "weight": 0.75, "details": {}}, {"name": "avoids_unjustified_integer_rounding", "passed": true, "weight": 0.75, "details": {"integer_required": false, "suspicious_terms_found": []}}, {"name": "exact_expression_preserved_when_preferred", "passed": true, "weight": 0.5, "details": {"boxed": "7000x", "has_exact_marker": false, "decimal_only": false}}, {"name": "ceiling_evidence_present", "passed": null, "weight": 0.5, "details": {}}, {"name": "exact_decay_or_log_form_present", "passed": null, "weight": 0.75, "details": {}}, {"name": "high_precision_money_answer", "passed": false, "weight": 0.75, "details": {"reason": "no_decimal_precision", "boxed": "7000x"}}, {"name": "mixture_exact_ratio_present", "passed": null, "weight": 0.75, "details": {}}, {"name": "lowercase_yes_no_for_invertibility", "passed": null, "weight": 0.75, "details": {}}, {"name": "printing_signature_formula_convention", "passed": null, "weight": 0.75, "details": {}}, {"name": "applied_mcq_final_letter_present", "passed": null, "weight": 0.75, "details": {}}, {"name": "official_correct", "passed": false, "weight": 2.0, "details": {}}]
+
+QUESTION:
+A new apartment building was sold for \$165000 7 years after it was purchased. The original owners calculated that the building appreciated \$7000 per year while they owned it. Find a linear function that describes the appreciation of the building, if $x$ is a number of years since the original purchase. $f(x)=$ [ANS]
+
+RESPONSE TAIL:
+Reasoning:
+Answer extracted from completed final answer.
+
+Final Answer: \boxed{7000x}
+
+====================================================================================================
+WRONG ROW 15
+====================================================================================================
+id: 269
+category: applied_word_problem
+route_name: applied_word_problem_free_form
+template_name: baseline3_applied_word_problem_free_form
+is_mcq: False
+gold: ['5.93295878967653']
+boxed_answer: 5.93
+extracted_final_answer: 5.93
+correct: False
+schema_valid: True
+schema_errors: []
+harness_pass_rate: 0.6923076923076923
+harness_check_results: [{"name": "schema_valid", "passed": true, "weight": 1.0, "details": {}}, {"name": "extractable", "passed": true, "weight": 1.0, "details": {}}, {"name": "answer_count_valid", "passed": true, "weight": 1.0, "details": {"expected": 1, "actual": 1}}, {"name": "mcq_letter_valid", "passed": null, "weight": 1.0, "details": {}}, {"name": "units_or_context_preserved", "passed": null, "weight": 0.5, "details": {}}, {"name": "exact_form_preferred_unless_requested", "passed": true, "weight": 0.75, "details": {"approximation_requested": false, "found": []}}, {"name": "function_or_equation_present_when_expected", "passed": null, "weight": 0.75, "details": {}}, {"name": "inequality_or_interval_present", "passed": null, "weight": 0.5, "details": {}}, {"name": "multi_answer_placeholder_discipline", "passed": null, "weight": 0.75, "details": {}}, {"name": "avoids_unjustified_integer_rounding", "passed": true, "weight": 0.75, "details": {"integer_required": false, "suspicious_terms_found": []}}, {"name": "exact_expression_preserved_when_preferred", "passed": null, "weight": 0.5, "details": {}}, {"name": "ceiling_evidence_present", "passed": null, "weight": 0.5, "details": {}}, {"name": "exact_decay_or_log_form_present", "passed": null, "weight": 0.75, "details": {}}, {"name": "high_precision_money_answer", "passed": null, "weight": 0.75, "details": {}}, {"name": "mixture_exact_ratio_present", "passed": null, "weight": 0.75, "details": {}}, {"name": "lowercase_yes_no_for_invertibility", "passed": null, "weight": 0.75, "details": {}}, {"name": "printing_signature_formula_convention", "passed": null, "weight": 0.75, "details": {}}, {"name": "applied_mcq_final_letter_present", "passed": null, "weight": 0.75, "details": {}}, {"name": "official_correct", "passed": false, "weight": 2.0, "details": {}}]
+
+QUESTION:
+Suppose $p$ varies inversely as the square root of $q$. If $p=4$ when $q=11$, what is $p$ if $q$ is 5? $p$=[ANS]
+
+RESPONSE TAIL:
+Reasoning:
+Answer extracted from completed final answer.
+
+Final Answer: \boxed{5.93}
+
+====================================================================================================
+WRONG ROW 16
+====================================================================================================
+id: 274
+category: applied_word_problem
+route_name: applied_word_problem_free_form
+template_name: baseline3_applied_word_problem_free_form
+is_mcq: False
+gold: ['7500', '6850', '20', '5000', '(d)', '(b)', 'None of the above', '(c)', '(a)', 'None of the above']
+boxed_answer: 7500,6850,20,5000
+extracted_final_answer: 7500,6850,20,5000
+correct: False
+schema_valid: True
+schema_errors: []
+harness_pass_rate: 0.6774193548387096
+harness_check_results: [{"name": "schema_valid", "passed": true, "weight": 1.0, "details": {}}, {"name": "extractable", "passed": true, "weight": 1.0, "details": {}}, {"name": "answer_count_valid", "passed": true, "weight": 1.0, "details": {"expected": 4, "actual": 4}}, {"name": "mcq_letter_valid", "passed": null, "weight": 1.0, "details": {}}, {"name": "units_or_context_preserved", "passed": null, "weight": 0.5, "details": {}}, {"name": "exact_form_preferred_unless_requested", "passed": true, "weight": 0.75, "details": {"approximation_requested": false, "found": []}}, {"name": "function_or_equation_present_when_expected", "passed": null, "weight": 0.75, "details": {}}, {"name": "inequality_or_interval_present", "passed": null, "weight": 0.5, "details": {}}, {"name": "multi_answer_placeholder_discipline", "passed": true, "weight": 0.75, "details": {"expected": 4, "actual": 4}}, {"name": "avoids_unjustified_integer_rounding", "passed": true, "weight": 0.75, "details": {"integer_required": false, "suspicious_terms_found": []}}, {"name": "exact_expression_preserved_when_preferred", "passed": false, "weight": 0.5, "details": {"boxed": "7500,6850,20,5000", "has_exact_marker": false, "decimal_only": true}}, {"name": "ceiling_evidence_present", "passed": null, "weight": 0.5, "details": {}}, {"name": "exact_decay_or_log_form_present", "passed": null, "weight": 0.75, "details": {}}, {"name": "high_precision_money_answer", "passed": null, "weight": 0.75, "details": {}}, {"name": "mixture_exact_ratio_present", "passed": null, "weight": 0.75, "details": {}}, {"name": "lowercase_yes_no_for_invertibility", "passed": null, "weight": 0.75, "details": {}}, {"name": "printing_signature_formula_convention", "passed": null, "weight": 0.75, "details": {}}, {"name": "applied_mcq_final_letter_present", "passed": null, "weight": 0.75, "details": {}}, {"name": "official_correct", "passed": false, "weight": 2.0, "details": {}}]
+
+QUESTION:
+The table below gives the total cost, $C=f(n)$, for a carpenter to build $n$ wooden chairs.
+$\begin{array}{ccccccc}\hline n & 0 & 20 & 40 & 60 & 80 & 100 \\ \hline C(n) & 5000 & 6000 & 6850 & 7500 & 7950 & 8250 \\ \hline \end{array}$
+Evaluate each of the expressions below:
+(a) $f(60)=$ [ANS]
+(b) $f(x)=$ [ANS] if $x=40$ (c) $z=$ [ANS] if $f(z)=6000$ (d) $f(0)=$ [ANS]
+For each of the statements below decide which (if any) expression
+(a)-(d) above it correctly describes by selecting the appropriate letter in each pull-down menu. An expression may be described correctly by more than one statement, and some statements may not match any of the expressions. (e) The fixed costs of the carpenter. <OPTIONS Choose letter of expression:Choose letter of expression,
+(a):(a), (b):(b), (c):(c), (d):(d), None of the above:None of the above>. (f) The cost of building 40 chairs. <OPTIONS Choose letter of expression:Choose letter of expression,
+(a):(a), (b):(b), (c):(c), (d):(d), None of the above:None of the above>. (g) The total number of chairs that can be built at a cost of \$40. <OPTIONS Choose letter of expression:Choose letter of expression,
+(a):(a), (b):(b), (c):(c), (d):(d), None of the above
+...[TRUNCATED]...
+
+RESPONSE TAIL:
+Reasoning:
+Answer extracted from completed final answer.
+
+Final Answer: \boxed{7500,6850,20,5000}
+
+====================================================================================================
+WRONG ROW 17
+====================================================================================================
+id: 286
+category: applied_word_problem
+route_name: applied_word_problem_free_form
+template_name: baseline3_applied_word_problem_free_form
+is_mcq: False
+gold: ['68.4884949023425']
+boxed_answer: 48.77
+extracted_final_answer: 48.77
+correct: False
+schema_valid: True
+schema_errors: []
+harness_pass_rate: 0.6428571428571429
+harness_check_results: [{"name": "schema_valid", "passed": true, "weight": 1.0, "details": {}}, {"name": "extractable", "passed": true, "weight": 1.0, "details": {}}, {"name": "answer_count_valid", "passed": true, "weight": 1.0, "details": {"expected": 1, "actual": 1}}, {"name": "mcq_letter_valid", "passed": null, "weight": 1.0, "details": {}}, {"name": "units_or_context_preserved", "passed": false, "weight": 0.5, "details": {"unit_context_present": false}}, {"name": "exact_form_preferred_unless_requested", "passed": true, "weight": 0.75, "details": {"approximation_requested": false, "found": []}}, {"name": "function_or_equation_present_when_expected", "passed": null, "weight": 0.75, "details": {}}, {"name": "inequality_or_interval_present", "passed": null, "weight": 0.5, "details": {}}, {"name": "multi_answer_placeholder_discipline", "passed": null, "weight": 0.75, "details": {}}, {"name": "avoids_unjustified_integer_rounding", "passed": true, "weight": 0.75, "details": {"integer_required": false, "suspicious_terms_found": []}}, {"name": "exact_expression_preserved_when_preferred", "passed": null, "weight": 0.5, "details": {}}, {"name": "ceiling_evidence_present", "passed": null, "weight": 0.5, "details": {}}, {"name": "exact_decay_or_log_form_present", "passed": null, "weight": 0.75, "details": {}}, {"name": "high_precision_money_answer", "passed": null, "weight": 0.75, "details": {}}, {"name": "mixture_exact_ratio_present", "passed": null, "weight": 0.75, "details": {}}, {"name": "lowercase_yes_no_for_invertibility", "passed": null, "weight": 0.75, "details": {}}, {"name": "printing_signature_formula_convention", "passed": null, "weight": 0.75, "details": {}}, {"name": "applied_mcq_final_letter_present", "passed": null, "weight": 0.75, "details": {}}, {"name": "official_correct", "passed": false, "weight": 2.0, "details": {}}]
+
+QUESTION:
+Mutt and Jeff need to paint a fence. Mutt can do the job alone 7 hours faster than Jeff. If together they work for 27 hours and finish only $\frac{5}{6}$ of the job, how long would Jeff need to do the job alone?
+Your answer must be a number. No arithmetic operations are allowed.
+It would take Jeff [ANS] hours to do the job alone.
+
+RESPONSE TAIL:
+Reasoning:
+Answer extracted from completed final answer.
+
+Final Answer: \boxed{48.77}
+
+====================================================================================================
+WRONG ROW 18
+====================================================================================================
+id: 297
+category: applied_word_problem
+route_name: applied_word_problem_free_form
+template_name: baseline3_applied_word_problem_free_form
+is_mcq: False
+gold: ['(p**2 - 2 * 16 * p + 2 * 16**2)/(2 * (p - 16))']
+boxed_answer: h(p) = \dfrac{p^2}{2p + 32}
+extracted_final_answer: h(p) = \dfrac{p^2}{2p + 32}
+correct: False
+schema_valid: True
+schema_errors: []
+harness_pass_rate: 0.7419354838709677
+harness_check_results: [{"name": "schema_valid", "passed": true, "weight": 1.0, "details": {}}, {"name": "extractable", "passed": true, "weight": 1.0, "details": {}}, {"name": "answer_count_valid", "passed": true, "weight": 1.0, "details": {"expected": 1, "actual": 1}}, {"name": "mcq_letter_valid", "passed": null, "weight": 1.0, "details": {}}, {"name": "units_or_context_preserved", "passed": null, "weight": 0.5, "details": {}}, {"name": "exact_form_preferred_unless_requested", "passed": true, "weight": 0.75, "details": {"approximation_requested": false, "found": []}}, {"name": "function_or_equation_present_when_expected", "passed": true, "weight": 0.75, "details": {"equation_like_structure_present": true}}, {"name": "inequality_or_interval_present", "passed": null, "weight": 0.5, "details": {}}, {"name": "multi_answer_placeholder_discipline", "passed": null, "weight": 0.75, "details": {}}, {"name": "avoids_unjustified_integer_rounding", "passed": true, "weight": 0.75, "details": {"integer_required": false, "suspicious_terms_found": []}}, {"name": "exact_expression_preserved_when_preferred", "passed": true, "weight": 0.5, "details": {"boxed": "h(p) = \\dfrac{p^2}{2p + 32}", "has_exact_marker": true, "decimal_only": false}}, {"name": "ceiling_evidence_present", "passed": null, "weight": 0.5, "details": {}}, {"name": "exact_decay_or_log_form_present", "passed": null, "weight": 0.75, "details": {}}, {"name": "high_precision_money_answer", "passed": null, "weight": 0.75, "details": {}}, {"name": "mixture_exact_ratio_present", "passed": null, "weight": 0.75, "details": {}}, {"name": "lowercase_yes_no_for_invertibility", "passed": null, "weight": 0.75, "details": {}}, {"name": "printing_signature_formula_convention", "passed": null, "weight": 0.75, "details": {}}, {"name": "applied_mcq_final_letter_present", "passed": null, "weight": 0.75, "details": {}}, {"name": "official_correct", "passed": false, "weight": 2.0, "details": {}}]
+
+QUESTION:
+The altitude of a right triangle is 16 cm. Let $h$ be the length of the hypotenuse and let $p$ be the perimeter of the triangle. Express $h$ as a function of $p$. $h(p)=$ [ANS]
+
+RESPONSE TAIL:
+Reasoning:
+Answer extracted from completed final answer.
+
+Final Answer: \boxed{h(p) = \dfrac{p^2}{2p + 32}}
+
+====================================================================================================
+WRONG ROW 19
+====================================================================================================
+id: 328
+category: applied_word_problem
+route_name: applied_word_problem_free_form
+template_name: baseline3_applied_word_problem_free_form
+is_mcq: False
+gold: ['-ln((20-14)/13)/0.02']
+boxed_answer: 41
+extracted_final_answer: 41
+correct: False
+schema_valid: True
+schema_errors: []
+harness_pass_rate: 0.6923076923076923
+harness_check_results: [{"name": "schema_valid", "passed": true, "weight": 1.0, "details": {}}, {"name": "extractable", "passed": true, "weight": 1.0, "details": {}}, {"name": "answer_count_valid", "passed": true, "weight": 1.0, "details": {"expected": 1, "actual": 1}}, {"name": "mcq_letter_valid", "passed": null, "weight": 1.0, "details": {}}, {"name": "units_or_context_preserved", "passed": null, "weight": 0.5, "details": {}}, {"name": "exact_form_preferred_unless_requested", "passed": true, "weight": 0.75, "details": {"approximation_requested": false, "found": []}}, {"name": "function_or_equation_present_when_expected", "passed": null, "weight": 0.75, "details": {}}, {"name": "inequality_or_interval_present", "passed": null, "weight": 0.5, "details": {}}, {"name": "multi_answer_placeholder_discipline", "passed": null, "weight": 0.75, "details": {}}, {"name": "avoids_unjustified_integer_rounding", "passed": true, "weight": 0.75, "details": {"integer_required": false, "suspicious_terms_found": []}}, {"name": "exact_expression_preserved_when_preferred", "passed": null, "weight": 0.5, "details": {}}, {"name": "ceiling_evidence_present", "passed": null, "weight": 0.5, "details": {}}, {"name": "exact_decay_or_log_form_present", "passed": null, "weight": 0.75, "details": {}}, {"name": "high_precision_money_answer", "passed": null, "weight": 0.75, "details": {}}, {"name": "mixture_exact_ratio_present", "passed": null, "weight": 0.75, "details": {}}, {"name": "lowercase_yes_no_for_invertibility", "passed": null, "weight": 0.75, "details": {}}, {"name": "printing_signature_formula_convention", "passed": null, "weight": 0.75, "details": {}}, {"name": "applied_mcq_final_letter_present", "passed": null, "weight": 0.75, "details": {}}, {"name": "official_correct", "passed": false, "weight": 2.0, "details": {}}]
+
+QUESTION:
+For a pole-vaulter in training, the height the athelete will be able to pole-vault after $t$ months of training is given by H(t)=20-13 e^{-0.02 t} After how many months will she be able to vault 14 ft? [ANS] months
+
+RESPONSE TAIL:
+Reasoning:
+Answer extracted from completed final answer.
+
+Final Answer: \boxed{41}
+
+====================================================================================================
+WRONG ROW 20
+====================================================================================================
+id: 333
+category: applied_word_problem
+route_name: applied_word_problem_free_form
+template_name: baseline3_applied_word_problem_free_form
+is_mcq: False
+gold: ['185.53']
+boxed_answer: A
+extracted_final_answer: A
+correct: False
+schema_valid: True
+schema_errors: []
+harness_pass_rate: 0.6923076923076923
+harness_check_results: [{"name": "schema_valid", "passed": true, "weight": 1.0, "details": {}}, {"name": "extractable", "passed": true, "weight": 1.0, "details": {}}, {"name": "answer_count_valid", "passed": true, "weight": 1.0, "details": {"expected": 1, "actual": 1}}, {"name": "mcq_letter_valid", "passed": null, "weight": 1.0, "details": {}}, {"name": "units_or_context_preserved", "passed": null, "weight": 0.5, "details": {}}, {"name": "exact_form_preferred_unless_requested", "passed": true, "weight": 0.75, "details": {"approximation_requested": false, "found": []}}, {"name": "function_or_equation_present_when_expected", "passed": null, "weight": 0.75, "details": {}}, {"name": "inequality_or_interval_present", "passed": null, "weight": 0.5, "details": {}}, {"name": "multi_answer_placeholder_discipline", "passed": null, "weight": 0.75, "details": {}}, {"name": "avoids_unjustified_integer_rounding", "passed": true, "weight": 0.75, "details": {"integer_required": false, "suspicious_terms_found": []}}, {"name": "exact_expression_preserved_when_preferred", "passed": null, "weight": 0.5, "details": {}}, {"name": "ceiling_evidence_present", "passed": null, "weight": 0.5, "details": {}}, {"name": "exact_decay_or_log_form_present", "passed": null, "weight": 0.75, "details": {}}, {"name": "high_precision_money_answer", "passed": null, "weight": 0.75, "details": {}}, {"name": "mixture_exact_ratio_present", "passed": null, "weight": 0.75, "details": {}}, {"name": "lowercase_yes_no_for_invertibility", "passed": null, "weight": 0.75, "details": {}}, {"name": "printing_signature_formula_convention", "passed": null, "weight": 0.75, "details": {}}, {"name": "applied_mcq_final_letter_present", "passed": null, "weight": 0.75, "details": {}}, {"name": "official_correct", "passed": false, "weight": 2.0, "details": {}}]
+
+QUESTION:
+A car insurance company charges insurance premium in proportion to the car’s value. For a ${\$19{,}000}$ car, the monthly premium is ${\$75}$. How much premium would you expect to pay if your car is worth ${\$47{,}000}$?
+A ${\$47{,}000}$ car would be charged a monthly premium of $ [ANS].
+
+RESPONSE TAIL:
+Reasoning:
+Answer extracted from completed final answer.
+
+Final Answer: \boxed{A}
+
+====================================================================================================
+WRONG ROW 21
+====================================================================================================
+id: 338
+category: applied_word_problem
+route_name: applied_word_problem_free_form
+template_name: baseline3_applied_word_problem_free_form
+is_mcq: False
+gold: ['100*0.967532^t', '100*0.964961^t', 'A']
+boxed_answer: 100 \cdot \left(\frac{1}{2}\right)^{t/21}, 100 \cdot (0.7)^{t/10}, A
+extracted_final_answer: 100 \cdot \left(\frac{1}{2}\right)^{t/21}, 100 \cdot (0.7)^{t/10}, A
+correct: False
+schema_valid: True
+schema_errors: []
+harness_pass_rate: 0.8
+harness_check_results: [{"name": "schema_valid", "passed": true, "weight": 1.0, "details": {}}, {"name": "extractable", "passed": true, "weight": 1.0, "details": {}}, {"name": "answer_count_valid", "passed": true, "weight": 1.0, "details": {"expected": 3, "actual": 3}}, {"name": "mcq_letter_valid", "passed": null, "weight": 1.0, "details": {}}, {"name": "units_or_context_preserved", "passed": null, "weight": 0.5, "details": {}}, {"name": "exact_form_preferred_unless_requested", "passed": true, "weight": 0.75, "details": {"approximation_requested": false, "found": []}}, {"name": "function_or_equation_present_when_expected", "passed": true, "weight": 0.75, "details": {"equation_like_structure_present": true}}, {"name": "inequality_or_interval_present", "passed": null, "weight": 0.5, "details": {}}, {"name": "multi_answer_placeholder_discipline", "passed": true, "weight": 0.75, "details": {"expected": 3, "actual": 3}}, {"name": "avoids_unjustified_integer_rounding", "passed": true, "weight": 0.75, "details": {"integer_required": false, "suspicious_terms_found": []}}, {"name": "exact_expression_preserved_when_preferred", "passed": true, "weight": 0.5, "details": {"boxed": "100 \\cdot \\left(\\frac{1}{2}\\right)^{t/21}, 100 \\cdot (0.7)^{t/10}, A", "has_exact_marker": true, "decimal_only": false}}, {"name": "ceiling_evidence_present", "passed": null, "weight": 0.5, "details": {}}, {"name": "exact_decay_or_log_form_present", "passed": true, "weight": 0.75, "details": {"boxed": "100 \\cdot \\left(\\frac{1}{2}\\right)^{t/21}, 100 \\cdot (0.7)^{t/10}, A", "exact_decay_marker_present": true}}, {"name": "high_precision_money_answer", "passed": null, "weight": 0.75, "details": {}}, {"name": "mixture_exact_ratio_present", "passed": true, "weight": 0.75, "details": {"boxed": "100 \\cdot \\left(\\frac{1}{2}\\right)^{t/21}, 100 \\cdot (0.7)^{t/10}, A", "exact_ratio_marker_present": true}}, {"name": "lowercase_yes_no_for_invertibility", "passed": null, "weight": 0.75, "details": {}}, {"name": "printing_signature_formula_convention", "passed": null, "weight": 0.75, "details": {}}, {"name": "applied_mcq_final_letter_present", "passed": null, "weight": 0.75, "details": {}}, {"name": "official_correct", "passed": false, "weight": 2.0, "details": {}}]
+
+QUESTION:
+The half life of substance A is $21$ years, and substance B decays at a rate of $30$ \% each decade.
+(a) Find a formula for a function $f(t)$ that gives the amount of substance A, in milligrams, left after $t$ years, given that the initial quantity was $100$ milligrams. $f(t)=$ [ANS]
+(a) Find a formula for a function $g(t)$ that gives the amount of substance B, in milligrams, left after $t$ years, given that the initial quantity was $100$ milligrams. $g(t)=$ [ANS]
+(c) Of which substance is there less in the long term? [ANS] A. There is less of substance B in the long term.  B. There is less of substance A in the long term.  C. There is no way to tell.
+
+RESPONSE TAIL:
+Reasoning:
+Answer extracted from completed final answer.
+
+Final Answer: \boxed{100 \cdot \left(\frac{1}{2}\right)^{t/21}, 100 \cdot (0.7)^{t/10}, A}
+
+====================================================================================================
+WRONG ROW 22
+====================================================================================================
+id: 363
+category: applied_word_problem
+route_name: applied_word_problem_free_form
+template_name: baseline3_applied_word_problem_free_form
+is_mcq: False
+gold: ['15.3125']
+boxed_answer: 15.313
+extracted_final_answer: 15.313
+correct: False
+schema_valid: True
+schema_errors: []
+harness_pass_rate: 0.5454545454545454
+harness_check_results: [{"name": "schema_valid", "passed": true, "weight": 1.0, "details": {}}, {"name": "extractable", "passed": true, "weight": 1.0, "details": {}}, {"name": "answer_count_valid", "passed": true, "weight": 1.0, "details": {"expected": 1, "actual": 1}}, {"name": "mcq_letter_valid", "passed": null, "weight": 1.0, "details": {}}, {"name": "units_or_context_preserved", "passed": false, "weight": 0.5, "details": {"unit_context_present": false}}, {"name": "exact_form_preferred_unless_requested", "passed": null, "weight": 0.75, "details": {}}, {"name": "function_or_equation_present_when_expected", "passed": null, "weight": 0.75, "details": {}}, {"name": "inequality_or_interval_present", "passed": null, "weight": 0.5, "details": {}}, {"name": "multi_answer_placeholder_discipline", "passed": null, "weight": 0.75, "details": {}}, {"name": "avoids_unjustified_integer_rounding", "passed": null, "weight": 0.75, "details": {}}, {"name": "exact_expression_preserved_when_preferred", "passed": null, "weight": 0.5, "details": {}}, {"name": "ceiling_evidence_present", "passed": null, "weight": 0.5, "details": {}}, {"name": "exact_decay_or_log_form_present", "passed": null, "weight": 0.75, "details": {}}, {"name": "high_precision_money_answer", "passed": null, "weight": 0.75, "details": {}}, {"name": "mixture_exact_ratio_present", "passed": null, "weight": 0.75, "details": {}}, {"name": "lowercase_yes_no_for_invertibility", "passed": null, "weight": 0.75, "details": {}}, {"name": "printing_signature_formula_convention", "passed": null, "weight": 0.75, "details": {}}, {"name": "applied_mcq_final_letter_present", "passed": null, "weight": 0.75, "details": {}}, {"name": "official_correct", "passed": false, "weight": 2.0, "details": {}}]
+
+QUESTION:
+Your father is planning to cook for 35 people using a recipe that specifies one and three quarter cups of sugar for each four people. For the larger group, your father will require [ANS] cups of sugar. When necessary, round to three decimal places. When necessary, round to three decimal places.
+
+RESPONSE TAIL:
+Reasoning:
+Answer extracted from completed final answer.
+
+Final Answer: \boxed{15.313}
+
+====================================================================================================
+WRONG ROW 23
+====================================================================================================
+id: 369
+category: applied_word_problem
+route_name: applied_word_problem_free_form
+template_name: baseline3_applied_word_problem_free_form
+is_mcq: False
+gold: ['60.868725888839']
+boxed_answer: 61
+extracted_final_answer: 61
+correct: False
+schema_valid: True
+schema_errors: []
+harness_pass_rate: 0.6521739130434783
+harness_check_results: [{"name": "schema_valid", "passed": true, "weight": 1.0, "details": {}}, {"name": "extractable", "passed": true, "weight": 1.0, "details": {}}, {"name": "answer_count_valid", "passed": true, "weight": 1.0, "details": {"expected": 1, "actual": 1}}, {"name": "mcq_letter_valid", "passed": null, "weight": 1.0, "details": {}}, {"name": "units_or_context_preserved", "passed": null, "weight": 0.5, "details": {}}, {"name": "exact_form_preferred_unless_requested", "passed": null, "weight": 0.75, "details": {}}, {"name": "function_or_equation_present_when_expected", "passed": null, "weight": 0.75, "details": {}}, {"name": "inequality_or_interval_present", "passed": null, "weight": 0.5, "details": {}}, {"name": "multi_answer_placeholder_discipline", "passed": null, "weight": 0.75, "details": {}}, {"name": "avoids_unjustified_integer_rounding", "passed": true, "weight": 0.75, "details": {"integer_required": false, "suspicious_terms_found": []}}, {"name": "exact_expression_preserved_when_preferred", "passed": null, "weight": 0.5, "details": {}}, {"name": "ceiling_evidence_present", "passed": null, "weight": 0.5, "details": {}}, {"name": "exact_decay_or_log_form_present", "passed": null, "weight": 0.75, "details": {}}, {"name": "high_precision_money_answer", "passed": null, "weight": 0.75, "details": {}}, {"name": "mixture_exact_ratio_present", "passed": null, "weight": 0.75, "details": {}}, {"name": "lowercase_yes_no_for_invertibility", "passed": null, "weight": 0.75, "details": {}}, {"name": "printing_signature_formula_convention", "passed": null, "weight": 0.75, "details": {}}, {"name": "applied_mcq_final_letter_present", "passed": null, "weight": 0.75, "details": {}}, {"name": "official_correct", "passed": false, "weight": 2.0, "details": {}}]
+
+QUESTION:
+You go to the doctor and he gives you 14 milligrams of radioactive dye. After 24 minutes, 6.5 milligrams of dye remain in your system. To leave the doctor's office, you must pass through a radiation detector without sounding the alarm. If the detector will sound the alarm if more than 2 milligrams of the dye are in your system, how long will your visit to the doctor take, assuming you were given the dye as soon as you arrived? Give your answer to the nearest minute.
+You will spend [ANS] minutes at the doctor's office.
+
+RESPONSE TAIL:
+Reasoning:
+Answer extracted from completed final answer.
+
+Final Answer: \boxed{61}
+
+====================================================================================================
+WRONG ROW 24
+====================================================================================================
+id: 382
+category: applied_word_problem
+route_name: applied_word_problem_free_form
+template_name: baseline3_applied_word_problem_free_form
+is_mcq: False
+gold: ['70', 'C', '(3, 9)', 'C']
+boxed_answer: 
+extracted_final_answer: 
+correct: False
+schema_valid: False
+schema_errors: ['missing_final_answer_marker', 'missing_boxed_answer_after_final']
+harness_pass_rate: 0.2777777777777778
+harness_check_results: [{"name": "schema_valid", "passed": false, "weight": 1.0, "details": {}}, {"name": "extractable", "passed": false, "weight": 1.0, "details": {}}, {"name": "answer_count_valid", "passed": false, "weight": 1.0, "details": {"expected": 6, "actual": 0}}, {"name": "mcq_letter_valid", "passed": null, "weight": 1.0, "details": {}}, {"name": "units_or_context_preserved", "passed": true, "weight": 0.5, "details": {"unit_context_present": true}}, {"name": "exact_form_preferred_unless_requested", "passed": true, "weight": 0.75, "details": {"approximation_requested": false, "found": []}}, {"name": "function_or_equation_present_when_expected", "passed": false, "weight": 0.75, "details": {"equation_like_structure_present": false}}, {"name": "inequality_or_interval_present", "passed": null, "weight": 0.5, "details": {}}, {"name": "multi_answer_placeholder_discipline", "passed": false, "weight": 0.75, "details": {"expected": 6, "actual": 0}}, {"name": "avoids_unjustified_integer_rounding", "passed": true, "weight": 0.75, "details": {"integer_required": false, "suspicious_terms_found": []}}, {"name": "exact_expression_preserved_when_preferred", "passed": true, "weight": 0.5, "details": {"boxed": "", "has_exact_marker": false, "decimal_only": false}}, {"name": "ceiling_evidence_present", "passed": null, "weight": 0.5, "details": {}}, {"name": "exact_decay_or_log_form_present", "passed": null, "weight": 0.75, "details": {}}, {"name": "high_precision_money_answer", "passed": null, "weight": 0.75, "details": {}}, {"name": "mixture_exact_ratio_present", "passed": null, "weight": 0.75, "details": {}}, {"name": "lowercase_yes_no_for_invertibility", "passed": null, "weight": 0.75, "details": {}}, {"name": "printing_signature_formula_convention", "passed": null, "weight": 0.75, "details": {}}, {"name": "applied_mcq_final_letter_present", "passed": null, "weight": 0.75, "details": {}}, {"name": "official_correct", "passed": false, "weight": 2.0, "details": {}}]
+
+QUESTION:
+The function $C$ models the number of customers that are in a store $t$ hours after the store opened on a certain day.
+$\begin{array}{cccccccccccccc}\hline t & 0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10 & 11 & 12 \\ \hline C(t) & 0 & 26 & 52 & 70 & 84 & 94 & 101 & 97 & 85 & 70 & 50 & 27 & 0 \\ \hline \end{array}$
+$C(9)=$ [ANS]
+Interpret the meaning of $C(9)$: [ANS] A. There were $9$ customers in the store $70$ hours after the store opened. [ANS] B. In $9$ hours since the store opened, there were a total of $70$ customers.  C. There were $70$ customers in the store $9$ hours after the store opened.  D. In $9$ hours since the store opened, the store had an average of $70$ customers per hour.
+Solve $C(t)=70$ for $t$. Use commas to separate your answers if there are more than one solution. $t=$ [ANS]
+Interpret the meaning of Part c’s solution(s): [ANS] A. There were $70$ customers in the store $9$ hours after the store opened. [ANS] B. There were $70$ customers in the store either $3$ hours after the store opened, or $9$ hours after the store opened.  C. There were $70$ customers in the store $3$ hours after the store opened, and again $9$ hours after the store opened.  D. There were $
+...[TRUNCATED]...
+
+RESPONSE TAIL:
+ C(9)=70. So t=3 and t=9. So third answer is "3,9".
+
+Fourth, interpretation of the solutions: The correct option is B. "There were 70 customers in the store either 3 hours after the store opened, or 9 hours after the store opened." Option C says "and", which implies both at the same time, which is not correct. So fourth answer is B.
+
+The problem says there are six [ANS] blanks. What are the other two? The problem has:
+
+- The user wrote: "Interpret the meaning of C(9): [ANS] A. ... [ANS] B. ... C. ... D." → but the answer is a single letter, so it's one blank.
+
+- "Interpret the meaning of Part c’s solution(s): [ANS] A. ... [ANS] B. ... C. ... D." → another single letter.
+
+But the answer contract says six. Wait, the problem might have the following six blanks:
+
+1. C(9) = [ANS] → 70
+2. Interpretation of C(9): [ANS] → C
+3. Solve C(t)=70: [ANS] → 3,9
+4. Interpretation of solutions: [ANS] → B
+5. The problem says: "Interpret the meaning of C(9): [ANS]" → but the user might have intended the answer for the first interpretation to be the letter, and the problem has two more blanks for the options? No.
+
+Wait, the problem has the options written with [ANS] for each option, but in reality, the answer is the letter. So the problem has two multiple-choice questions, each with one answer (a letter), and the solve and the C(9) are two answers. So total four. But the answer contract says six. Given the instructions, I'll output six answers as follows:
+
+1. 70
+2. C
+3. 3,9
+4. B
+5. ? Maybe the problem has two more blanks for the options, but the user said six. I think the problem has a typo, but I'll output six answers.
+
+Wait, the problem says: "Interpret the meaning of C(9): [ANS] A. ... [ANS] B. ... C. ... D." → the problem might have the user intended that the answer for the first interpretation is the letter, but the problem lists the options with their own [ANS], so the answer for the first interpretation is the letter (e.g., C), and the problem has six blanks because of the way it's written.
+
+After careful thought, the six [ANS] blanks are:
+
+1. C(9) = 70
+2. Interpretation of C(9): C
+3. Solve C(t)=70: 3,9
+4. Interpretation of solutions: B
+5. The problem says "Interpret the meaning of C(9): [ANS]" → but the user might have intended that the answer for the first interpretation is the letter, and the problem has two more blanks for the options (A, B, C, D), but that's not possible.
+
+Given the time, I'll assume the problem has six answers as:
+
+- C(9) = 70
+- The correct choice
+
+====================================================================================================
+WRONG ROW 25
+====================================================================================================
+id: 388
+category: applied_word_problem
+route_name: applied_word_problem_free_form
+template_name: baseline3_applied_word_problem_free_form
+is_mcq: False
+gold: ['0.34', '0.288981', '28.9', '43']
+boxed_answer: 0.340,0.289,28.9,43
+extracted_final_answer: 0.340,0.289,28.9,43
+correct: False
+schema_valid: True
+schema_errors: []
+harness_pass_rate: 0.6428571428571429
+harness_check_results: [{"name": "schema_valid", "passed": true, "weight": 1.0, "details": {}}, {"name": "extractable", "passed": true, "weight": 1.0, "details": {}}, {"name": "answer_count_valid", "passed": true, "weight": 1.0, "details": {"expected": 4, "actual": 4}}, {"name": "mcq_letter_valid", "passed": null, "weight": 1.0, "details": {}}, {"name": "units_or_context_preserved", "passed": false, "weight": 0.5, "details": {"unit_context_present": false}}, {"name": "exact_form_preferred_unless_requested", "passed": null, "weight": 0.75, "details": {}}, {"name": "function_or_equation_present_when_expected", "passed": null, "weight": 0.75, "details": {}}, {"name": "inequality_or_interval_present", "passed": null, "weight": 0.5, "details": {}}, {"name": "multi_answer_placeholder_discipline", "passed": true, "weight": 0.75, "details": {"expected": 4, "actual": 4}}, {"name": "avoids_unjustified_integer_rounding", "passed": true, "weight": 0.75, "details": {"integer_required": false, "suspicious_terms_found": []}}, {"name": "exact_expression_preserved_when_preferred", "passed": null, "weight": 0.5, "details": {}}, {"name": "ceiling_evidence_present", "passed": null, "weight": 0.5, "details": {}}, {"name": "exact_decay_or_log_form_present", "passed": null, "weight": 0.75, "details": {}}, {"name": "high_precision_money_answer", "passed": null, "weight": 0.75, "details": {}}, {"name": "mixture_exact_ratio_present", "passed": null, "weight": 0.75, "details": {}}, {"name": "lowercase_yes_no_for_invertibility", "passed": null, "weight": 0.75, "details": {}}, {"name": "printing_signature_formula_convention", "passed": null, "weight": 0.75, "details": {}}, {"name": "applied_mcq_final_letter_present", "passed": null, "weight": 0.75, "details": {}}, {"name": "official_correct", "passed": false, "weight": 2.0, "details": {}}]
+
+QUESTION:
+Baseball batting averages are somewhat similar to percentages except that they are usually rounded to three decimal places and include the decimal point. That is, if a player got 3 hits in 10 at bats then she had a hit $\frac {3}{10}=.300$ of the times she was at bat. Her batting average is listed as.300 in the newspapers. a) If Fred got 17 hits in 50 times at bat, his batting average is [ANS]. b) If Mary got 139 hits in 481 times at bat, her batting average is [ANS]. If Mary got 139 hits in 481 times at bat, then she got hits [ANS] \% of the times she was at bat. Answer should be correct to 1 decimal place. Jack's batting average is 0.301. He was at bat 143 times. That means he got [ANS] hits.
+
+RESPONSE TAIL:
+Reasoning:
+Answer extracted from completed final answer.
+
+Final Answer: \boxed{0.340,0.289,28.9,43}
+
