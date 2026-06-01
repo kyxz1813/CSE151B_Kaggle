@@ -258,6 +258,99 @@ def is_geometry_numeric_precision_problem(record):
         "calculator",
     ])
 
+def is_general_trig_solution_exact_period_problem(record):
+    text = _text(record)
+    return (
+        is_trig_equation(record)
+        and _has_any(text, ["n is any integer", "any integer", "[ans]+[ans] n", "all solutions"])
+        and _has_any(text, ["tan", "sin", "cos"])
+    )
+
+
+def is_arc_radius_decimal_preferred_problem(record):
+    text = _text(record)
+    return (
+        is_arc_length_sector(record)
+        and _has_any(text, ["find the radius", "radius of the circle", "[ans] feet", "[ans] meters"])
+        and not _has_any(text, ["exact form", "leave in terms of pi"])
+    )
+
+
+def is_coordinate_point_decimal_trig_value_problem(record):
+    text = _text(record)
+    return (
+        is_coordinate_point_trig(record)
+        and _has_any(text, ["one valid point", "valid point"])
+        and _has_any(text, ["sin", "cos", "tan"])
+        and not _has_any(text, ["exact form", "no decimals"])
+    )
+
+
+def is_exact_sqrt_plain_text_problem(record):
+    text = _text(record)
+    return (
+        _has_any(text, ["exact form", "no decimals", "type \"sqrt\"", "type sqrt"])
+        and _has_any(text, ["sin", "cos", "tan", "quadrant"])
+    )
+
+
+def is_pythagorean_equation_canonical_problem(record):
+    text = _text(record)
+    return (
+        _has_any(text, ["pythagorean theorem", "wire", "anchored", "tree"])
+        and _has_any(text, ["x", "4 feet longer", "equation"])
+    )
+
+
+def is_bearing_vector_answer_contract_problem(record):
+    text = _text(record)
+    return (
+        _has_any(text, ["bearing", "traveling between two ports", "boat", "straight distance"])
+        and _has_any(text, ["north", "south", "east", "west", " n ", " e ", " s ", " w "])
+    )
+
+
+def is_direct_numeric_trig_values_problem(record):
+    text = _text(record)
+    return (
+        _has_any(text, ["sin (", "cos (", "tan (", "\\sin", "\\cos", "\\tan"])
+        and _ans_count(record) >= 2
+        and _has_any(text, ["find the following values", "calculator"])
+    )
+
+
+def is_geometry_high_precision_decimal_preferred_problem(record):
+    text = _text(record)
+    return (
+        is_geometry_numeric_precision_problem(record)
+        or is_arc_radius_decimal_preferred_problem(record)
+        or is_direct_numeric_trig_values_problem(record)
+        or _has_any(text, ["at least four significant digits", "at least one decimal place"])
+    )
+
+
+def is_parallel_triangle_area_mcq_problem(record):
+    text = _text(record)
+    return (
+        bool(record.get("options"))
+        and _has_any(text, ["de is parallel to ab", "area of", "triangle", "parallel to"])
+    )
+
+
+def is_fourier_series_mcq_problem(record):
+    text = _text(record)
+    return (
+        bool(record.get("options"))
+        and _has_any(text, ["fourier series", "periodic extension", "period 2"])
+    )
+
+
+def is_geometry_mcq_long_reasoning_problem(record):
+    text = _text(record)
+    return (
+        bool(record.get("options"))
+        and _has_any(text, ["find the area", "fourier series", "parallel", "triangle", "how many"])
+    )
 
 def schema_valid(record, row):
     return row.get("schema_valid")
@@ -571,6 +664,166 @@ def high_precision_geometry_numeric(record, row):
         },
     }
 
+def trig_period_exact_form_present(record, row):
+    if not is_general_trig_solution_exact_period_problem(record):
+        return None
+
+    boxed = _boxed(row)
+    has_exact_period = "pi" in boxed.lower() or "π" in boxed or "atan" in boxed.lower()
+
+    return {
+        "passed": has_exact_period,
+        "details": {
+            "boxed": boxed,
+            "has_exact_period_or_inverse_trig": has_exact_period,
+        },
+    }
+
+
+def arc_radius_decimal_format(record, row):
+    if not is_arc_radius_decimal_preferred_problem(record):
+        return None
+
+    boxed = _boxed(row)
+    has_pi_expr = "pi" in boxed.lower() or "\\pi" in boxed or "π" in boxed
+    has_decimal = bool(re.search(r"-?\d+\.\d+", boxed))
+
+    return {
+        "passed": has_decimal and not has_pi_expr,
+        "details": {
+            "boxed": boxed,
+            "has_decimal": has_decimal,
+            "has_pi_expression": has_pi_expr,
+        },
+    }
+
+
+def coordinate_point_decimal_value_format(record, row):
+    if not is_coordinate_point_decimal_trig_value_problem(record):
+        return None
+
+    boxed = _boxed(row)
+    parts = [part.strip() for part in boxed.split(",")]
+    has_coordinate = bool(re.search(r"\(-?\d+,-?\d+\)", boxed.replace(" ", "")))
+    has_decimal = bool(re.search(r"-?\d+\.\d+", boxed))
+
+    return {
+        "passed": has_coordinate and has_decimal,
+        "details": {
+            "boxed": boxed,
+            "has_coordinate_no_space": has_coordinate,
+            "has_decimal_trig_value": has_decimal,
+            "parts": parts,
+        },
+    }
+
+
+def exact_sqrt_plain_text_format(record, row):
+    if not is_exact_sqrt_plain_text_problem(record):
+        return None
+
+    boxed = _boxed(row)
+    uses_latex_frac = "\\dfrac" in boxed or "\\frac" in boxed
+    has_sqrt = "sqrt" in boxed.lower()
+
+    return {
+        "passed": has_sqrt and not uses_latex_frac,
+        "details": {
+            "boxed": boxed,
+            "has_sqrt": has_sqrt,
+            "uses_latex_frac": uses_latex_frac,
+        },
+    }
+
+
+def pythagorean_equation_canonical_format(record, row):
+    if not is_pythagorean_equation_canonical_problem(record):
+        return None
+
+    boxed = _boxed(row).replace(" ", "")
+    first_answer = boxed.split(",")[0] if boxed else ""
+
+    expected_markers = [
+        "13^2",
+        "(x-4)^2",
+        "=x^2",
+    ]
+
+    passed = all(marker.replace(" ", "") in first_answer for marker in expected_markers)
+
+    return {
+        "passed": passed,
+        "details": {
+            "first_answer": first_answer,
+            "expected_markers": expected_markers,
+        },
+    }
+
+
+def bearing_answer_contract_format(record, row):
+    if not is_bearing_vector_answer_contract_problem(record):
+        return None
+
+    boxed = _boxed(row)
+    parts = [part.strip() for part in boxed.split(",") if part.strip()]
+
+    has_four_parts = len(parts) == 4
+    has_direction_letters = has_four_parts and parts[1].upper() in {"N", "S"} and parts[3].upper() in {"E", "W"}
+    has_distance_expr = has_four_parts and ("sqrt" in parts[0].lower() or re.search(r"\d+\.\d+", parts[0]))
+    has_angle = has_four_parts and re.search(r"-?\d+(?:\.\d+)?", parts[2])
+
+    return {
+        "passed": has_four_parts and has_direction_letters and bool(has_distance_expr) and bool(has_angle),
+        "details": {
+            "boxed": boxed,
+            "parts": parts,
+            "has_four_parts": has_four_parts,
+            "has_direction_letters": has_direction_letters,
+            "has_distance_expr": bool(has_distance_expr),
+            "has_angle": bool(has_angle),
+        },
+    }
+
+
+def direct_numeric_trig_precision(record, row):
+    if not is_direct_numeric_trig_values_problem(record):
+        return None
+
+    boxed = _boxed(row)
+    decimals = re.findall(r"\d+\.(\d+)", boxed)
+
+    if not decimals:
+        return {
+            "passed": False,
+            "details": {
+                "reason": "no_decimal_values",
+                "boxed": boxed,
+            },
+        }
+
+    return {
+        "passed": min(len(item) for item in decimals) >= 6,
+        "details": {
+            "min_decimal_digits": min(len(item) for item in decimals),
+            "boxed": boxed,
+        },
+    }
+
+
+def geometry_mcq_final_letter_present(record, row):
+    if not is_geometry_mcq_long_reasoning_problem(record):
+        return None
+
+    boxed = _boxed(row).strip().upper()
+    valid = [chr(ord("A") + idx) for idx in range(len(record.get("options") or []))]
+
+    return {
+        "passed": boxed in valid,
+        "details": {
+            "boxed": boxed,
+            "valid": valid,
+        },
+    }
 
 def official_correct(record, row):
     if row.get("correct") is None:
@@ -637,6 +890,46 @@ def build_geometry_trig_harness():
                 "high_precision_geometry_numeric",
                 high_precision_geometry_numeric,
                 weight=0.5,
+            ),
+            HarnessCheck(
+                "trig_period_exact_form_present",
+                trig_period_exact_form_present,
+                weight=0.75,
+            ),
+            HarnessCheck(
+                "arc_radius_decimal_format",
+                arc_radius_decimal_format,
+                weight=0.75,
+            ),
+            HarnessCheck(
+                "coordinate_point_decimal_value_format",
+                coordinate_point_decimal_value_format,
+                weight=0.75,
+            ),
+            HarnessCheck(
+                "exact_sqrt_plain_text_format",
+                exact_sqrt_plain_text_format,
+                weight=0.75,
+            ),
+            HarnessCheck(
+                "pythagorean_equation_canonical_format",
+                pythagorean_equation_canonical_format,
+                weight=0.75,
+            ),
+            HarnessCheck(
+                "bearing_answer_contract_format",
+                bearing_answer_contract_format,
+                weight=0.75,
+            ),
+            HarnessCheck(
+                "direct_numeric_trig_precision",
+                direct_numeric_trig_precision,
+                weight=0.75,
+            ),
+            HarnessCheck(
+                "geometry_mcq_final_letter_present",
+                geometry_mcq_final_letter_present,
+                weight=0.75,
             ),
             HarnessCheck(
                 "official_correct",
@@ -774,6 +1067,73 @@ def register_category_rules():
             category=CATEGORY,
             detector=is_geometry_numeric_precision_problem,
             description="Geometry/trig numerical answer where extra precision is safer.",
+        ),
+
+        DerivedRule(
+            name="geometry_trig_general_solution_exact_period",
+            category=CATEGORY,
+            detector=is_general_trig_solution_exact_period_problem,
+            description="Trig equation general solution where exact inverse trig and pi period are preferred.",
+        ),
+        DerivedRule(
+            name="geometry_trig_arc_radius_decimal_preferred",
+            category=CATEGORY,
+            detector=is_arc_radius_decimal_preferred_problem,
+            description="Arc length radius problem where high-precision decimal radius is preferred.",
+        ),
+        DerivedRule(
+            name="geometry_trig_coordinate_point_decimal_value",
+            category=CATEGORY,
+            detector=is_coordinate_point_decimal_trig_value_problem,
+            description="Coordinate point plus trig value problem where point should be simple and trig value decimal unless exact is requested.",
+        ),
+        DerivedRule(
+            name="geometry_trig_exact_sqrt_plain_text",
+            category=CATEGORY,
+            detector=is_exact_sqrt_plain_text_problem,
+            description="Exact trig value problem where plain sqrt expression is preferred over LaTeX fraction form.",
+        ),
+        DerivedRule(
+            name="geometry_trig_pythagorean_equation_canonical",
+            category=CATEGORY,
+            detector=is_pythagorean_equation_canonical_problem,
+            description="Pythagorean theorem word problem requiring canonical equation order.",
+        ),
+        DerivedRule(
+            name="geometry_trig_bearing_vector_contract",
+            category=CATEGORY,
+            detector=is_bearing_vector_answer_contract_problem,
+            description="Bearing/vector travel problem requiring distance, direction, angle, direction answer contract.",
+        ),
+        DerivedRule(
+            name="geometry_trig_direct_numeric_trig_values",
+            category=CATEGORY,
+            detector=is_direct_numeric_trig_values_problem,
+            description="Direct sin/cos/tan numeric evaluation requiring high precision.",
+        ),
+        DerivedRule(
+            name="geometry_trig_high_precision_decimal_preferred",
+            category=CATEGORY,
+            detector=is_geometry_high_precision_decimal_preferred_problem,
+            description="Geometry/trig numeric answer where high-precision decimal is safer.",
+        ),
+        DerivedRule(
+            name="geometry_trig_parallel_triangle_area_mcq",
+            category=CATEGORY,
+            detector=is_parallel_triangle_area_mcq_problem,
+            description="Triangle with parallel segment and area ratios MCQ.",
+        ),
+        DerivedRule(
+            name="geometry_trig_fourier_series_mcq",
+            category=CATEGORY,
+            detector=is_fourier_series_mcq_problem,
+            description="Fourier series / periodic extension MCQ currently routed to geometry_trig.",
+        ),
+        DerivedRule(
+            name="geometry_trig_mcq_long_reasoning",
+            category=CATEGORY,
+            detector=is_geometry_mcq_long_reasoning_problem,
+            description="Geometry/trig MCQ likely to run long and must still finalize with one option letter.",
         ),
     ]
 

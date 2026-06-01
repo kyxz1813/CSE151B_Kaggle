@@ -363,6 +363,79 @@ def is_exact_expression_preferred_problem(record):
         "half life",
     ])
 
+def is_half_life_fraction_remaining_problem(record):
+    text = _text(record)
+    return (
+        is_half_life_decay_exact_problem(record)
+        and _has_any(text, ["fraction", "remained", "remaining", "absorbed"])
+        and _has_any(text, ["year", "1963", "1999", "half-life", "half life"])
+    )
+
+
+def is_half_life_percent_decay_log_problem(record):
+    text = _text(record)
+    return (
+        is_half_life_decay_exact_problem(record)
+        and _has_any(text, ["decays by", "decreases by", "%", "percent each day", "each day"])
+        and _has_any(text, ["half-life", "half life"])
+    )
+
+
+def is_high_precision_money_application_problem(record):
+    text = _text(record)
+    return (
+        _has_any(text, ["paycheck", "salary", "earns", "monthly", "weekly", "total of", "per year"])
+        and not _has_any(text, ["nearest cent", "round to the nearest cent", "dollars and cents"])
+    )
+
+
+def is_mixture_exact_expression_problem(record):
+    text = _text(record)
+    return (
+        _has_any(text, ["juice", "punch", "mixture", "solution", "concentration", "%"])
+        and _has_any(text, ["must be added", "obtain", "amount"])
+    )
+
+
+def is_real_world_invertibility_problem(record):
+    text = _text(record)
+    return (
+        _has_any(text, ["invertible", "inverse"])
+        and _has_any(text, ["volume", "rainfall", "mailing", "cost", "water"])
+    )
+
+
+def is_printing_signature_formula_convention_problem(record):
+    text = _text(record)
+    return (
+        _has_any(text, ["printing press", "signatures", "signature", "16 pages"])
+        and _has_any(text, ["rounded", "up/down", "c(p)", "cost"])
+    )
+
+
+def is_applied_counting_mcq_problem(record):
+    text = _text(record)
+    return (
+        bool(record.get("options"))
+        and _has_any(text, ["how many", "digit", "integer", "distinct", "pairwise"])
+    )
+
+
+def is_modular_crypto_application_problem(record):
+    text = _text(record)
+    return (
+        bool(record.get("options"))
+        and _has_any(text, ["ciphertext", "plaintext", "sender", "random integer", "mod", "p=", "e_1", "d="])
+    )
+
+
+def is_applied_exact_or_high_precision_problem(record):
+    return (
+        is_half_life_fraction_remaining_problem(record)
+        or is_half_life_percent_decay_log_problem(record)
+        or is_high_precision_money_application_problem(record)
+        or is_mixture_exact_expression_problem(record)
+    )
 
 # ============================================================
 # HARNESS CHECKS
@@ -664,6 +737,139 @@ def ceiling_evidence_present(record, row):
         },
     }
 
+def exact_decay_or_log_form_present(record, row):
+    if not (
+        is_half_life_fraction_remaining_problem(record)
+        or is_half_life_percent_decay_log_problem(record)
+    ):
+        return None
+
+    boxed = _boxed(row)
+    markers = ["ln", "log", "^", "(1/2)", "0.5", "/"]
+
+    present = any(marker in boxed for marker in markers)
+
+    return {
+        "passed": present,
+        "details": {
+            "boxed": boxed,
+            "exact_decay_marker_present": present,
+        },
+    }
+
+
+def high_precision_money_answer(record, row):
+    if not is_high_precision_money_application_problem(record):
+        return None
+
+    boxed = _boxed(row)
+    nums = re.findall(r"-?\d+(?:\.\d+)?", boxed)
+
+    if not nums:
+        return None
+
+    decimal_lengths = [
+        len(num.split(".")[-1])
+        for num in nums
+        if "." in num
+    ]
+
+    if not decimal_lengths:
+        return {
+            "passed": False,
+            "details": {
+                "reason": "no_decimal_precision",
+                "boxed": boxed,
+            },
+        }
+
+    return {
+        "passed": max(decimal_lengths) >= 6,
+        "details": {
+            "max_decimal_digits": max(decimal_lengths),
+            "boxed": boxed,
+        },
+    }
+
+
+def mixture_exact_ratio_present(record, row):
+    if not is_mixture_exact_expression_problem(record):
+        return None
+
+    boxed = _boxed(row)
+    has_exact = "/" in boxed or "ln" in boxed or "*" in boxed
+
+    return {
+        "passed": has_exact,
+        "details": {
+            "boxed": boxed,
+            "exact_ratio_marker_present": has_exact,
+        },
+    }
+
+
+def lowercase_yes_no_for_invertibility(record, row):
+    if not is_real_world_invertibility_problem(record):
+        return None
+
+    boxed = _boxed(row)
+    parts = [part.strip() for part in boxed.split(",") if part.strip()]
+
+    if not parts:
+        return {
+            "passed": False,
+            "details": {
+                "reason": "empty_answer",
+                "boxed": boxed,
+            },
+        }
+
+    passed = all(part in {"yes", "no"} for part in parts)
+
+    return {
+        "passed": passed,
+        "details": {
+            "parts": parts,
+            "expected": "lowercase yes/no",
+            "boxed": boxed,
+        },
+    }
+
+
+def printing_signature_formula_convention(record, row):
+    if not is_printing_signature_formula_convention_problem(record):
+        return None
+
+    boxed = _boxed(row)
+    parts = [part.strip() for part in boxed.split(",")]
+
+    has_ceil_in_formula = bool(parts) and "ceil" in parts[0].lower()
+    has_up_down = any(part.lower() in {"up", "down"} for part in parts)
+
+    return {
+        "passed": (not has_ceil_in_formula) and has_up_down,
+        "details": {
+            "has_ceil_in_first_answer": has_ceil_in_formula,
+            "has_up_down": has_up_down,
+            "boxed": boxed,
+        },
+    }
+
+
+def applied_mcq_final_letter_present(record, row):
+    if not record.get("options"):
+        return None
+
+    boxed = _boxed(row).upper()
+    valid = [chr(ord("A") + i) for i in range(len(record.get("options") or []))]
+
+    return {
+        "passed": boxed in valid,
+        "details": {
+            "boxed": boxed,
+            "valid": valid,
+        },
+    }
 
 def official_correct(record, row):
     if row.get("correct") is None:
@@ -735,6 +941,36 @@ def build_applied_word_problem_harness():
                 "ceiling_evidence_present",
                 ceiling_evidence_present,
                 weight=0.5,
+            ),
+            HarnessCheck(
+                "exact_decay_or_log_form_present",
+                exact_decay_or_log_form_present,
+                weight=0.75,
+            ),
+            HarnessCheck(
+                "high_precision_money_answer",
+                high_precision_money_answer,
+                weight=0.75,
+            ),
+            HarnessCheck(
+                "mixture_exact_ratio_present",
+                mixture_exact_ratio_present,
+                weight=0.75,
+            ),
+            HarnessCheck(
+                "lowercase_yes_no_for_invertibility",
+                lowercase_yes_no_for_invertibility,
+                weight=0.75,
+            ),
+            HarnessCheck(
+                "printing_signature_formula_convention",
+                printing_signature_formula_convention,
+                weight=0.75,
+            ),
+            HarnessCheck(
+                "applied_mcq_final_letter_present",
+                applied_mcq_final_letter_present,
+                weight=0.75,
             ),
             HarnessCheck(
                 "official_correct",
@@ -864,6 +1100,60 @@ def register_category_rules():
             category=CATEGORY,
             detector=is_exact_expression_preferred_problem,
             description="Problem where formula/log/exponential expression should be preserved if allowed.",
+        ),
+        DerivedRule(
+            name="applied_word_problem_half_life_fraction_remaining",
+            category=CATEGORY,
+            detector=is_half_life_fraction_remaining_problem,
+            description="Half-life fraction remaining problem where exact power form should be preserved.",
+        ),
+        DerivedRule(
+            name="applied_word_problem_half_life_percent_decay_log",
+            category=CATEGORY,
+            detector=is_half_life_percent_decay_log_problem,
+            description="Half-life from percent decay where exact logarithmic form should be preserved.",
+        ),
+        DerivedRule(
+            name="applied_word_problem_high_precision_money",
+            category=CATEGORY,
+            detector=is_high_precision_money_application_problem,
+            description="Money/paycheck/salary application where high precision should be preserved unless rounding is explicit.",
+        ),
+        DerivedRule(
+            name="applied_word_problem_mixture_exact_expression",
+            category=CATEGORY,
+            detector=is_mixture_exact_expression_problem,
+            description="Mixture/concentration application where exact ratio/expression is preferred.",
+        ),
+        DerivedRule(
+            name="applied_word_problem_real_world_invertibility",
+            category=CATEGORY,
+            detector=is_real_world_invertibility_problem,
+            description="Real-world invertibility yes/no problem.",
+        ),
+        DerivedRule(
+            name="applied_word_problem_printing_signature_formula_convention",
+            category=CATEGORY,
+            detector=is_printing_signature_formula_convention_problem,
+            description="Printing signature step-function problem with dataset-specific formula/up convention.",
+        ),
+        DerivedRule(
+            name="applied_word_problem_counting_mcq",
+            category=CATEGORY,
+            detector=is_applied_counting_mcq_problem,
+            description="Applied MCQ counting/combinatorics problem.",
+        ),
+        DerivedRule(
+            name="applied_word_problem_modular_crypto_mcq",
+            category=CATEGORY,
+            detector=is_modular_crypto_application_problem,
+            description="Applied modular arithmetic / cryptography MCQ problem.",
+        ),
+        DerivedRule(
+            name="applied_word_problem_exact_or_high_precision",
+            category=CATEGORY,
+            detector=is_applied_exact_or_high_precision_problem,
+            description="Applied problem where exact expression or high precision is preferred.",
         ),
     ]
 

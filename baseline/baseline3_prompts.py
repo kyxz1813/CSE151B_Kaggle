@@ -8,11 +8,12 @@ CATEGORY_GUIDANCE = {
     ),
     "calculus": (
         "Identify the calculus object first: derivative, integral, limit, series, approximation, "
-        "optimization, differential equation, or complex-analysis residue. State the exact operation "
-        "and variables before computing. For limits, compare dominant terms or use expansions. "
-        "For derivatives and extrema, differentiate before testing candidates. For integrals, choose "
-        "substitution, parts, symmetry, standard forms, or residues as appropriate. Keep exact forms "
-        "when possible and match the requested precision."
+        "optimization, differential equation, or complex-analysis residue. For calculus MCQ, treat the "
+        "problem as option verification: compute the mathematical result, then verify the selected option "
+        "before boxing. For antiderivative choices, differentiate the chosen option. For definite integral "
+        "or numeric choices, estimate the value and compare against the choices. For DE/IVP choices, "
+        "substitute into the equation and initial condition when possible. For calculus free-form, keep exact "
+        "forms and give 10-15 significant digits when a numeric answer is requested unless exact rounding is required."
     ),
     "geometry_trig": (
         "Track geometric definitions, diagrams implied by the text, and trigonometric identities. "
@@ -27,8 +28,10 @@ CATEGORY_GUIDANCE = {
         "Use exact integer reasoning and verify list-style answers against the requested order."
     ),
     "arithmetic_algebra": (
-        "Simplify expressions step by step. Respect order of operations, signs, fractions, "
-        "equation solving, and algebraic simplification."
+        "Solve arithmetic/algebra problems with exact final-answer discipline. Preserve symbolic formula blanks, "
+        "use explicit multiplication (*) and powers (^), keep ordered pairs/letter lists in the requested syntax, "
+        "and give extra decimal precision unless exact rounding is explicitly required. For MCQ, compute first and "
+        "then map to exactly one option letter."
     ),
     "applied_word_problem": (
         "Define variables and units before computing. Preserve requested units, rounding, and "
@@ -41,6 +44,109 @@ CATEGORY_GUIDANCE = {
         "answer order, units, rounding, and option-letter format."
     ),
 }
+
+
+CALCULUS_MCQ_VERIFICATION_BLOCK = """
+Calculus MCQ verification requirement:
+- Do not choose by resemblance. Compute, then verify the selected option.
+- For antiderivative options, differentiate the option you intend to choose and check it gives the integrand.
+- For definite integrals or numeric-answer choices, estimate the value numerically and compare choices before deciding.
+- For derivative choices, simplify the derivative and compare algebraically to the options.
+- For DE/IVP choices, substitute the candidate expression/value into the differential equation and initial condition when possible.
+- For area, volume, or surface-area choices, write the correct formula before comparing options.
+- If the exact expression seems absent, choose the option that best matches after simplification or convention, but still box exactly one letter.
+"""
+
+
+CALCULUS_FREEFORM_PRECISION_BLOCK = """
+Calculus free-form precision requirement:
+- Do not round final numeric answers unless the problem explicitly says to round to exactly N places.
+- If the prompt says “give to N places,” “at least N,” “use a calculator,” “graphically,” or asks for a decimal, output 10-15 significant digits when possible.
+- For exponential models, write formulas using exp(...), for example 77.2*exp(0.016*t).
+- For multi-part calculus models, count all [ANS] blanks and return formula/value/year or value/time entries in exactly that order.
+- For maximum error problems, compute the actual maximum error when requested; do not only use the differential approximation unless the prompt asks for an approximation.
+"""
+
+
+ARITHMETIC_ALGEBRA_CANONICAL_BLOCK = """
+Arithmetic/algebra canonical final-answer requirements:
+- Count all [ANS] blanks and classify each blank as formula, number, letter-list, ordered pair, interval, or text before solving.
+- If a blank asks for a formula or symbolic expression, do not substitute later numerical values into that blank.
+- Use explicit * for multiplication and ^ for powers in symbolic answers. Avoid implicit multiplication such as 3t or 6e^(16x).
+- If an exponent is 1 in a pattern/formula answer, keep it explicitly when helpful, e.g. t^1 and (1-t)^1.
+- For decimal/numeric answers, give 8-15 significant digits when possible unless the problem explicitly asks to round to exactly N places.
+- For free-form letter-list answers, concatenate letters with no commas/spaces unless commas are explicitly requested, e.g. BCEG.
+- For ordered pairs, preserve parentheses and order, e.g. (2,-2).
+"""
+
+STATISTICS_PROBABILITY_CANONICAL_BLOCK = """
+Statistics/probability canonical final-answer requirements:
+- Count all [ANS] blanks, but for hypothesis-test decision prompts with duplicated final [ANS] placeholders, output only the requested YES/NO decision unless another blank explicitly asks for the reject/fail-to-reject phrase.
+- Use high precision: 10-15 significant digits for probabilities, test statistics, sample sizes, regression values, standard deviations, and thresholds unless the prompt explicitly asks for exact rounding.
+- For categorical decision words, use uppercase canonical text: YES, NO, INCREASING, DECREASING.
+- For True/False questions, output T or F, not YES/NO and not TRUE/FALSE.
+- For representative/non-representative questions with choices A/B, output A or B, not the words REPRESENTATIVE or NON-REPRESENTATIVE.
+- For measurement-scale questions, output abbreviations N, O, I, R for Nominal, Ordinal, Interval, Ratio when the expected answers are compact blanks.
+- For embedded A/B/C/D subquestions inside a free-form problem, output only the selected letters in order, comma-separated.
+- For sample-size and margin-of-error formulas, output the raw computed value unless the problem explicitly says integer, whole number, smallest integer, minimum integer, or round up.
+- For two-population mean-difference sample-size problems with equal sample sizes, use the formula that matches the prompt's notation carefully. If sigma_1^2 and sigma_2^2 are variances, do not square them again.
+- For chi-square independence, output expected frequencies in row-major table order, then chi-square statistic, then critical value, then one final YES/NO answer.
+- For chi-square goodness-of-fit, output the test statistic, critical value or p-value if requested, then one final YES/NO decision.
+- Do not put reject H0, fail to reject, p-value explanations, or sentence fragments inside the final answer box unless explicitly requested as a blank.
+- For long table/regression/hypothesis-test rows, do not keep debating the answer contract. Once values are computed, immediately end with Final Answer: \\boxed{...}.
+"""
+
+APPLIED_WORD_PROBLEM_CANONICAL_BLOCK = """
+Applied word problem canonical final-answer requirements:
+- Prefer exact expressions over decimals unless the prompt explicitly asks for a decimal, rounded value, or approximate value.
+- For decay/half-life fraction remaining, preserve the exact power form such as (1/2)^[(target_year-start_year)/half_life].
+- For half-life from percent decay, preserve the exact logarithmic form such as [ln(0.5)]/[ln(1-r)] unless the prompt explicitly asks for a decimal approximation.
+- For money/paycheck/salary/rate word problems, do not round to cents unless the prompt explicitly asks for cents, nearest cent, or dollars and cents. Give 10-15 significant digits when possible.
+- For mixture/concentration problems, prefer exact ratio/fraction expressions when the prompt does not explicitly request a decimal.
+- For real-world invertibility yes/no questions, output lowercase yes or no in the same order as the blanks.
+- For step-function printing/signature problems with one blank for formula and a separate blank for rounded up/down, put the simple proportional expression in the formula blank and put up/down in the separate direction blank.
+- For multi-answer word problems, match each blank's requested type separately: expression, integer, decimal, yes/no, direction word, domain/range increment, or MCQ letter.
+- For MCQ applied counting/modular/arithmetic problems, finish with exactly one option letter in \\boxed{} even if the reasoning is incomplete.
+"""
+
+GEOMETRY_TRIG_CANONICAL_BLOCK = """
+Geometry/trigonometry canonical final-answer requirements:
+- Match the requested representation, not just a mathematically equivalent one.
+- For general trig-equation blanks of the form theta=[ANS]+[ANS] n, prefer exact symbolic period form when possible: atan(value), pi, 2*pi. Do not replace pi with 3.142 unless the prompt explicitly asks for decimal-only.
+- For arc length / radius problems with degree angles, convert degrees to radians first. If the answer blank asks for feet/meters and no exact-form instruction is given, output a high-precision decimal rather than a pi expression.
+- For quadrant point problems, use the simplest integer point when possible, with no spaces inside the coordinate pair: (-1,-3). If the second blank asks for a trig value and does not explicitly demand exact form, use a high-precision decimal.
+- If the problem explicitly says exact form and says to type sqrt, avoid LaTeX \\dfrac. Use plain expressions like -2*sqrt(14)/9.
+- For numeric trig values like sin(0.6), cos(0.6), tan(0.6), use radians unless degrees are explicitly stated, compute each value directly, and give 10-15 significant digits.
+- For Pythagorean theorem equation blanks, preserve the requested visual/canonical equation order. If x is the wire/hypotenuse and the height is x-4, write 13^2 + (x-4)^2 = x^2.
+- For bearing/vector travel problems, output distance expression/value first, then direction letter, then angle, then direction letter. Example: sqrt(a^2+b^2), N, angle, E.
+- For MCQ geometry/trig, always finish with exactly one option letter in \\boxed{}.
+"""
+
+def _problem_is_mcq(problem):
+    return bool(getattr(problem, "options", None))
+
+
+def _category_extra_guidance(context):
+    category = context.metadata.get("category") or "general_math"
+
+    if category == "statistics_probability":
+        return STATISTICS_PROBABILITY_CANONICAL_BLOCK.strip()
+
+    if category == "applied_word_problem":
+        return APPLIED_WORD_PROBLEM_CANONICAL_BLOCK.strip()
+
+    if category == "geometry_trig":
+        return GEOMETRY_TRIG_CANONICAL_BLOCK.strip()
+
+    if category == "calculus":
+        if _problem_is_mcq(context.problem):
+            return CALCULUS_MCQ_VERIFICATION_BLOCK.strip()
+        return CALCULUS_FREEFORM_PRECISION_BLOCK.strip()
+
+    if category == "arithmetic_algebra":
+        return ARITHMETIC_ALGEBRA_CANONICAL_BLOCK.strip()
+
+    return ""
 
 
 def build_baseline3_system_prompt(category):
@@ -70,25 +176,33 @@ def build_adaptive_rule_user_prompt(context):
         category=category,
     )
 
-    if not guidance:
+    extra_guidance = _category_extra_guidance(context)
+
+    parts = []
+    if guidance:
+        parts.append(guidance)
+    if extra_guidance:
+        parts.append(extra_guidance)
+
+    if not parts:
         return base_prompt
 
     return (
-        f"{guidance}\n\n"
-        "Adaptive-rule instructions:\n"
-        "- Use the subtype-specific guidance above only when relevant.\n"
-        "- First count [ANS] blanks and identify what each blank asks for.\n"
-        "- Preserve exact forms unless a decimal is explicitly required.\n"
-        "- If a decimal is needed, provide extra precision when possible.\n"
-        "- For MCQ, always map the result to exactly one option letter.\n"
-        "- The final answer format requirements still take priority.\n\n"
-        f"{base_prompt}"
+        "\n\n".join(parts)
+        + "\n\nAdaptive-rule instructions:\n"
+        + "- Use the subtype-specific guidance above when relevant, but do not mention the category or rule names.\n"
+        + "- First count [ANS] blanks and identify what each blank asks for.\n"
+        + "- Preserve exact forms unless a decimal is explicitly required.\n"
+        + "- If a decimal is needed, provide extra precision when possible.\n"
+        + "- For MCQ, always map the result to exactly one option letter.\n"
+        + "- The final answer format requirements still take priority.\n\n"
+        + base_prompt
     )
 
 VED_STRICT_OUTPUT_GUARD = """
 Required output structure:
 Reasoning:
-- At most 4 concise lines.
+- At most 6 concise lines. For calculus MCQ, reserve one line for option verification.
 
 Final Answer: \\boxed{<final answer>}
 

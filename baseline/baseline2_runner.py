@@ -11,7 +11,7 @@ from .baseline2_prompts import (
 from .datasets import save_jsonl
 from .experiments import append_comparison_row, build_comparison_row
 from .generation import GenerationConfig, generate_prompt_texts
-from .output_parsing import parse_model_output
+from .output_parsing import parse_model_output, is_placeholder_answer
 from .prompt_sets import build_prompt_texts
 from .runner import RunResult, save_submission_csv, write_report, maybe_limit_problem_set
 from .scoring import load_judger, score_records, summarize_results
@@ -100,6 +100,9 @@ def _should_retry(parsed_row):
 
 
 def _retry_mode_for(parsed_row):
+    if "placeholder_boxed_answer" in (parsed_row.get("schema_errors") or []):
+        return "short_resolve"
+
     if parsed_row.get("extractable"):
         return "format_repair"
 
@@ -126,7 +129,7 @@ def _best_effort_final_answer(record, raw_output, parsed_row=None):
     if parsed_row:
         extracted = str(parsed_row.get("extracted_answer") or "").strip()
 
-    if extracted:
+    if extracted and not is_placeholder_answer(extracted):
         if options:
             valid = set(_valid_letters(record))
             if extracted.upper() in valid:
@@ -137,11 +140,13 @@ def _best_effort_final_answer(record, raw_output, parsed_row=None):
     boxed = BOXED_RE.findall(text)
     if boxed:
         candidate = boxed[-1].strip()
-        if options:
+        if is_placeholder_answer(candidate):
+            candidate = ""
+        if candidate and options:
             valid = set(_valid_letters(record))
             if candidate.upper() in valid:
                 return candidate.upper()
-        else:
+        elif candidate:
             return candidate
 
     if options:

@@ -260,6 +260,81 @@ def is_letter_set_selection_problem(record):
     ]) and not record.get("options")
 
 
+
+def is_formula_then_evaluate_problem(record):
+    text = _text(record)
+    return (
+        _ans_count(record) >= 2
+        and _has_any(text, [
+            "can be simplified to the form",
+            "simplified to the form",
+            "where a and b",
+            "a=",
+            "b=",
+            "suppose that",
+            "then",
+            "contains no fractions",
+            "contain no fractions",
+        ])
+        and _has_any(text, [
+            "formula",
+            "expression",
+            "simplified",
+            "suppose",
+            "then",
+        ])
+    )
+
+
+def is_exponential_log_solve_problem(record):
+    text = _text(record)
+    return (
+        _has_any(text, ["graphically", "solve", "log", "ln"])
+        and re.search(r"\b[a-z]\s*=\s*[-+]?\d", text) is not None
+        and re.search(r"\([^)]*\)\s*\^\s*[a-z]", text) is not None
+    ) or (
+        "^q" in text and _has_any(text, ["graphically", "solve"])
+    )
+
+
+def is_ordered_pair_answer_problem(record):
+    text = _text(record)
+    return _has_any(text, [
+        "ordered pair",
+        "point",
+        "coordinate",
+        "zero of the polynomial",
+        "zeros of the polynomial",
+        "pair",
+    ]) and _ans_count(record) >= 1
+
+
+def is_canonical_symbolic_syntax_problem(record):
+    text = _text(record)
+    return (
+        _has_any(text, [
+            "formula",
+            "express your answer",
+            "simplified to the form",
+            "write the formula",
+            "find a simplified formula",
+        ])
+        and _has_any(text, ["t", "x", "y", "e^", "exp", "^", "*"])
+    )
+
+
+def is_scientific_expression_style_problem(record):
+    text = _text(record)
+    return _has_any(text, [
+        "e^",
+        "exp",
+        "exponential",
+        "simplified formula",
+        "let u(x)",
+        "let v(x)",
+    ]) and _ans_count(record) >= 1
+
+
 def schema_valid(record, row):
     return row.get("schema_valid")
 
@@ -483,6 +558,155 @@ def temperature_answer_count_valid(record, row):
     }
 
 
+def temperature_high_precision_valid(record, row):
+    if not is_temperature_conversion_problem(record):
+        return None
+
+    boxed = _boxed(row)
+    parts = [part.strip() for part in boxed.split(",") if part.strip()]
+
+    if len(parts) < 2:
+        return {
+            "passed": False,
+            "details": {"reason": "fewer_than_two_temperature_answers", "boxed": boxed},
+        }
+
+    decimal_digits = []
+    for part in parts[:2]:
+        match = re.search(r"\.([0-9]+)", part)
+        decimal_digits.append(len(match.group(1)) if match else 0)
+
+    return {
+        "passed": min(decimal_digits) >= 10,
+        "details": {
+            "first_two_decimal_digits": decimal_digits,
+            "boxed": boxed,
+        },
+    }
+
+
+def bernstein_canonical_syntax_valid(record, row):
+    if not is_bernstein_polynomial_problem(record):
+        return None
+
+    boxed = _boxed(row)
+    expected = _ans_count(record)
+    actual = row.get("actual_answer_count")
+
+    has_explicit_multiplication = "*" in boxed
+    has_power_one = "^1" in boxed
+    has_implicit_coeff_var = re.search(r"\b\d+[a-zA-Z]", boxed) is not None
+
+    return {
+        "passed": (
+            actual == expected
+            and has_explicit_multiplication
+            and has_power_one
+            and not has_implicit_coeff_var
+        ),
+        "details": {
+            "actual_answer_count": actual,
+            "expected_answer_count": expected,
+            "has_explicit_multiplication": has_explicit_multiplication,
+            "has_power_one": has_power_one,
+            "has_implicit_coeff_var": bool(has_implicit_coeff_var),
+            "boxed": boxed,
+        },
+    }
+
+
+def formula_blank_not_numeric_substitution(record, row):
+    if not is_formula_then_evaluate_problem(record):
+        return None
+
+    boxed = _boxed(row)
+    parts = [part.strip() for part in boxed.split(",") if part.strip()]
+
+    if len(parts) < 2:
+        return {
+            "passed": False,
+            "details": {"reason": "not_enough_parts", "boxed": boxed},
+        }
+
+    first_two_have_symbols = all(
+        re.search(r"[A-Za-z]", part) is not None
+        for part in parts[:2]
+    )
+
+    first_two_are_plain_numbers = any(
+        re.fullmatch(r"[-+]?\d+(?:\.\d+)?", part) is not None
+        for part in parts[:2]
+    )
+
+    return {
+        "passed": first_two_have_symbols and not first_two_are_plain_numbers,
+        "details": {
+            "first_two_have_symbols": first_two_have_symbols,
+            "first_two_are_plain_numbers": first_two_are_plain_numbers,
+            "first_two_parts": parts[:2],
+        },
+    }
+
+
+def letter_set_no_commas_valid(record, row):
+    if not is_letter_set_selection_problem(record):
+        return None
+
+    boxed = _boxed(row).strip()
+    compact = boxed.replace(" ", "")
+
+    if not re.fullmatch(r"[A-Z,]+", compact):
+        return None
+
+    return {
+        "passed": "," not in compact,
+        "details": {
+            "boxed": boxed,
+            "compact": compact,
+        },
+    }
+
+
+def ordered_pair_format_valid(record, row):
+    if not is_ordered_pair_answer_problem(record):
+        return None
+
+    boxed = _boxed(row).strip()
+    looks_like_pair = bool(re.search(r"\([^()]+,[^()]+\)", boxed))
+
+    return {
+        "passed": looks_like_pair,
+        "details": {
+            "boxed": boxed,
+            "looks_like_pair": looks_like_pair,
+        },
+    }
+
+
+def exponential_solution_precision_valid(record, row):
+    if not is_exponential_log_solve_problem(record):
+        return None
+
+    boxed = _boxed(row)
+    decimals = re.findall(r"\d+\.([0-9]+)", boxed)
+
+    if not decimals:
+        return {
+            "passed": False,
+            "details": {"reason": "no_decimal_answer", "boxed": boxed},
+        }
+
+    max_digits = max(len(item) for item in decimals)
+
+    return {
+        "passed": max_digits >= 4,
+        "details": {
+            "max_decimal_digits": max_digits,
+            "boxed": boxed,
+        },
+    }
+
+
 def official_correct(record, row):
     if row.get("correct") is None:
         return None
@@ -547,6 +771,36 @@ def build_arithmetic_algebra_harness():
             HarnessCheck(
                 "temperature_answer_count_valid",
                 temperature_answer_count_valid,
+                weight=0.5,
+            ),
+            HarnessCheck(
+                "temperature_high_precision_valid",
+                temperature_high_precision_valid,
+                weight=0.5,
+            ),
+            HarnessCheck(
+                "bernstein_canonical_syntax_valid",
+                bernstein_canonical_syntax_valid,
+                weight=0.5,
+            ),
+            HarnessCheck(
+                "formula_blank_not_numeric_substitution",
+                formula_blank_not_numeric_substitution,
+                weight=0.5,
+            ),
+            HarnessCheck(
+                "letter_set_no_commas_valid",
+                letter_set_no_commas_valid,
+                weight=0.5,
+            ),
+            HarnessCheck(
+                "ordered_pair_format_valid",
+                ordered_pair_format_valid,
+                weight=0.5,
+            ),
+            HarnessCheck(
+                "exponential_solution_precision_valid",
+                exponential_solution_precision_valid,
                 weight=0.5,
             ),
             HarnessCheck(
@@ -666,6 +920,36 @@ def register_category_rules():
             category=CATEGORY,
             detector=is_letter_set_selection_problem,
             description="Free-form answer consisting of selected letters such as BCEG.",
+        ),
+        DerivedRule(
+            name="arithmetic_algebra_formula_then_evaluate",
+            category=CATEGORY,
+            detector=is_formula_then_evaluate_problem,
+            description="Problem asks for symbolic formula blanks first and numerical evaluation later.",
+        ),
+        DerivedRule(
+            name="arithmetic_algebra_exponential_log_solve",
+            category=CATEGORY,
+            detector=is_exponential_log_solve_problem,
+            description="Exponential equation solved using logarithms with high precision.",
+        ),
+        DerivedRule(
+            name="arithmetic_algebra_ordered_pair_answer",
+            category=CATEGORY,
+            detector=is_ordered_pair_answer_problem,
+            description="Problem expects an ordered pair or coordinate-style final answer.",
+        ),
+        DerivedRule(
+            name="arithmetic_algebra_canonical_symbolic_syntax",
+            category=CATEGORY,
+            detector=is_canonical_symbolic_syntax_problem,
+            description="Symbolic answer should use explicit multiplication and canonical syntax.",
+        ),
+        DerivedRule(
+            name="arithmetic_algebra_scientific_expression_style",
+            category=CATEGORY,
+            detector=is_scientific_expression_style_problem,
+            description="Expression answer involving e, exp, powers, or simplified symbolic formula style.",
         ),
     ]
 
